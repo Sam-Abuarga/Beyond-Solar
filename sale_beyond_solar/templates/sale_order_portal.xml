@@ -48,8 +48,8 @@
             </section>
 
             <!-- System Components -->
-            <t t-set="inverter_line" t-value="sale_order.order_line.filtered(lambda sol: sol.product_id.categ_id.name == 'Inverter')[:1]"/>
-            <t t-set="panels_line" t-value="sale_order.order_line.filtered(lambda sol: sol.product_id.categ_id.name == 'Panels')[:1]"/>
+            <t t-set="inverter_line" t-value="sale_order.order_line.filtered(lambda sol: sol.product_id.categ_id.name == 'Inverters' or sol.product_id.categ_id.parent_id.name == 'Inverters')[:1]"/>
+            <t t-set="panels_line" t-value="sale_order.order_line.filtered(lambda sol: sol.product_id.categ_id.name == 'Solar Panels')[:1]"/>
             <t t-if="inverter_line or panels_line">
                 <hr/>
                 <section id="components" style="page-break-inside: auto;" class="mt32">
