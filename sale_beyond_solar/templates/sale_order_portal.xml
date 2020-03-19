@@ -1,0 +1,204 @@
+<odoo>
+    <template id="sale_order_portal_content" inherit_id="sale.sale_order_portal_content">
+        <xpath expr="//section[@id='details']" position="before">
+            <t t-set="image_left" t-value="False"/>
+
+            <!-- Solar Panel Layout -->
+            <t t-if="sale_order.order_line[0].product_id.image_1920">
+                <hr/>
+                <section id="panel_layout">
+                    <h1 style="text-align: center">Solar Panel Layout</h1>
+                    <img t-att-src="image_data_uri(sale_order.x_studio_solar_panel_layout)" alt="Solar Panel Layout Diagram" style="width: 100%;" class="mt16 mb16"/>
+                </section>
+            </t>
+
+            <!-- System Performance Analysis -->
+            <hr/>
+            <section id="performance">
+                <h1 style="text-align: center">System Performance Analysis</h1>
+                <t t-if="sale_order.order_line[0].product_id.image_1920">
+                    <img t-att-src="image_data_uri(sale_order.x_studio_performance_chart)" alt="Solar Panel Layout Diagram" style="width: 100%;" class="mt16"/>
+                </t>
+                <div class="row mt16">
+                    <div class="col-6">
+                        <h3>System Production</h3>
+                        <p>Peak DC Power:
+                            <span t-field="sale_order.x_studio_peak_dc_power_kw"/> kW
+                        </p>
+                        <p>Annual Energy Yield<sup>1</sup>:
+                            <span t-field="sale_order.x_studio_annual_energy_yield"/> kWh
+                        </p>
+                        <p>Greenhouse Gas Emission Reduction<sup>2</sup>:
+                            <span t-field="sale_order.x_studio_co2_prevented"/>
+                        </p>
+                    </div>
+                    <div class="col-6">
+                        <h3>System Payback</h3>
+                        <p>Maximum Annual Savings:
+                            <span t-esc="'${:.2f}'.format(sale_order.x_studio_savings)"/>
+                        </p>
+                        <p>System Payback Period:
+                            <span t-field="sale_order.x_studio_years_to_payoff_system"/> years
+                        </p>
+                        <p>Return on Investment:
+                            <span t-field="sale_order.x_studio_roi_"/>%
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- System Components -->
+            <t t-set="inverter_line" t-value="sale_order.order_line.filtered(lambda sol: sol.product_id.categ_id.name == 'Inverter')[:1]"/>
+            <t t-set="panels_line" t-value="sale_order.order_line.filtered(lambda sol: sol.product_id.categ_id.name == 'Panels')[:1]"/>
+            <t t-if="inverter_line or panels_line">
+                <hr/>
+                <section id="components" style="page-break-inside: auto;" class="mt32">
+                    <h1 style="text-align: center">System Components</h1>
+
+                    <t t-if="inverter_line">
+                        <div class="row mb16">
+                            <div class="col-6">
+                                <h3>Inverter</h3>
+                                <h5 t-field="inverter_line.product_id.name"/>
+                                <p t-field="inverter_line.product_id.description_sale"/>
+                            </div>
+                            <div class="col-6">
+                                <t t-if="inverter_line.product_id.image_1920">
+                                    <img t-att-src="image_data_uri(inverter_line.product_id.image_1920)" alt="Inverter Image"
+                                         style="display: block; margin: auto; max-height: 600px; max-width: 100%;"/>
+                                </t>
+                            </div>
+                            <t t-set="image_left" t-value="True"/>
+                        </div>
+                    </t>
+
+                    <t t-if="panels_line">
+                        <div class="row mb16">
+                            <div class="col-6" t-if="image_left">
+                                <t t-if="panels_line.product_id.image_1920">
+                                    <img t-att-src="image_data_uri(panels_line.product_id.image_1920)" alt="Panels Image"
+                                         style="display: block; margin: auto; max-height: 600px; max-width: 100%;"/>
+                                </t>
+                            </div>
+                            <div class="col-6">
+                                <h3>Panels</h3>
+                                <h5 t-field="panels_line.product_id.name"/>
+                                <p t-field="panels_line.product_id.description_sale"/>
+                            </div>
+                            <div class="col-6" t-if="not image_left">
+                                <t t-if="panels_line.product_id.image_1920">
+                                    <img t-att-src="image_data_uri(panels_line.product_id.image_1920)" alt="Panels Image"
+                                         style="display: block; margin: auto; max-height: 600px; max-width: 100%;"/>
+                                </t>
+                            </div>
+                            <t t-set="image_left" t-value="not image_left"/>
+                        </div>
+                    </t>
+                </section>
+            </t>
+
+            <!-- Our Accreditations -->
+            <hr/>
+            <section id="testimonials" style="page-break-inside: auto;" class="mt32">
+                <h1 style="text-align: center">Our Accreditations</h1>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div style="height: 200px; position: relative;" class="mb16">
+                            <img src="https://scottburkeelectrical.com.au/wp-content/uploads/2019/12/SMA-PowerUP-logo-800.jpg"
+                                 style="max-width: 100%; max-height: 200px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) !important;" alt="SMA Power Up Logo"/>
+                        </div>
+                        <p>SMA PowerUP Trusted Solar Energy Partners are industry professionals that are fully qualified and trained to install and service SMA inverters.</p>
+                        <p>By purchasing your Solar Power System from Beyond Solar, you can rest easy knowing that we have got the tools and knowledge to ensure a smooth and
+                            stress-free installation, but that's not the only benefit.
+                        </p>
+                        <p>You will also recieve a complimentary 5+5 year warranty, as well as priority service should anything in the rare occassion go wrong, in addition to the
+                            industry-leading service standard employed at Beyond Solar.
+                        </p>
+                    </div>
+                    <div class="col-md-4">
+                        <div style="height: 200px; position: relative;" class="mb16">
+                            <img src="https://www.solarpowerdirect.com.au/wp-content/uploads/2019/01/approved-solar-retailer-CEC-medium.jpg"
+                                 style="max-width: 100%; max-height: 200px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) !important;" alt="Clean Energy Council Logo"/>
+                        </div>
+                        <p>Beyond Solar has signed on to the Clean Energy Council Solar Retailer Code of Conduct,
+                            a voluntary scheme authorised by the Australian Competition and ConsumerCommission (ACCC).
+                        </p>
+                        <p>Companies that have signed on to the code have committed to provide a high standard of quality and service,
+                            raising the bar in the solar industry. They also provide a minimum five-year whole of system and installation warranty on solar power systems.
+                        </p>
+                    </div>
+                    <div class="col-md-4">
+                        <div style="height: 200px; position: relative;" class="mb16">
+                            <img src="https://modeelectrical.com.au/wp-content/uploads/2016/07/TE-Certified-Installer.jpg"
+                                 style="max-width: 100%; max-height: 200px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) !important;" alt="Tesla PowerWall Installer Logo"/>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Optional Products -->
+            <t t-if="sale_order.sale_order_option_ids">
+                <hr/>
+                <section id="optional_products" style="page-break-inside: auto;" class="mt32">
+                    <h1 style="text-align: center">Optional Products</h1>
+                    <div class="row mb16" t-foreach="sale_order.sale_order_option_ids" t-as="option_line">
+                        <div class="col-6" t-if="image_left">
+                            <t t-if="option_line.product_id.image_1920">
+                                <img t-att-src="image_data_uri(option_line.product_id.image_1920)" alt="Optional Product Image"
+                                     style="display: block; margin: auto; max-height: 600px; max-width: 100%;"/>
+                            </t>
+                        </div>
+                        <div class="col-6">
+                            <h3 t-esc="option_line.product_id.name"/>
+                            <p t-field="option_line.product_id.description_sale"/>
+                        </div>
+                        <div class="col-6" t-if="not image_left">
+                            <t t-if="option_line.product_id.image_1920">
+                                <img t-att-src="image_data_uri(option_line.product_id.image_1920)" alt="Optional Product Image"
+                                     style="display: block; margin: auto; max-height: 600px; max-width: 100%;"/>
+                            </t>
+                        </div>
+                        <t t-set="image_left" t-value="not image_left"/>
+                    </div>
+                </section>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="sale_order_portal_template" inherit_id="sale.sale_order_portal_template">
+        <!-- Condition text in sign modal -->
+        <xpath expr="//div[@t-if='sale_order.has_to_be_signed(True)']//main[@id='sign-dialog']//ul" position="inside">
+            <li><span>With a deposit of:</span> <b t-esc="'$ {:.2f}'.format(sale_order.amount_total * 0.1)"/></li>
+        </xpath>
+
+        <!-- Condition text in payment modal -->
+        <xpath expr="//div[@t-if='not sale_order.has_to_be_signed(True) and sale_order.has_to_be_paid(True)']//main[@id='sign-dialog']//ul" position="inside">
+            <li><span>With a deposit of:</span> <b t-esc="'$ {:.2f}'.format(sale_order.amount_total * 0.1)"/></li>
+        </xpath>
+
+        <!-- Text in left Pay Now button -->
+        <xpath expr="//a[@id='o_sale_portal_paynow']//t[@t-else='']" position="replace">
+            <t t-else="">Pay Deposit</t>
+        </xpath>
+
+        <!-- Text in left Sign & Pay button -->
+        <xpath expr="//a[@t-if='sale_order.has_to_be_signed(True)']//t[@t-if='sale_order.has_to_be_paid(True)']" position="replace">
+            <t t-if="sale_order.has_to_be_paid(True)"> Sign &amp; Pay Deposit</t>
+        </xpath>
+
+        <!-- Text in bottom Pay Now button -->
+        <xpath expr="//div[@t-elif='sale_order.has_to_be_paid(True)']//t[@t-else='']" position="replace">
+            <t t-else="">Pay Deposit</t>
+        </xpath>
+
+        <!-- Text in bottom Sign & Pay button -->
+        <xpath expr="//t[@t-if='sale_order.has_to_be_signed(True)']//t[@t-if='sale_order.has_to_be_paid(True)']" position="replace">
+            <t t-if="sale_order.has_to_be_paid(True)"> Sign &amp; Pay Deposit</t>
+        </xpath>
+
+        <!-- Text in Pay Now modal -->
+        <xpath expr="//div[@id='payment_method']/h3" position="replace">
+            <h3 class="mb24">Pay deposit with</h3>
+        </xpath>
+    </template>
+</odoo>
