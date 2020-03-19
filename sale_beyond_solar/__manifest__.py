@@ -15,6 +15,8 @@
     ],
     'data': [
         'templates/sale_order_portal.xml',
+
+        'views/product_template.xml',
     ],
     'images': [
         'static/description/banner.png',
