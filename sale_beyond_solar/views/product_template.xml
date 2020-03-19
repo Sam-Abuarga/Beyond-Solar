@@ -1,0 +1,14 @@
+<odoo>
+    <record id="product_template_form_view" model="ir.ui.view">
+        <field name="name">product.template.form.view</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='description']" position="after">
+                <group name="html_description" string="Sales Description (HTML)">
+                    <field name="description_sale_html" nolabel="1" placeholder="This field is show on line quotes."/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
