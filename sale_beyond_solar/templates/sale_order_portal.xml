@@ -320,11 +320,11 @@
 
     <template id="payment_confirmation_status" inherit_id="payment.payment_confirmation_status">
         <xpath expr="//b[1]" position="replace">
-            <b>Amount: </b><span t-esc='"${:.2f}".format(payment_tx_id.amount)'/>
+            <b>Amount: </b><span t-esc='"${:.2f}".format(payment_tx_id.amount)'/><br/>
             <b>Reference: </b>
         </xpath>
-        <xpath expr="//b[2]" position="replace">
-            <b>Amount: </b><span t-esc='"${:.2f}".format(payment_tx_id.amount)'/>
+        <xpath expr="//b[3]" position="replace">
+            <b>Amount: </b><span t-esc='"${:.2f}".format(payment_tx_id.amount)'/><br/>
             <b>Reference: </b>
         </xpath>
     </template>
