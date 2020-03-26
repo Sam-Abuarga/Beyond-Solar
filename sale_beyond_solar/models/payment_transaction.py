@@ -25,3 +25,8 @@ class PaymentTransaction(models.Model):
             order.pricelist_id.currency_id.id,
             values=values,
         )
+
+    def _check_amount_and_confirm_order(self):
+        self.ensure_one()
+        for order in self.sale_order_ids.filtered(lambda so: so.state in ('draft', 'sent')):
+            order.with_context(send_email=True).action_confirm()
