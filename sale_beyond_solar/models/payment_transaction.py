@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 
 
 class PaymentTransaction(models.Model):
@@ -25,9 +25,3 @@ class PaymentTransaction(models.Model):
             order.pricelist_id.currency_id.id,
             values=values,
         )
-
-    def _reconcile_after_transaction_done(self):
-        # Validate invoices automatically upon the transaction is posted.
-        invoices = self.mapped('invoice_ids').filtered(lambda inv: inv.state == 'draft')
-
-        return super(PaymentTransaction, self)._reconcile_after_transaction_done()
