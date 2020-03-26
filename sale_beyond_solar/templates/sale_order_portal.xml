@@ -317,4 +317,15 @@
             <h3 class="mb24">Pay deposit with</h3>
         </xpath>
     </template>
+
+    <template id="payment_confirmation_status" inherit_id="payment.payment_confirmation_status">
+        <xpath expr="//b[1]" position="replace">
+            <b>Amount: </b><span t-esc='"${:.2f}".format(payment_tx_id.amount)'/>
+            <b>Reference: </b>
+        </xpath>
+        <xpath expr="//b[2]" position="replace">
+            <b>Amount: </b><span t-esc='"${:.2f}".format(payment_tx_id.amount)'/>
+            <b>Reference: </b>
+        </xpath>
+    </template>
 </odoo>
