@@ -42,7 +42,7 @@
                             <span t-esc="'{:.2f}'.format(sale_order.x_studio_years_to_payoff_system)"/> years
                         </p>
                         <p>Return on Investment:
-                            <span t-esc="'{:.2%}'.format(sale_order.x_studio_roi_)"/>%
+                            <span t-esc="'{:.2%}'.format(sale_order.x_studio_roi_)"/>
                         </p>
                     </div>
                 </div>
