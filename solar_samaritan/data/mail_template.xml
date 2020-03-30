@@ -1,0 +1,69 @@
+<odoo noupdate="1">
+    <record id="mail_template_referral_state_draft" model="mail.template">
+        <field name="name">Referral - New</field>
+        <field name="model_id" ref="model_sale_referral"/>
+        <field name="email_to">${object.partner_id.email}</field>
+        <field name="subject">New Referral</field>
+        <field name="auto_delete" eval="False"/>
+        <field name="body_html"><![CDATA[
+Hi ${object.partner_id.name},
+
+A customer that you referred has contacted us. If they purchase a solar package we will give you $100 gift card.
+
+Many Thanks,
+Beyond Solar
+        ]]>
+        </field>
+    </record>
+
+    <record id="mail_template_referral_state_qualified" model="mail.template">
+        <field name="name">Referral - Qualified</field>
+        <field name="model_id" ref="model_sale_referral"/>
+        <field name="email_to">${object.partner_id.email}</field>
+        <field name="subject">Referral Qualified</field>
+        <field name="auto_delete" eval="False"/>
+        <field name="body_html"><![CDATA[
+Hi ${object.partner_id.name},
+
+You're one step closer to getting $100.
+
+Many Thanks,
+Beyond Solar
+        ]]>
+        </field>
+    </record>
+
+    <record id="mail_template_referral_state_entitled" model="mail.template">
+        <field name="name">Referral - Entitled</field>
+        <field name="model_id" ref="model_sale_referral"/>
+        <field name="email_to">${object.partner_id.email}</field>
+        <field name="subject">Referral Complete</field>
+        <field name="auto_delete" eval="False"/>
+        <field name="body_html"><![CDATA[
+Hi ${object.partner_id.name},
+
+You just earned yourself $100, congratulations.
+
+Many Thanks,
+Beyond Solar
+        ]]>
+        </field>
+    </record>
+
+    <record id="mail_template_referral_state_done" model="mail.template">
+        <field name="name">Referral - Fulfilled</field>
+        <field name="model_id" ref="model_sale_referral"/>
+        <field name="email_to">${object.partner_id.email}</field>
+        <field name="subject">Your Reward has Been Sent</field>
+        <field name="auto_delete" eval="False"/>
+        <field name="body_html"><![CDATA[
+Hi ${object.partner_id.name},
+
+Your $100 referral bonus is on it's way.
+
+Many Thanks,
+Beyond Solar
+        ]]>
+        </field>
+    </record>
+</odoo>
