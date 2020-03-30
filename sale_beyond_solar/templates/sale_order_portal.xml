@@ -39,10 +39,10 @@
                             <span t-esc="'${:.2f}'.format(sale_order.x_studio_savings)"/>
                         </p>
                         <p>System Payback Period:
-                            <span t-field="sale_order.x_studio_years_to_payoff_system"/> years
+                            <span t-esc="'${:.2f}'.format(sale_order.x_studio_years_to_payoff_system)"/> years
                         </p>
                         <p>Return on Investment:
-                            <span t-field="sale_order.x_studio_roi_"/>%
+                            <span t-esc="'${:.2f}'.format=(sale_order.x_studio_roi_*100)"/>%
                         </p>
                     </div>
                 </div>
