@@ -11,17 +11,13 @@
     """,
     'depends': [
         'base',
+        'payment',
         'sale',
     ],
     'data': [
         'templates/sale_order_portal.xml',
 
         'views/product_template.xml',
-    ],
-    'images': [
-        'static/description/banner.png',
-    ],
-    'test': [
     ],
     'installable': True,
     'application': False,
