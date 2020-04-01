@@ -15,6 +15,7 @@
         'sale',
     ],
     'data': [
+        'assets.xml',
         'security/ir.model.access.csv',
 
         'data/mail_template.xml',
@@ -23,6 +24,7 @@
         'views/crm_lead.xml',
         'views/sale_referral.xml',
     ],
+    'qweb': ['static/src/xml/*.xml'],
     'installable': True,
     'application': False,
 

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+<t t-name="referral_chart_partner">
+    <div t-attf-class="o_org_chart_entry o_org_chart_entry_#{type} media">
+        <div class="o_media_left">
+            <a t-if="type != 'self'"
+                class="o_media_object rounded-circle o_partner_redirect"
+                t-att-style="'background-image:url(\'/web/image/res.partner/' + partner.id + '/image_1024/\')'"
+                t-att-alt="partner.name"
+                t-att-data-partner-id="partner.id"
+                t-att-href="partner.link"/>
+            <div t-if="type == 'self'"
+                class="o_media_object rounded-circle"
+                t-att-style="'background-image:url(\'/web/image/res.partner/' + partner.id + '/image_1024/\')'"/>
+        </div>
+
+        <div class="media-body">
+            <a t-att-href="partner.link" class="o_partner_redirect" t-att-data-partner-id="partner.id">
+                <h5 class="o_media_heading"><b><t t-esc="partner.name"/></b></h5>
+                <span t-esc="partner.direct"/> direct, <span t-esc="partner.indirect"/> indirect
+            </a>
+        </div>
+    </div>
+</t>
+
+<t t-name="referral_chart">
+    <div id="o_employee_right">
+        <div t-if='referred_by.length' class="o_org_chart_group_up">
+            <t t-foreach="referred_by" t-as="partner">
+                <t t-call="referral_chart_partner">
+                    <t t-set="type" t-value="'up'"/>
+                </t>
+            </t>
+        </div>
+
+        <t t-call="referral_chart_partner">
+            <t t-set="partner" t-value="main_partner"/>
+            <t t-set="type" t-value="'self'"/>
+        </t>
+
+        <div t-if="referrals.length" class="o_org_chart_group_down">
+            <t t-foreach="referrals" t-as="partner">
+                <t t-call="referral_chart_partner">
+                    <t t-set="type" t-value="'down'"/>
+                </t>
+            </t>
+        </div>
+    </div>
+</t>
+
+</templates>
