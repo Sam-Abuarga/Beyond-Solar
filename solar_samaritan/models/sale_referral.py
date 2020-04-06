@@ -1,5 +1,8 @@
 from odoo import api, fields, models
+from odoo.tools import pycompat
 
+import base64
+import io
 import json
 
 
@@ -95,3 +98,36 @@ class SaleReferral(models.Model):
         for rec in self:
             if rec.state != 'done':
                 rec.state = 'entitled'
+
+    def action_csv(self):
+        output = io.BytesIO()
+        writer = pycompat.csv_writer(output, quoting=1)
+
+        writer.writerow(['Company', 'FirstName', 'LastName', 'Email', 'Phone', 'Quantity', 'CardValue', 'ToName', 'CarrierMessage', 'FromName'])
+        for rec in self:
+            writer.writerow([
+                rec.partner_id.parent_id.name or '',
+                rec.partner_id.name.split(' ')[0],
+                rec.partner_id.name.split(' ', 1)[1] if len(rec.partner_id.name.split(' ')) > 1 else '',
+                rec.partner_id.email or '',
+                rec.partner_id.phone or '',
+                '1',
+                '100',
+                rec.partner_id.name,
+                'Thank you for your referral and thank you for being part of the SolarSamritan movement.\n\nBest Wishes from the Team at Beyond Solar.',
+                'BeyondSolar'
+            ])
+
+        attachment = self.env['ir.attachment'].create({
+            'name': "DigitalCorporateOrderUpload.csv",
+            'datas': base64.b64encode(output.getvalue()),
+            'type': 'binary',
+            'mimetype': 'text/csv',
+        })
+
+        return {
+            'name': "Referral Upload",
+            'type': 'ir.actions.act_url',
+            'url': f'/web/content/{attachment.id}/DigitalCorporateOrderUpload.csv',
+            'target': 'new'
+        }

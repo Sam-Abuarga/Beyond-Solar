@@ -18,6 +18,7 @@
         'assets.xml',
         'security/ir.model.access.csv',
 
+        'data/ir_actions_server.xml',
         'data/mail_template.xml',
         'data/base_automation.xml',
 
