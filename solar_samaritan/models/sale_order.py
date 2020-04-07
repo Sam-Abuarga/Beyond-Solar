@@ -17,5 +17,22 @@ class SaleOrder(models.Model):
         res = super(SaleOrder, self).action_confirm()
         for rec in self:
             if rec.referral_id:
-                rec.referral_id.set_sale_created(rec)
+                rec.referral_id.sudo().set_sale_created(rec)
+        return res
+
+    def action_cancel(self):
+        res = super(SaleOrder, self).action_cancel()
+        for rec in self:
+            if rec.referral_id and rec.referral_id.sale_id == rec:
+                rec.referral_id.sudo().mark_cancel()
+        return res
+
+    def action_draft(self):
+        res = super(SaleOrder, self).action_draft()
+        for rec in self:
+            if rec.referral_id and rec.referral_id.sale_id == rec:
+                rec.referral_id.sudo().mark_draft()
+            elif rec.referral_id and rec.referral_id.state == 'cancel':
+                rec.referral_id.sudo().sale_id = rec
+                rec.referral_id.sudo().mark_draft()
         return res

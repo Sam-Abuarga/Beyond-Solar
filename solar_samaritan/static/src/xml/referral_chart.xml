@@ -18,7 +18,7 @@
         <div class="media-body">
             <a t-att-href="partner.link" class="o_partner_redirect" t-att-data-partner-id="partner.id">
                 <h5 class="o_media_heading"><b><t t-esc="partner.name"/></b></h5>
-                <span t-esc="partner.direct"/> direct, <span t-esc="partner.indirect"/> indirect
+                <span class="o_referral_redirect" t-att-data-partner-id="partner.id"><span t-esc="partner.direct"/> direct, <span t-esc="partner.indirect"/> indirect</span>
             </a>
         </div>
     </div>

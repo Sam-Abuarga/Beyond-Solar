@@ -25,7 +25,7 @@ class CrmLead(models.Model):
     def create_referral(self):
         for rec in self:
             if not rec.referral_id:
-                rec.referral_id = self.env['sale.referral'].create({
+                rec.referral_id = self.env['sale.referral'].sudo().create({
                     'state': 'draft',
                     'lead_id': rec.id,
                     'partner_id': rec.referral_partner_id.id
