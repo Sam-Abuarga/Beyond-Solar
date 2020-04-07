@@ -1,5 +1,16 @@
 <odoo>
     <data>
+        <record id="action_server_mark_fulfilled" model="ir.actions.server">
+            <field name="name">Mark Fulfilled</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_sale_referral" />
+            <field name="binding_model_id" ref="model_sale_referral" />
+            <field name="state">code</field>
+            <field name="code">action = records.filtered(lambda ref: ref.state == 'entitled').mark_done()</field>
+        </record>
+    </data>
+
+    <data>
         <record id="action_server_referral_csv" model="ir.actions.server">
             <field name="name">Generate CSV</field>
             <field name="type">ir.actions.server</field>

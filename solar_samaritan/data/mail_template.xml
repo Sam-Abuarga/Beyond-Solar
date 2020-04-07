@@ -2,6 +2,7 @@
     <record id="mail_template_referral_state_draft" model="mail.template">
         <field name="name">Referral - New</field>
         <field name="model_id" ref="model_sale_referral"/>
+        <field name="email_from">${object.lead_id.user_id.email}</field>
         <field name="email_to">${object.partner_id.email}</field>
         <field name="subject">New Referral</field>
         <field name="auto_delete" eval="False"/>
@@ -19,6 +20,7 @@ Beyond Solar
     <record id="mail_template_referral_state_qualified" model="mail.template">
         <field name="name">Referral - Qualified</field>
         <field name="model_id" ref="model_sale_referral"/>
+        <field name="email_from">${object.sale_id.user_id.email}</field>
         <field name="email_to">${object.partner_id.email}</field>
         <field name="subject">Referral Qualified</field>
         <field name="auto_delete" eval="False"/>
@@ -36,6 +38,7 @@ Beyond Solar
     <record id="mail_template_referral_state_entitled" model="mail.template">
         <field name="name">Referral - Entitled</field>
         <field name="model_id" ref="model_sale_referral"/>
+        <field name="email_from">${object.sale_id.user_id.email}</field>
         <field name="email_to">${object.partner_id.email}</field>
         <field name="subject">Referral Complete</field>
         <field name="auto_delete" eval="False"/>
@@ -53,6 +56,7 @@ Beyond Solar
     <record id="mail_template_referral_state_done" model="mail.template">
         <field name="name">Referral - Fulfilled</field>
         <field name="model_id" ref="model_sale_referral"/>
+        <field name="email_from">${object.sale_id.user_id.email}</field>
         <field name="email_to">${object.partner_id.email}</field>
         <field name="subject">Your Reward has Been Sent</field>
         <field name="auto_delete" eval="False"/>

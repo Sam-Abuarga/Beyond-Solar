@@ -17,7 +17,7 @@ class SaleReferral(models.Model):
     sale_id = fields.Many2one(comodel_name='sale.order', string="Sale Order")
     fulfill_date = fields.Datetime(sting="Fulfill Date")
 
-    state = fields.Selection(string="State", required=True, default='new', group_expand='_expand_states', selection=[
+    state = fields.Selection(string="State", required=True, default='draft', group_expand='_expand_states', selection=[
         ('draft', "New"),
         ('qualified', "Qualified"),
         ('entitled', "Entitled"),
@@ -35,6 +35,18 @@ class SaleReferral(models.Model):
     phone = fields.Char(related='partner_id.phone')
     mobile = fields.Char(related='partner_id.mobile')
     email = fields.Char(related='partner_id.email')
+
+    # Related fields to show contact details
+    ref_partner_id = fields.Many2one(comodel_name='res.partner', compute='_compute_ref_partner')
+    ref_street = fields.Char(related='partner_id.street')
+    ref_street2 = fields.Char(related='partner_id.street2')
+    ref_city = fields.Char(related='partner_id.city')
+    ref_zip = fields.Char(related='partner_id.zip')
+    ref_state_id = fields.Many2one(comodel_name='res.country.state', related='partner_id.state_id')
+    ref_country_id = fields.Many2one(comodel_name='res.country', related='partner_id.country_id')
+    ref_phone = fields.Char(related='partner_id.phone')
+    ref_mobile = fields.Char(related='partner_id.mobile')
+    ref_email = fields.Char(related='partner_id.email')
 
     referral_ids = fields.Many2many(comodel_name='sale.referral', compute='_compute_referral_ids')
     referral_chart = fields.Text(compute='_compute_referral_chart')
@@ -54,6 +66,11 @@ class SaleReferral(models.Model):
     def _compute_referral_ids(self):
         for rec in self:
             rec.referral_ids = rec.partner_id.referral_ids
+
+    @api.depends('sale_id.partner_id', 'lead_id.partner_id')
+    def _compute_ref_partner(self):
+        for rec in self:
+            rec.ref_partner_id = rec.sale_id.partner_id or rec.lead_id.partner_id
 
     @staticmethod
     def _prepare_partner_data(partner):
@@ -89,8 +106,17 @@ class SaleReferral(models.Model):
                 rec.state = 'qualified'
                 rec.sale_id = sale
 
+    def mark_cancel(self):
+        for rec in self:
+            rec.state = 'cancel'
+
+    def mark_draft(self):
+        for rec in self:
+            rec.state = 'draft'
+
     def mark_done(self):
         for rec in self:
+            rec = rec.sudo()
             rec.fulfill_date = fields.Datetime.now()
             rec.state = 'done'
 

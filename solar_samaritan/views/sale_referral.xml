@@ -45,6 +45,8 @@
                     <field name="state" widget="statusbar" statusbar_visible="draft,qualified,entitled,done"/>
                 </header>
                 <sheet>
+                    <widget name="web_ribbon" text="Fulfilled" attrs="{'invisible': [('state', '!=', 'done')]}"/>
+
                     <label for="partner_id" class="oe_edit_only" string="Referrer"/>
                     <h2><field name="partner_id"/></h2>
                     <group>
@@ -76,11 +78,12 @@
                     <notebook>
                         <page name="referrals" string="All Referrals">
                             <group>
-                                <field name="referral_ids" nolabel="1">
+                                <field name="referral_ids" nolabel="1" context="{'form_view_ref': 'solar_samaritan.sale_referral_referee_form_view'}">
                                     <tree>
                                         <field name="lead_id"/>
                                         <field name="sale_id"/>
                                         <field name="state"/>
+                                        <button type="object" name="mark_done" string="Mark Fulfilled" class="btn btn-primary" attrs="{'invisible': [('state', '!=', 'entitled')]}"/>
                                     </tree>
                                 </field>
                             </group>
@@ -97,6 +100,45 @@
                      <field name="activity_ids" widget="mail_activity"/>
                      <field name="message_ids" widget="mail_thread"/>
                 </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="sale_referral_referee_form_view" model="ir.ui.view">
+        <field name="name">sale.referral.referee.form.view</field>
+        <field name="model">sale.referral</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <label for="ref_partner_id" class="oe_edit_only" string="Referee"/>
+                    <h2><field name="ref_partner_id"/></h2>
+                    <group>
+                        <group>
+                            <label for="" name="address_name">
+                                <b>Address</b>
+                            </label>
+                            <div class="o_address_format">
+                                <field name="ref_street" placeholder="Street..." class="o_address_street"/>
+                                <field name="ref_street2" placeholder="Street 2..." class="o_address_street"/>
+                                <field name="ref_city" placeholder="City" class="o_address_city"/>
+                                <field name="ref_state_id" class="o_address_state" placeholder="State" options="{'no_open': True}" context="{'country_id': ref_country_id, 'zip': ref_zip}"/>
+                                <field name="ref_zip" placeholder="ZIP" class="o_address_zip"/>
+                                <field name="ref_country_id" placeholder="Country" class="o_address_country" options="{'no_open': True, 'no_create': True}"/>
+                            </div>
+                        </group>
+                        <group>
+                            <field name="ref_phone" widget="phone"/>
+                            <field name="ref_mobile" widget="phone"/>
+                            <field name="ref_email" widget="email"/>
+                        </group>
+
+                        <group string="Referral">
+                            <field name="lead_id"/>
+                            <field name="sale_id"/>
+                            <field name="fulfill_date" attrs="{'invisible': [('fulfill_date', '=', False)]}"/>
+                        </group>
+                    </group>
+                </sheet>
             </form>
         </field>
     </record>
