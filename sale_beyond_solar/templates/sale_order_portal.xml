@@ -3,11 +3,41 @@
         <xpath expr="//section[@id='details']" position="before">
             <t t-set="image_left" t-value="False"/>
 
+
+            <!-- About us -->
+
+            <section id="performance" class="mt32">
+                <h3>About us</h3>
+                <hr class="mt-0 mb-1"/> <br />
+                <div class="row">    
+                    <div class="col-lg-12">
+                        <p>Beyond Solar is a locally owned company with a commitment to providing high-quality customer service built on a foundation of transparency and honesty.</p>
+                        <p>With a 10 year warranty on all our workmanship, we stand by the quality of our work and provide all our clients with lifetime access to our after-sales support.</p>
+                        <p>Our team of expert installers are all Clean Energy Council accredited and will install a solar power system that’s built to last.</p>
+                    </div>
+                </div><br />
+                    <div class="card-deck">
+                        <div class="card">
+                            <div class="card-header text.font-weight-bold"><b>Our Products</b></div>
+                            <div class="card-body text-justify">We only provide products that meet our strict criteria. We only offer the leading brands in the market and support these great products with high-quality installations back by our 10 Year Workmanship Warranty.</div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header"><b>Our Service</b></div>
+                            <div class="card-body text-justify">Buying a solar system can be confusing, and that's why our friendly team are here to help design a solar system tailored to your needs. With a pressure-free approach, you can be comfortable knowing that they will help guide you to make an informed decision about the right system for you.</div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header"><b>Our Support</b></div>
+                            <div class="card-body text-justify">Customer satisfaction is important to us, and our friendly team are here to help you with any issues you have. With lifetime after-sales support, you have the peace of mind of knowing we will there to help.</div>
+                        </div>
+                    </div>
+            </section><br />
+            
             <!-- Solar Panel Layout -->
+            
             <t t-if="sale_order.x_studio_solar_panel_layout">
                 <section id="panel_layout" class="mt32">
                     <h3>Solar Panel Layout</h3>
-                    <hr class="mt-0 mb-1"/>
+                    <hr class="mt-0 mb-1"/><br />
                     <img t-att-src="image_data_uri(sale_order.x_studio_solar_panel_layout)" alt="Solar Panel Layout Diagram" style="width: 100%;"/>
                 </section>
             </t>
@@ -16,73 +46,85 @@
 
             <section id="performance" class="mt32">
                 <h3>System Performance Analysis</h3>
-                <hr class="mt-0 mb-1"/>
+                <hr class="mt-0 mb-1"/><br />
                 <t t-if="sale_order.x_studio_performance_chart">
                     <img t-att-src="image_data_uri(sale_order.x_studio_performance_chart)" alt="Solar Panel Layout Diagram" style="width: 100%;" class="mb16"/>
-                </t>
-                <div class="row">
-                    <div class="col-6">
+                </t> <br />
+                <div class="row">                  
+                    <div class="col-4">
+                        <h4>Site Details</h4>
+                        <p><b>Roof Type:</b>
+                            <span t-field="sale_order.x_studio_report_roof_type"/>
+                        </p>
+                        <p><b>Number of Stories:</b>
+                            <span t-field="sale_order.x_studio_report_number_of_storeys"/>
+                        </p>
+                        <p><b>Exterior Wall Type:</b>
+                            <span t-field="sale_order.x_studio_report_exterior_walltype"/>
+                        </p>
+                    </div> 
+                    <div class="col-4">
                         <h4>System Production</h4>
-                        <p>Peak DC Power:
+                        <p><b>Peak DC Power:</b>
                             <span t-field="sale_order.x_studio_peak_dc_power_kw"/> kW
                         </p>
-                        <p>Annual Energy Yield<sup>1</sup>:
+                        <p><b>Annual Energy Yield<sup>1</sup>:</b>
                             <span t-field="sale_order.x_studio_annual_energy_yield"/> kWh
                         </p>
-                        <p>Greenhouse Gas Emission Reduction<sup>2</sup>:
+                        <p><b>Greenhouse Gas Reduction<sup>2</sup>:</b>
                             <span t-field="sale_order.x_studio_co2_prevented"/>
                         </p>
                     </div>
-                    <div class="col-6">
+                    <div class="col-4">
                         <h4>System Payback</h4>
-                        <p>Maximum Annual Savings:
+                        <p><b>Maximum Annual Savings:</b>
                             <span t-esc="'${:.2f}'.format(sale_order.x_studio_savings)"/>
                         </p>
-                        <p>System Payback Period:
+                        <p><b>System Payback Period:</b>
                             <span t-esc="'{:.2f}'.format(sale_order.x_studio_years_to_payoff_system)"/> years
                         </p>
-                        <p>Return on Investment:
+                        <p><b>Return on Investment:</b>
                             <span t-esc="'{:.2%}'.format(sale_order.x_studio_roi_)"/>
                         </p>
                     </div>
-                </div>
+                </div> <br />
                 <div class="row">
                     <div class="col-12">
                         <h4>Panel Orientation and Tilt</h4>
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>Panels</th>
+                                    <th>No of Panels</th>
                                     <th>Tilt</th>
-                                    <th>Orientation (Relative to N)</th>
+                                    <th>Orientation (Relative to North)</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td><span t-field="sale_order.x_studio_array_one_no_of_panels_1"/></td>
-                                    <td><span t-field="sale_order.x_studio_tilt_angle"/></td>
-                                    <td><span t-field="sale_order.x_studio_array_one"/></td>
+                                    <td><span t-field="sale_order.x_studio_tilt_angle"/><sup> o</sup></td>
+                                    <td><span t-field="sale_order.x_studio_array_one"/><sup> o</sup></td>
                                 </tr>
                                 <tr t-if="sale_order.x_studio_array_directions in ['2', '3', '4']">
                                     <td><span t-field="sale_order.x_studio_array_two_no_of_panels_1"/></td>
-                                    <td><span t-field="sale_order.x_studio_array_two_tilt_angle"/></td>
-                                    <td><span t-field="sale_order.x_studio_array_two"/></td>
+                                    <td><span t-field="sale_order.x_studio_array_two_tilt_angle"/><sup> o</sup></td>
+                                    <td><span t-field="sale_order.x_studio_array_two"/><sup> o</sup></td>
                                 </tr>
                                 <tr t-if="sale_order.x_studio_array_directions in ['3', '4']">
                                     <td><span t-field="sale_order.x_studio_array_three_no_of_panels"/></td>
-                                    <td><span t-field="sale_order.x_studio_array_three_tilt_angle"/></td>
-                                    <td><span t-field="sale_order.x_studio_array_three"/></td>
+                                    <td><span t-field="sale_order.x_studio_array_three_tilt_angle"/><sup> o</sup></td>
+                                    <td><span t-field="sale_order.x_studio_array_three"/><sup> o</sup></td>
                                 </tr>
                                 <tr t-if="sale_order.x_studio_array_directions in ['4']">
                                     <td><span t-field="sale_order.x_studio_array_four_no_of_panels"/></td>
-                                    <td><span t-field="sale_order.x_studio_array_four_tilt_angle"/></td>
-                                    <td><span t-field="sale_order.x_studio_array_four"/></td>
+                                    <td><span t-field="sale_order.x_studio_array_four_tilt_angle"/><sup> o</sup></td>
+                                    <td><span t-field="sale_order.x_studio_array_four"/><sup> o</sup></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-            </section>
+            </section><br />
 
             <!-- System Components -->
             <t t-set="inverter_line" t-value="sale_order.order_line.filtered(lambda sol: sol.product_id.categ_id.name == 'Inverters' or sol.product_id.categ_id.parent_id.name == 'Inverters')[:1]"/>
