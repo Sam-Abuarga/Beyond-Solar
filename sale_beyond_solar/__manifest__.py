@@ -13,6 +13,7 @@
         'base',
         'payment',
         'sale',
+        'sale_timesheet',
     ],
     'data': [
         'templates/sale_order_portal.xml',
