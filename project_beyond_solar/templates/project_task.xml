@@ -1,0 +1,874 @@
+<odoo>
+    <template inherit_id="project.portal_my_tasks" id="portal_my_tasks">
+        <!-- Add additional title fields -->
+        <xpath expr="//th[hasclass('text-center')]" position="before">
+            <th>Address</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+        </xpath>
+        <xpath expr="//th[last()]" position="before">
+            <th>Status</th>
+        </xpath>
+
+        <!-- Add additional content -->
+        <xpath expr="//span[@t-esc='task.stage_id.name']//parent::td" position="before">
+            <td>
+                <address t-field="task.partner_id" t-options='{"widget": "contact", "fields": ["address"], "no_marker": True}' style="margin-bottom: 0"/>
+            </td>
+            <td>
+                <span t-esc="task.get_start_date()"/>
+            </td>
+            <td>
+                <span t-esc="task.get_end_date()"/>
+            </td>
+        </xpath>
+        <xpath expr="//span[@t-esc='task.stage_id.name']//parent::td" position="after">
+            <td>
+                <span class="badge badge-pill badge-info" title="Status of the current task" t-field="task.status"/>
+            </td>
+        </xpath>
+    </template>
+
+    <template inherit_id="project.portal_my_task" id="portal_my_task">
+        <xpath expr="//t[@t-call='portal.portal_record_layout']" position="replace">
+            <div class="modal fade" id="rescheduleModal" tabindex="-1" role="dialog" aria-labelledby="rescheduleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="rescheduleModalLabel">Reschedule Task</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">x</span>
+                            </button>
+                        </div>
+                        <form t-attf-action="/my/task/{{task.id}}/reschedule">
+                            <div class="modal-body">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                Reason for Reschedule:<br/>
+                                <textarea name="reason" style="width: 100%;" required="required"/>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Reschedule</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="incompleteModal" tabindex="-1" role="dialog" aria-labelledby="incompleteModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="incompleteModalLabel">Mark Task Incomplete</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">x</span>
+                            </button>
+                        </div>
+                        <form t-attf-action="/my/task/{{task.id}}/incomplete">
+                            <div class="modal-body">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                Reason for Incompletion:<br/>
+                                <textarea name="reason" style="width: 100%;" required="required"/>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Reschedule</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <t t-call="portal.portal_record_layout">
+                <t t-set="card_header">
+                    <div class="row no-gutters">
+                        <div class="col-md">
+                            <h5 class="mb-1 mb-md-0">
+                                <span t-field="task.name"/>
+                                <small class="text-muted">(#<span t-field="task.id"/>)
+                                </small>
+                            </h5>
+                        </div>
+                        <div class="col-md text-md-right">
+                            <small class="text-right">Stage:</small>
+                            <span t-field="task.stage_id.name" class=" badge badge-pill badge-info" title="Current stage of this task"/>
+                            <small class="text-right" style="padding-left: 10px;">Status:</small>
+                            <span t-field="task.status" class=" badge badge-pill badge-info" title="Current status of this task"/>
+                        </div>
+                    </div>
+                    <div class="row no-gutters mt16">
+                        <div class="col-md">
+                            <form t-attf-action="/my/task/{{task.id}}/start" t-if="task.status == 'pending'">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                <button class="btn btn-primary" type="submit">Start</button>
+                            </form>
+                            <form t-attf-action="/my/task/{{task.id}}/finish" t-elif="task.date_worksheet_handover and task.status == 'progress'">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                <button class="btn btn-primary" type="submit">Mark Completed</button>
+                            </form>
+                        </div>
+                        <div class="col-md text-md-right">
+                            <button class="btn btn-primary" data-toggle="modal" data-target="#rescheduleModal" t-if="task.status == 'pending'">Reschedule</button>
+                            <button class="btn btn-primary" data-toggle="modal" data-target="#incompleteModal" t-if="task.status == 'progress'">Mark Incomplete</button>
+                        </div>
+                    </div>
+                </t>
+
+                <t t-set="card_body">
+                    <div class="row">
+                        <div class="col-12 col-md-7 mb-1">
+                            <table class="mb16">
+                                <tr>
+                                    <th style="padding-right: 15px;">Customer</th>
+                                    <td>
+                                        <span t-field="task.partner_id.name"/>
+                                    </td>
+                                </tr>
+                                <tr t-if="task.partner_id.email">
+                                    <th style="padding-right: 15px;">Email</th>
+                                    <td>
+                                        <span t-field="task.partner_id.email"/>
+                                    </td>
+                                </tr>
+                                <tr t-if="task.partner_id.phone">
+                                    <th style="padding-right: 15px;">Phone</th>
+                                    <td>
+                                        <span t-field="task.partner_id.phone"/>
+                                    </td>
+                                </tr>
+                                <tr t-if="task.partner_id.mobile">
+                                    <th style="padding-right: 15px;">Mobile</th>
+                                    <td>
+                                        <span t-field="task.partner_id.mobile"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="padding-right: 15px;">Address</th>
+                                    <td>
+                                        <address t-field="task.partner_id" t-options='{"widget": "contact", "fields": ["address"], "no_marker": True}' style="margin-bottom: 0"/>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <h4>Products</h4>
+                            <table class="table">
+                                <tr>
+                                    <th>Description</th>
+                                    <th>Qty</th>
+                                </tr>
+                                <tr t-foreach="task.x_studio_product_list.filtered(lambda l: not l.display_type)" t-as="line">
+                                    <td>
+                                        <span t-field="line.product_id.name"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="line.product_uom_qty"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="col-12 col-md-5">
+                            <t t-if="task.x_studio_solar_panel_layout">
+                                <h4>Panel Layout</h4>
+                                <img style="max-width: 100%;" t-attf-src="/web/image/project.task/#{task.id}/x_studio_solar_panel_layout/" alt="Panel Layout"/>
+                            </t>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 col-md-6 mb16">
+                            <h4>Premises Details</h4>
+                            <table>
+                                <tr>
+                                    <th style="padding-right: 10px;">Type of Premises</th>
+                                    <td>
+                                        <span t-field="task.x_studio_3_type_of_premises"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="padding-right: 10px;">How Many Storeys</th>
+                                    <td>
+                                        <span t-field="task.x_studio_5_how_many_storeys"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="padding-right: 10px;">Exterior Wall Type</th>
+                                    <td>
+                                        <span t-field="task.x_studio_exterior_wall_type"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="padding-right: 10px;">Roof Type</th>
+                                    <td>
+                                        <span t-field="task.x_studio_6_roof_type"/>
+                                    </td>
+                                </tr>
+                                <tr t-if="task.x_studio_other_roof_type">
+                                    <th style="padding-right: 10px;">Other Roof Type</th>
+                                    <td>
+                                        <span t-field="task.x_studio_other_roof_type"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="padding-right: 10px;">Meter Boc Phase</th>
+                                    <td>
+                                        <span t-field="task.x_studio_7_meter_box_phase"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="col-12 col-md-6 mb16">
+                            <h4>Photos</h4>
+                            <t t-if="task.x_studio_switch_board_photo">
+                                <a t-attf-href="/web/image/project.task/#{task.id}/x_studio_switch_board_photo/">Switch Board Photo</a>
+                                <br/>
+                            </t>
+                            <t t-if="task.x_studio_inverter_location_1">
+                                <a t-attf-href="/web/image/project.task/#{task.id}/x_studio_inverter_location_1/">Inverter Location Photo</a>
+                                <br/>
+                            </t>
+                            <t t-if="task.x_studio_battery_location">
+                                <a t-attf-href="/web/image/project.task/#{task.id}/x_studio_battery_location/">Battery Location Photo</a>
+                                <br/>
+                            </t>
+                        </div>
+
+                        <div class="col-12 col-md-6 mb16">
+                            <h4>Job Information</h4>
+                            <table>
+                                <tr>
+                                    <th style="padding-right: 10px;">Type of Service</th>
+                                    <td>
+                                        <span t-field="task.x_studio_type_of_service"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="padding-right: 10px;">Has Existing System Installed?</th>
+                                    <td>
+                                        <span t-field="task.x_studio_has_existing_system_installed"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="padding-right: 10px;">Customer Notes</th>
+                                    <td>
+                                        <span t-field="task.x_studio_customer_notes"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="col-12 col-md-6 mb16" t-if="task.sale_order_id.has_panel">
+                            <h4>Array</h4>
+                            <table class="table">
+                                <tr>
+                                    <th/>
+                                    <th style="padding-left: 10px;">No. of Panels</th>
+                                    <th style="padding-left: 10px;">Azimuth (Degrees)</th>
+                                    <th style="padding-left: 10px;">Tilt Angle</th>
+                                </tr>
+                                <tr>
+                                    <td>Array 1</td>
+                                    <td class="text-right">
+                                        <span t-field="task.x_studio_array_1_number_of_panels"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-field="task.x_studio_array_1_azimuth"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-field="task.x_studio_array_1_tilt_angle"/>
+                                    </td>
+                                </tr>
+                                <tr t-if="task.x_studio_number_of_arrays in ['2', '3', '4']">
+                                    <td>Array 2</td>
+                                    <td class="text-right">
+                                        <span t-field="task.x_studio_array_2_number_of_panels"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-field="task.x_studio_array_2_azimuth"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-field="task.x_studio_array_2_tilt_angle"/>
+                                    </td>
+                                </tr>
+                                <tr t-if="task.x_studio_number_of_arrays in ['3', '4']">
+                                    <td>Array 3</td>
+                                    <td class="text-right">
+                                        <span t-field="task.x_studio_array_3_number_of_panels"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-field="task.x_studio_array_3_azimuth"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-field="task.x_studio_array_3_tilt_angle"/>
+                                    </td>
+                                </tr>
+                                <tr t-if="task.x_studio_number_of_arrays in ['4']">
+                                    <td>Array 4</td>
+                                    <td class="text-right">
+                                        <span t-field="task.x_studio_array_4_number_of_panels"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-field="task.x_studio_array_4_azimuth"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-field="task.x_studio_array_4_tilt_angle"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="col-12 col-md-6 mb16" t-if="task.sale_order_id.has_inverter">
+                            <h4>Inverter</h4>
+                            <table>
+                                <tr>
+                                    <th style="padding-right: 10px;">Switch Board Used</th>
+                                    <td>
+                                        <span t-field="task.x_studio_switch_board_used"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="padding-right: 10px;">Expected Inverter Location</th>
+                                    <td>
+                                        <span t-field="task.x_studio_expected_inverter_location"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="padding-right: 10px;">Inverter Mounting Wall Type</th>
+                                    <td>
+                                        <span t-field="task.x_studio_mounting_wall_type_1"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="padding-right: 10px;">Inverter Location Notes</th>
+                                    <td>
+                                        <span t-field="task.x_studio_inverter_location_notes"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="col-12 col-md-6 mb16" t-if="task.sale_order_id.has_battery">
+                            <h4>Battery</h4>
+                            <table>
+                                <tr>
+                                    <th style="padding-right: 10px;">Expected Battery Location</th>
+                                    <td>
+                                        <span t-field="task.x_studio_expected_battery_location"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="padding-right: 10px;">Mounting Type</th>
+                                    <td>
+                                        <span t-field="task.x_studio_mounting_type"/>
+                                        -
+                                        <span t-field="task.x_studio_mounting_wall_type"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="padding-right: 10px;">Battery Location Notes</th>
+                                    <td>
+                                        <span t-field="task.x_studio_battery_location_notes"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <ul class="nav nav-tabs" style="width: 100%;">
+                            <li class="nav-item">
+                                <a t-attf-class="nav-link {{'active' if not task.date_worksheet_check else ''}}" data-toggle="tab" href="#tab-check">In House Check</a>
+                            </li>
+                            <li class="nav-item">
+                                <a t-attf-class="nav-link {{'active' if task.date_worksheet_check and not task.date_worksheet_swms else ''}}" data-toggle="tab" href="#tab-swms">
+                                    SWMS
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a t-attf-class="nav-link {{'active' if task.date_worksheet_swms and not task.date_worksheet_site else ''}}" data-toggle="tab" href="#tab-site">Site
+                                    Condition
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a t-attf-class="nav-link {{'active' if task.date_worksheet_site and not task.date_worksheet_install else ''}}" data-toggle="tab"
+                                   href="#tab-install">Installation and Commissioning
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a t-attf-class="nav-link {{'active' if task.date_worksheet_install and not task.date_worksheet_handover else ''}}" data-toggle="tab"
+                                   href="#tab-handover">Handover
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content mt16" id="worksheets">
+                            <div id="tab-check" t-attf-class="tab-pane fade {{'show active' if not task.date_worksheet_check else ''}}">
+                                <form t-attf-action="/my/task/{{task.id}}/worksheet/check">
+                                    <ul>
+                                        <li>
+                                            <input type="checkbox" name="labelling" disabled="disabled" t-if="not task.date_worksheet_start"/>
+                                            <input type="checkbox" name="labelling" required="required" t-elif="task.date_worksheet_start and not task.date_worksheet_check"/>
+                                            <input type="checkbox" name="labelling" disabled="disabled" checked="checked" t-else=""/>
+                                            Confirm Quantity of Materials
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="eta" disabled="disabled" t-if="not task.date_worksheet_start"/>
+                                            <input type="checkbox" name="eta" required="required" t-elif="task.date_worksheet_start and not task.date_worksheet_check"/>
+                                            <input type="checkbox" name="eta" disabled="disabled" checked="checked" t-else=""/>
+                                            Contact the Customer to Provide ETA
+                                        </li>
+                                    </ul>
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                    <button class="btn btn-primary ml16" type="submit" t-if="task.date_worksheet_start and not task.date_worksheet_check">Submit</button>
+                                </form>
+                            </div>
+
+                            <div id="tab-swms" t-attf-class="tab-pane fade {{'show active' if task.date_worksheet_check and not task.date_worksheet_swms else ''}}">
+                                <h4>Hazards</h4>
+                                <table class="table table-sm">
+                                    <tr>
+                                        <th>Activity</th>
+                                        <th>Hazard</th>
+                                        <th>Initial Risk</th>
+                                        <th>Control Measure</th>
+                                        <th>Residual Risk</th>
+                                        <th>Responsible Person</th>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="6" style="background-color: #75bda7; color: white;">Preparation</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Induct worker and check competency</th>
+                                        <td>Competency, personal injury, substances</td>
+                                        <td>High</td>
+                                        <td>Induct workers into business, check workers competency &amp; experience, train as required, supervise work if inexperienced.</td>
+                                        <td>Low</td>
+                                        <td>Manager</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Discuss work process with workers</th>
+                                        <td>Incorrect Equipment use, Personal injury</td>
+                                        <td>Medium</td>
+                                        <td>Ensure worker familiar with equipment, tool and installation operation &amp; wears suitable PPE e.g. boots</td>
+                                        <td>Low</td>
+                                        <td>Manager and Workers</td>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="6" style="background-color: #75bda7; color: white;">Setting Up</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Parking and setting up work area</th>
+                                        <td>Inadequate access/ High egress for workers &amp; pedestrian</td>
+                                        <td>High</td>
+                                        <td>Assess area for best place to park and set up away from pedestrian walkways, set up bollards if required</td>
+                                        <td>Low</td>
+                                        <td>Manager and Workers</td>
+                                    </tr>
+                                    <tr>
+                                        <th/>
+                                        <td>Slip, trip, strain, sprain, Hand injuries</td>
+                                        <td>Medium</td>
+                                        <td>Clear all work areas, use suitable gloves, correct manual handling technique, share load with team lifts, use mechanical aid if required
+                                            e.g lifting trolley
+                                        </td>
+                                        <td>Low</td>
+                                        <td>Workers</td>
+                                    </tr>
+                                    <tr>
+                                        <th/>
+                                        <td>Other workers, pedestrians</td>
+                                        <td>Medium</td>
+                                        <td>Identify obstacles and other work activates (pedestrians, other workers, etc) around work location. As required, remove obstacles and
+                                            set up exclusion zone around work
+                                        </td>
+                                        <td>Low</td>
+                                        <td>Manager and Workers</td>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="6" style="background-color: #75bda7; color: white;">Setting up &amp; using fall arrest system</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Select ‘right’ fall restraint/arrest system</th>
+                                        <td>Incorrect fall restraint / arrest system will not work effectively and cause injury to person</td>
+                                        <td>High</td>
+                                        <td>Use fall restraints to prevent person becoming close to unprotected edge. When fall arrest system used, ensure shock absorber fitted,
+                                            but only for falls greater than the length of lanyard and chock absorber combined. Inertia reels only used when fall restraint and fall
+                                            areas systems impractical. (second fall protection)
+                                        </td>
+                                        <td>Medium</td>
+                                        <td>Workers</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Select anchorage type</th>
+                                        <td>Person injured by incorrect or inadequate anchorage</td>
+                                        <td>High</td>
+                                        <td>Select most suitable system, restraint device such as static line, SWL rated sling for tile installed around truss of house or a
+                                            temporary screwed anchorage point for tin roof
+                                        </td>
+                                        <td>Medium</td>
+                                        <td>Workers</td>
+                                    </tr>
+                                    <tr>
+                                        <th/>
+                                        <td>Person injured by anchorage failing</td>
+                                        <td>High</td>
+                                        <td>Where possible, anchorage point to be located directly above user on peak of roof. Provide safe access anchorage point. Check, confirm
+                                            anchorage point can support the imposed load of falling worker anchorage points only installed by competent person
+                                        </td>
+                                        <td>Medium</td>
+                                        <td>Workers</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Installing anchorage point on roof</th>
+                                        <td>Ladder slipping off roof</td>
+                                        <td>High</td>
+                                        <td>Use ladder mate then secure ladder to roof. Ensure ladder is on firm even ground .</td>
+                                        <td>Medium</td>
+                                        <td>Workers</td>
+                                    </tr>
+                                    <tr>
+                                        <th/>
+                                        <td>Fall from height</td>
+                                        <td>High</td>
+                                        <td>Install anchor point on opposite side roof form ladder, throw rope over roof and connect to anchor point, connect to that rope on other
+                                            side of roof and use to install 2nd roof anchor point on peak of roof above work area
+                                        </td>
+                                        <td>Medium</td>
+                                        <td>Manager and Workers</td>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="6" style="background-color: #75bda7; color: white;">Installing rail, wiring &amp; installing panels</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Working on Roof</th>
+                                        <td>Fall from roof</td>
+                                        <td>High</td>
+                                        <td>Install anchor point on opposite side roof form ladder, throw rope over roof and connect to anchor point, connect to that rope on other
+                                            side of roof and use to install 2nd roof anchor point on peak of roof above work area
+                                        </td>
+                                        <td>Medium</td>
+                                        <td>Manager and Workers</td>
+                                    </tr>
+                                    <tr>
+                                        <th/>
+                                        <td>Incorrect fall restraint / arrest system will not work effectively and cause injury to person</td>
+                                        <td>High</td>
+                                        <td>Install anchor point on opposite side roof form ladder, throw rope over roof and connect to anchor point, connect to that rope on other
+                                            side of roof and use to install 2nd roof anchor point on peak of roof above work area
+                                        </td>
+                                        <td>Medium</td>
+                                        <td>Manager and Workers</td>
+                                    </tr>
+                                    <tr>
+                                        <th/>
+                                        <td>UV Exposure, dehydration, Heat &amp; sun stress</td>
+                                        <td>Medium</td>
+                                        <td>Provide cool drinking water, consume liquids. Keep hydrated. Provide and use suitable PPE including</td>
+                                        <td>Low</td>
+                                        <td>Workers</td>
+                                    </tr>
+                                    <tr>
+                                        <th/>
+                                        <td>High Wind exposure</td>
+                                        <td>High</td>
+                                        <td>All tools and materials that are not fixed and could be blown away from an elevated position, should be relocated to an unexposed and
+                                            secure area
+                                        </td>
+                                        <td>Low</td>
+                                        <td>Workers</td>
+                                    </tr>
+                                    <tr>
+                                        <th/>
+                                        <td>Wet weather causing slippery surface</td>
+                                        <td>High</td>
+                                        <td>If roof becomes slippery, stop works and remove all personal off roof</td>
+                                        <td>Medium</td>
+                                        <td>Workers</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Screwing in feet and rail</th>
+                                        <td>Manual handling</td>
+                                        <td>Medium</td>
+                                        <td>Use correct lifting techniques, 2 person lift if too heavy</td>
+                                        <td>Low</td>
+                                        <td>Workers</td>
+                                    </tr>
+                                    <tr>
+                                        <th/>
+                                        <td>Repetitive strain injury</td>
+                                        <td>Medium</td>
+                                        <td>Stretch in regular intervals, take regular breaks if required, stop &amp; stretch if feeling stiff or soreness</td>
+                                        <td>Low</td>
+                                        <td>Workers</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Grinding tiles</th>
+                                        <td>Dust, inhalation form drilling</td>
+                                        <td>Medium</td>
+                                        <td>Use goggles, dust mask, gloves, good ventilation, have first aid kit nearby</td>
+                                        <td>Low</td>
+                                        <td>Workers</td>
+                                    </tr>
+                                    <tr>
+                                        <th/>
+                                        <td>Noise</td>
+                                        <td>Medium</td>
+                                        <td>Wear hearing protection and wan other immediate Area</td>
+                                        <td>Low</td>
+                                        <td>Workers</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Carrying Panels</th>
+                                        <td>High wind exposure</td>
+                                        <td>High</td>
+                                        <td>If wind is to high stop panelling and wait till wind dies off. Ensure all panels are screwed down or removed. All tools and materials
+                                            that are not fixed and could be blown away from and elevated position, should be relocated to an unexposed and secure ares
+                                        </td>
+                                        <td>Low</td>
+                                        <td>Workers</td>
+                                    </tr>
+                                    <tr>
+                                        <th/>
+                                        <td>Wet weather causing slippery surface</td>
+                                        <td>High</td>
+                                        <td>If roof becomes slippery, stop works and remove all personal off roof</td>
+                                        <td>Low</td>
+                                        <td>Workers</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Mounting Panels</th>
+                                        <td>Manual handling</td>
+                                        <td>Medium</td>
+                                        <td>Use correct lifting techniques, 2 person lift if to heavy</td>
+                                        <td>Low</td>
+                                        <td>Workers</td>
+                                    </tr>
+                                    <tr>
+                                        <th/>
+                                        <td>Repetitive strain injury</td>
+                                        <td>Medium</td>
+                                        <td>Stretch in regular intervals, take regular breaks if required, stop &amp; stretch feeling stiff or soreness</td>
+                                        <td>Low</td>
+                                        <td>Workers</td>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="6" style="background-color: #75bda7; color: white;">Installing Inverter</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Working in switch board</th>
+                                        <td>Working near live electrical cables and services</td>
+                                        <td>Extreme</td>
+                                        <td>Isolate switch board so all circuits are dead. Test circuits for dead and confirm tester functionality. If working near line side of
+                                            main switch pull service fuse and test for dead and confirm tester functionality. Ensure someone is close by while isolating circuits.
+                                        </td>
+                                        <td>Medium</td>
+                                        <td>Workers</td>
+                                    </tr>
+                                    <tr>
+                                        <th/>
+                                        <td>Electrocutions</td>
+                                        <td>Extreme</td>
+                                        <td>Treat all Boards, devices &amp; wiring as Live until status confirmed as NOT LIVE. Wear suitable protective clothing, carry test
+                                            equipment.
+                                        </td>
+                                        <td>Medium</td>
+                                        <td>Workers</td>
+                                    </tr>
+                                    <tr>
+                                        <th/>
+                                        <td>Physical &amp; mental fatigue</td>
+                                        <td>High</td>
+                                        <td>Consult with workers on workloads and schedules. Workers involved in repetitive tasks exceeding one hour must take regular hourly
+                                            breaks, at least 5 minutes, every hour or earlier where the worker feels bodily tired
+                                        </td>
+                                        <td>Medium</td>
+                                        <td>Manager and Workers</td>
+                                    </tr>
+                                    <tr>
+                                        <th/>
+                                        <td>Inadequate competency or knowledge of procedure, substances, etc may cause personal injury</td>
+                                        <td>Medium</td>
+                                        <td>Check worker competency &amp; experience, ensure worker familiar with welder operations, trains as required, supervise worker if
+                                            inexperienced
+                                        </td>
+                                        <td>Low</td>
+                                        <td>Manager and Workers</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Installing Inverters</th>
+                                        <td>Dust, inhalation from drilling</td>
+                                        <td>Medium</td>
+                                        <td>Use goggles, gloves, good ventilation, have first aid kit nearby</td>
+                                        <td>Low</td>
+                                        <td>Workers</td>
+                                    </tr>
+                                    <tr>
+                                        <th/>
+                                        <td>Strain from manual Handling</td>
+                                        <td>Medium</td>
+                                        <td>Use correct lifting techniques, 2 person lift if too heavy. Mechanical aid if required</td>
+                                        <td>Low</td>
+                                        <td>Workers</td>
+                                    </tr>
+                                    <tr>
+                                        <th/>
+                                        <td>Hand, foot, head, &amp; eye injuries</td>
+                                        <td>Medium</td>
+                                        <td>PPE worn such as gloves, safety boots, hard hats, high visibility clothing &amp; protective eyewear</td>
+                                        <td>Low</td>
+                                        <td>Workers</td>
+                                    </tr>
+                                    <tr>
+                                        <th/>
+                                        <td>Cuts &amp; punctures from drilling</td>
+                                        <td>Medium</td>
+                                        <td>Drill away from body, secure piece you are drilling into. Wear gloves if required</td>
+                                        <td>Low</td>
+                                        <td>Workers</td>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="6" style="background-color: #75bda7; color: white;">Commissioning</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Turning on inverters</th>
+                                        <td>Electrocution</td>
+                                        <td>Extreme</td>
+                                        <td>Ensure all covers have been put back in place and that there are no exposed live parts. All screws are down up Tight</td>
+                                        <td>Medium</td>
+                                        <td>Workers</td>
+                                    </tr>
+                                    <tr>
+                                        <th/>
+                                        <td>Arc Flash</td>
+                                        <td>High</td>
+                                        <td>Ensure all covers have been put back in place and that there are no exposed live parts. All screws are down up Tight.</td>
+                                        <td>Medium</td>
+                                        <td>Workers</td>
+                                    </tr>
+                                </table>
+                                <form t-attf-action="/my/task/{{task.id}}/worksheet/swms_details" class="mb16">
+                                    Additional Site Specific Requirements:
+                                    <br/>
+                                    <textarea name="additional_swms" t-attf-value="{{task.additional_swms or ''}}" style="width: 100%;"/>
+                                    Recommendations for Improvements to this Document:
+                                    <br/>
+                                    <textarea name="recommended_swms" t-attf-value="{{task.additional_swms or ''}}" style="width: 100%;"/>
+                                    <button class="btn btn-primary ml16" type="submit" t-if="task.date_worksheet_check and not task.date_worksheet_swms">Save Changes</button>
+                                </form>
+                                <form t-attf-action="/my/task/{{task.id}}/worksheet/swms_signature" class="mb16">
+                                    <h4>Signatures</h4>
+                                    <button class="btn btn-primary ml16" type="submit" t-if="task.date_worksheet_check and not task.date_worksheet_swms">Add Signature</button>
+                                </form>
+                                <form t-attf-action="/my/task/{{task.id}}/worksheet/swms" class="m616">
+                                    <button class="btn btn-primary ml16" type="submit" t-if="task.date_worksheet_check and not task.date_worksheet_swms">Submit</button>
+                                </form>
+                            </div>
+
+                            <div id="tab-site" t-attf-class="tab-pane fade {{'show active' if task.date_worksheet_swms and not task.date_worksheet_site else ''}}">
+                                <form t-attf-action="/my/task/{{task.id}}/worksheet/site">
+                                    <ul>
+                                        <li>
+                                            <input type="checkbox" name="existing_issues" disabled="disabled" t-if="not task.date_worksheet_swms"/>
+                                            <input type="checkbox" name="existing_issues" checked="check"
+                                                   t-elif="task.date_worksheet_swms and not task.date_worksheet_site and task.has_preexisting_issues"/>
+                                            <input type="checkbox" name="existing_issues" t-elif="task.date_worksheet_swms and not task.date_worksheet_site"/>
+                                            <input type="checkbox" name="existing_issues" disabled="disabled" checked="checked" t-elif="task.has_preexisting_issues"/>
+                                            <input type="checkbox" name="existing_issues" disabled="disabled" t-else=""/>
+                                            Inspect roof structure for defects, deterioration,
+                                            Galvanic Corrosion, water Leaks and broken tiles. Are There any Pre-existing Issues? If so, upload photos.
+                                        </li>
+                                        <li>
+                                            Confirm with the Customer the Job Details
+                                            <ul>
+                                                <li>
+                                                    <input type="checkbox" name="panel_layout" disabled="disabled" t-if="not task.date_worksheet_swms"/>
+                                                    <input type="checkbox" name="panel_layout" required="required"
+                                                           t-elif="task.date_worksheet_swms and not task.date_worksheet_site"/>
+                                                    <input type="checkbox" name="panel_layout" disabled="disabled" checked="checked" t-else=""/>
+                                                    Panel Layout
+                                                </li>
+                                                <li>
+                                                    <input type="checkbox" name="inverter_location" disabled="disabled" t-if="not task.date_worksheet_swms"/>
+                                                    <input type="checkbox" name="inverter_location" required="required"
+                                                           t-elif="task.date_worksheet_swms and not task.date_worksheet_site"/>
+                                                    <input type="checkbox" name="inverter_location" disabled="disabled" checked="checked" t-else=""/>
+                                                    Inverter Location
+                                                </li>
+                                                <li>
+                                                    <input type="checkbox" name="battery_location" disabled="disabled" t-if="not task.date_worksheet_swms"/>
+                                                    <input type="checkbox" name="battery_location" required="required"
+                                                           t-elif="task.date_worksheet_swms and not task.date_worksheet_site"/>
+                                                    <input type="checkbox" name="battery_location" disabled="disabled" checked="checked" t-else=""/>
+                                                    Battery Location
+                                                </li>
+                                                <li>
+                                                    <input type="checkbox" name="cable_run" disabled="disabled" t-if="not task.date_worksheet_swms"/>
+                                                    <input type="checkbox" name="cable_run" required="required" t-elif="task.date_worksheet_swms and not task.date_worksheet_site"/>
+                                                    <input type="checkbox" name="cable_run" disabled="disabled" checked="checked" t-else=""/>
+                                                    Cable Run Internal and External
+                                                </li>
+                                                <li>
+                                                    <input type="checkbox" name="shading" disabled="disabled" t-if="not task.date_worksheet_swms"/>
+                                                    <input type="checkbox" name="shading" required="required" t-elif="task.date_worksheet_swms and not task.date_worksheet_site"/>
+                                                    <input type="checkbox" name="shading" disabled="disabled" checked="checked" t-else=""/>
+                                                    Shading Issues (If Necessary)
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="variations" disabled="disabled" t-if="not task.date_worksheet_swms"/>
+                                            <input type="checkbox" name="variations" t-elif="task.date_worksheet_swms and not task.date_worksheet_site and task.has_variation"/>
+                                            <input type="checkbox" name="variations" t-elif="task.date_worksheet_swms and not task.date_worksheet_site and not task.has_variation"/>
+                                            <input type="checkbox" name="variations" disabled="disabled" checked="checked" t-else=""/>
+                                            Are there any variations to the Panel Layout?
+                                            <br/>
+                                            If so, please describe:
+                                            <br/>
+                                            <textarea name="variation_description" disabled="disabled" t-if="not task.date_worksheet_swms"/>
+                                            <textarea name="variation_description" t-esc="task.variation_description or ''" t-elif="task.date_worksheet_swms and not task.date_worksheet_site"/>
+                                            <textarea name="variation_description" disabled="disabled" t-esc="task.variation_description" t-elif="task.variation_description"/>
+                                        </li>
+                                    </ul>
+                                    <button class="btn btn-primary ml16" type="submit" t-if="task.date_worksheet_swms and not task.date_worksheet_site">Submit</button>
+                                </form>
+                            </div>
+
+                            <div id="tab-install" t-attf-class="tab-pane fade {{'show active' if task.date_worksheet_site and not task.date_worksheet_install else ''}}">
+                                <form t-attf-action="/my/task/{{task.id}}/worksheet/install">
+                                    <button class="btn btn-primary ml16" type="submit" t-if="task.date_worksheet_site and not task.date_worksheet_install">Submit</button>
+                                </form>
+                            </div>
+
+                            <div id="tab-handover" t-attf-class="tab-pane fade {{'show active' if task.date_worksheet_install and not task.date_worksheet_handover else ''}}">
+                                <form t-attf-action="/my/task/{{task.id}}/worksheet/handover">
+                                    <ul>
+                                        <li>
+                                            <input type="checkbox" name="labelling" disabled="disabled" t-if="not task.date_worksheet_install"/>
+                                            <input type="checkbox" name="labelling" required="required" t-elif="task.date_worksheet_install and not task.date_worksheet_handover"/>
+                                            <input type="checkbox" name="labelling" disabled="disabled" checked="checked" t-else=""/>
+                                            All labelling is visible and installed.
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="training" disabled="disabled" t-if="not task.date_worksheet_install"/>
+                                            <input type="checkbox" name="training" required="required" t-elif="task.date_worksheet_install and not task.date_worksheet_handover"/>
+                                            <input type="checkbox" name="training" disabled="disabled" checked="checked" t-else=""/>
+                                            Customer Explanation and Training Completed.
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="inspection" disabled="disabled" t-if="not task.date_worksheet_install"/>
+                                            <input type="checkbox" name="inspection" required="required" t-elif="task.date_worksheet_install and not task.date_worksheet_handover"/>
+                                            <input type="checkbox" name="inspection" disabled="disabled" checked="checked" t-else=""/>
+                                            Customer Acceptance Signature.
+                                        </li>
+                                    </ul>
+                                    <button class="btn btn-primary ml16" type="submit" t-if="task.date_worksheet_install and not task.date_worksheet_handover">Submit</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </xpath>
+    </template>
+</odoo>
