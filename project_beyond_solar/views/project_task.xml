@@ -13,6 +13,8 @@
                     <field name="planned_date_begin" string="Assigned Start Date" widget="datetime"/>
                     <field name="planned_date_end" string="Assigned End Date" widget="datetime"/>
                     <field name="x_studio_installation_completed" string="Installation Complete" widget="boolean"/>
+                    <field name="x_studio_proposed_date" string="Proposed Start Date" widget="invisible|planned_date_begin|datetime"/>
+                    <field name="x_studio_proposed_end_date" string="Proposed End Date" widget="invisible|planned_date_begin|datetime"/>
                 </marker-popup>
             </xpath>
         </field>

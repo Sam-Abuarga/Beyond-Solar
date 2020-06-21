@@ -83,6 +83,14 @@ odoo.define('project_beyond_solar.MapRenderer', function (require) {
                                 value = field.widget.substring(8);
                             }
                         }
+                        else if (field.widget.startsWith('invisible|')) {
+                            if (record[field.widget.split('|')[1]]) {
+                                value = false;
+                            }
+                            else {
+                                value = FieldUtils.format[field.widget.split('|')[2]](FieldUtils.parse[field.widget.split('|')[2]](value, {}), {}, {'forceString': true});
+                            }
+                        }
                         else if (value) {
                             value = FieldUtils.format[field.widget](FieldUtils.parse[field.widget](value, {}), {}, {'forceString': true});
                         }
