@@ -9,6 +9,9 @@ class SaleOrder(models.Model):
     has_inverter = fields.Boolean(string="Has Inverter", compute='_compute_line_categories')
     has_panel = fields.Boolean(string="Has Panel", compute='_compute_line_categories')
 
+    filtered_sale_order_option_ids = fields.One2many(comodel_name='sale.order.option', inverse_name='order_id', domain=[('is_present', '=', True)],
+                                                     string='Optional Products Lines', copy=True, readonly=False)
+
     @api.depends('order_line.product_id')
     def _compute_line_categories(self):
         battery_cat = self.env['product.category'].search([('name', '=', "Storage")], limit=1)
