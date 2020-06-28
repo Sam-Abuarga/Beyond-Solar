@@ -31,6 +31,7 @@
 
     <template inherit_id="project.portal_my_task" id="portal_my_task">
         <xpath expr="//t[@t-call='portal.portal_record_layout']" position="replace">
+            <!-- Reschedule Modal -->
             <div class="modal fade" id="rescheduleModal" tabindex="-1" role="dialog" aria-labelledby="rescheduleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -55,6 +56,7 @@
                 </div>
             </div>
 
+            <!-- Mark Incomplete Modal -->
             <div class="modal fade" id="incompleteModal" tabindex="-1" role="dialog" aria-labelledby="incompleteModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -75,6 +77,27 @@
                                 <button type="submit" class="btn btn-primary">Reschedule</button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sign Install Modal -->
+            <div class="modal fade" id="installSignModal" tabindex="-1" role="dialog" aria-labelledby="installSignModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="installSignModalLabel">Add Signature</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">x</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="o_portal_signature_form"
+                                t-attf-data-call-url="/my/task/{{task.id}}/worksheet/install/signature"
+                                data-signature-type="signature"
+                                />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -402,7 +425,7 @@
                             </li>
                         </ul>
 
-                        <div class="tab-content mt16" id="worksheets">
+                        <div class="tab-content mt16" id="worksheets" style="padding: 15px;">
                             <div id="tab-check" t-attf-class="tab-pane fade {{'show active' if not task.date_worksheet_check else ''}}">
                                 <form t-attf-action="/my/task/{{task.id}}/worksheet/check">
                                     <ul>
@@ -836,8 +859,425 @@
 
                             <div id="tab-install" t-attf-class="tab-pane fade {{'show active' if task.date_worksheet_site and not task.date_worksheet_install else ''}}">
                                 <form t-attf-action="/my/task/{{task.id}}/worksheet/install">
-                                    <button class="btn btn-primary ml16" type="submit" t-if="task.date_worksheet_site and not task.date_worksheet_install">Submit</button>
+                                    <h4>Installation Details</h4>
+                                    <table>
+                                        <tr>
+                                            <th>Address of Installation:</th>
+                                            <td><address t-field="task.partner_id" t-options='{"widget": "contact", "fields": ["address"], "no_marker": True}' style="margin-bottom: 0"/></td>
+                                        </tr>
+                                        <tr>
+                                            <th style="padding-right: 10px;">PV module manufacturer and model number:</th>
+                                            <td><span t-field="task.pv_details"/></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Number of modules in series in a string:</th>
+                                            <td>
+                                                <input type="number" name="modules_in_string" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                                <input type="number" name="modules_in_string" required="required" t-att-value="task.modules_in_string"
+                                                       t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
+                                                <input type="number" name="modules_in_string" disabled="disabled" t-att-value="task.modules_in_string" t-else=""/><br/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Number of strings in parallel in PV array:</th>
+                                            <td>
+                                                <input type="number" name="strings_in_parallel" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                                <input type="number" name="strings_in_parallel" required="required" t-att-value="task.strings_in_parallel"
+                                                       t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
+                                                <input type="number" name="strings_in_parallel" disabled="disabled" t-att-value="task.strings_in_parallel" t-else=""/><br/>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="task.sale_order_id.has_inverter">
+                                            <th>Inverter manufacturer and model number:</th>
+                                            <td><span t-field="task.inv_details"/></td>
+                                        </tr>
+                                        <tr t-if="task.sale_order_id.has_inverter">
+                                            <th>Number of inverters:</th>
+                                            <td>
+                                                <input type="number" name="inverter_count" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                                <input type="number" name="inverter_count" required="required" t-att-value="task.inverter_count"
+                                                       t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
+                                                <input type="number" name="inverter_count" disabled="disabled" t-att-value="task.inverter_count" t-else=""/><br/>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="task.sale_order_id.has_inverter">
+                                            <th>Number of MPPTs:</th>
+                                            <td>
+                                                <input type="number" name="mppt_count" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                                <input type="number" name="mppt_count" required="required" t-att-value="task.mppt_count"
+                                                       t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
+                                                <input type="number" name="mppt_count" disabled="disabled" t-att-value="task.mppt_count" t-else=""/><br/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <br/>
+                                    <h4>PV Array</h4>
+                                    <ul>
+                                        <li>
+                                            PV array 1 tilt<sup>o</sup>
+                                            <input type="text" name="array_1_tilt" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                            <input type="text" name="array_1_tilt" required="required" t-att-value="task.x_studio_array_1_tilt_angle"
+                                                   t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
+                                            <input type="text" name="array_1_tilt" disabled="disabled" t-att-value="task.x_studio_array_1_tilt_angle" t-else=""/>
+
+                                            Azimuth
+                                            <input type="text" name="array_1_azimuth" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                            <input type="text" name="array_1_azimuth" required="required" t-att-value="task.x_studio_array_1_azimuth"
+                                                   t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
+                                            <input type="text" name="array_1_azimuth" disabled="disabled" t-att-value="task.x_studio_array_1_azimuth" t-else=""/>
+                                        </li>
+                                        <li t-if="task.x_studio_number_of_arrays in ['2', '3', '4']">
+                                            PV array 2 tilt<sup>o</sup>
+                                            <input type="text" name="array_2_tilt" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                            <input type="text" name="array_2_tilt" required="required" t-att-value="task.x_studio_array_2_tilt_angle"
+                                                   t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
+                                            <input type="text" name="array_2_tilt" disabled="disabled" t-att-value="task.x_studio_array_2_tilt_angle" t-else=""/>
+
+                                            Azimuth
+                                            <input type="text" name="array_2_azimuth" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                            <input type="text" name="array_2_azimuth" required="required" t-att-value="task.x_studio_array_2_azimuth"
+                                                   t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
+                                            <input type="text" name="array_2_azimuth" disabled="disabled" t-att-value="task.x_studio_array_2_azimuth" t-else=""/>
+                                        </li>
+                                        <li t-if="task.x_studio_number_of_arrays in ['3', '4']">
+                                            PV array 3 tilt<sup>o</sup>
+                                            <input type="text" name="array_3_tilt" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                            <input type="text" name="array_3_tilt" required="required" t-att-value="task.x_studio_array_3_tilt_angle"
+                                                   t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
+                                            <input type="text" name="array_3_tilt" disabled="disabled" t-att-value="task.x_studio_array_3_tilt_angle" t-else=""/>
+
+                                            Azimuth
+                                            <input type="text" name="array_3_azimuth" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                            <input type="text" name="array_3_azimuth" required="required" t-att-value="task.x_studio_array_3_azimuth"
+                                                   t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
+                                            <input type="text" name="array_3_azimuth" disabled="disabled" t-att-value="task.x_studio_array_3_azimuth" t-else=""/>
+                                        </li>
+                                        <li t-if="task.x_studio_number_of_arrays in ['4']">
+                                            PV array 4 tilt<sup>o</sup>
+                                            <input type="text" name="array_4_tilt" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                            <input type="text" name="array_4_tilt" required="required" t-att-value="task.x_studio_array_4_tilt_angle"
+                                                   t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
+                                            <input type="text" name="array_4_tilt" disabled="disabled" t-att-value="task.x_studio_array_4_tilt_angle" t-else=""/>
+
+                                            Azimuth
+                                            <input type="text" name="array_4_azimuth" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                            <input type="text" name="array_4_azimuth" required="required" t-att-value="task.x_studio_array_4_azimuth"
+                                                   t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
+                                            <input type="text" name="array_4_azimuth" disabled="disabled" t-att-value="task.x_studio_array_4_azimuth" t-else=""/>
+                                        </li>
+
+                                        <li>
+                                            <input type="checkbox" name="certified" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                            <input type="checkbox" name="certified" required="required"
+                                                   t-elif="task.date_worksheet_site and not task.install_saved"/>
+                                            <input type="checkbox" name="certified" disabled="disabled" checked="checked" t-else=""/>
+                                            Array frame is certified to AS1170.2:2011 for installation location.
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="manufacturer" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                            <input type="checkbox" name="manufacturer" required="required"
+                                                   t-elif="task.date_worksheet_site and not task.install_saved"/>
+                                            <input type="checkbox" name="manufacturer" disabled="disabled" checked="checked" t-else=""/>
+                                            Array frame is installed to manufacturer's instructions.
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="metals" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                            <input type="checkbox" name="metals" required="required"
+                                                   t-elif="task.date_worksheet_site and not task.install_saved"/>
+                                            <input type="checkbox" name="metals" disabled="disabled" checked="checked" t-else=""/>
+                                            No galvanically dissimilar metals are in contact with the array frames or supports.
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="weatherproof" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                            <input type="checkbox" name="weatherproof" required="required"
+                                                   t-elif="task.date_worksheet_site and not task.install_saved"/>
+                                            <input type="checkbox" name="weatherproof" disabled="disabled" checked="checked" t-else=""/>
+                                            Roof penetrations are suitably sealed and weatherproofed.
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="current" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                            <input type="checkbox" name="current" required="required"
+                                                   t-elif="task.date_worksheet_site and not task.install_saved"/>
+                                            <input type="checkbox" name="current" disabled="disabled" checked="checked" t-else=""/>
+                                            PV wiring losses are less than 3% at the maximum current output of the array.
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="protection" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                            <input type="checkbox" name="protection" required="required"
+                                                   t-elif="task.date_worksheet_site and not task.install_saved"/>
+                                            <input type="checkbox" name="protection" disabled="disabled" checked="checked" t-else=""/>
+                                            Where PV array comprises multiple strings- string protection has been provided if required.
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="supported" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                            <input type="checkbox" name="supported" required="required"
+                                                   t-elif="task.date_worksheet_site and not task.install_saved"/>
+                                            <input type="checkbox" name="supported" disabled="disabled" checked="checked" t-else=""/>
+                                            Wiring is protected from mechanical damage and is appropriately supported.
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="mounted" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                            <input type="checkbox" name="mounted" required="required"
+                                                   t-elif="task.date_worksheet_site and not task.install_saved"/>
+                                            <input type="checkbox" name="mounted" disabled="disabled" checked="checked" t-else=""/>
+                                            Weatherproof PV array isolator mounted adjacent to the array.
+                                        </li>
+                                    </ul>
+
+                                    <h4>LV DC and AC Installation</h4>
+                                    <ul>
+                                        <li>
+                                            <input type="checkbox" name="installed_electrician" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                            <input type="checkbox" name="installed_electrician" required="required"
+                                                   t-elif="task.date_worksheet_site and not task.install_saved"/>
+                                            <input type="checkbox" name="installed_electrician" disabled="disabled" checked="checked" t-else=""/>
+                                            All low voltage wiring has been installed by a licensed electrical tradesperson.
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="tested_electrician" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                            <input type="checkbox" name="tested_electrician" required="required"
+                                                   t-elif="task.date_worksheet_site and not task.install_saved"/>
+                                            <input type="checkbox" name="tested_electrician" disabled="disabled" checked="checked" t-else=""/>
+                                            All wiring has been tested and approved by qualified electrical tradesperson.
+                                        </li>
+                                    </ul>
+
+                                    <t t-if="task.sale_order_id.has_micro_inverter">
+                                        <h4>Micro-Inverter</h4>
+                                        <ul>
+                                            <li>
+                                                <input type="checkbox" name="isolator" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                                <input type="checkbox" name="isolator" required="required"
+                                                       t-elif="task.date_worksheet_site and not task.install_saved"/>
+                                                <input type="checkbox" name="isolator" disabled="disabled" checked="checked" t-else=""/>
+                                                AC isolator mounted adjacent to each group of micro inverters.
+                                            </li>
+                                            <li>
+                                                <input type="checkbox" name="inverter_comm" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                                <input type="checkbox" name="inverter_comm" required="required"
+                                                       t-elif="task.date_worksheet_site and not task.install_saved"/>
+                                                <input type="checkbox" name="inverter_comm" disabled="disabled" checked="checked" t-else=""/>
+                                                Inverter communications device has been installed inverter (where required).
+                                            </li>
+                                            <li>
+                                                <input type="checkbox" name="breaker" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                                <input type="checkbox" name="breaker" required="required"
+                                                       t-elif="task.date_worksheet_site and not task.install_saved"/>
+                                                <input type="checkbox" name="breaker" disabled="disabled" checked="checked" t-else=""/>
+                                                Lockable AC circuit breaker mounted within the switchboard to act as the inverter main switch for the PV/inverter system .
+                                            </li>
+                                            <li>
+                                                <input type="checkbox" name="inverter_manufacturer" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                                <input type="checkbox" name="inverter_manufacturer" required="required"
+                                                       t-elif="task.date_worksheet_site and not task.install_saved"/>
+                                                <input type="checkbox" name="inverter_manufacturer" disabled="disabled" checked="checked" t-else=""/>
+                                                Inverter is installed as per manufacturer’s specification.
+                                            </li>
+                                            <li>
+                                                <input type="checkbox" name="inverter_loss" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                                <input type="checkbox" name="inverter_loss" required="required"
+                                                       t-elif="task.date_worksheet_site and not task.install_saved"/>
+                                                <input type="checkbox" name="inverter_loss" disabled="disabled" checked="checked" t-else=""/>
+                                                Inverter ceases supplying power within two seconds of a loss of AC mains.
+                                            </li>
+                                            <li>
+                                                <input type="checkbox" name="inverter_delay" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                                <input type="checkbox" name="inverter_delay" required="required"
+                                                       t-elif="task.date_worksheet_site and not task.install_saved"/>
+                                                <input type="checkbox" name="inverter_delay" disabled="disabled" checked="checked" t-else=""/>
+                                                Inverter does not resume supplying power until mains have been present for more than 60 seconds.
+                                            </li>
+                                        </ul>
+                                    </t>
+                                    <t t-elif="task.sale_order_id.has_inverter">
+                                        <h4>Inverter</h4>
+                                        <ul>
+                                            <li>
+                                                <input type="checkbox" name="isolator" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                                <input type="checkbox" name="isolator" required="required"
+                                                       t-elif="task.date_worksheet_site and not task.install_saved"/>
+                                                <input type="checkbox" name="isolator" disabled="disabled" checked="checked" t-else=""/>
+                                                PV array isolator mounted adjacent to the inverter.
+                                            </li>
+                                            <li>
+                                                <input type="checkbox" name="isolator_output" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                                <input type="checkbox" name="isolator_output" required="required"
+                                                       t-elif="task.date_worksheet_site and not task.install_saved"/>
+                                                <input type="checkbox" name="isolator_output" disabled="disabled" checked="checked" t-else=""/>
+                                                Isolator is mounted on output of the inverter (where required).
+                                            </li>
+                                            <li>
+                                                <input type="checkbox" name="breaker" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                                <input type="checkbox" name="breaker" required="required"
+                                                       t-elif="task.date_worksheet_site and not task.install_saved"/>
+                                                <input type="checkbox" name="breaker" disabled="disabled" checked="checked" t-else=""/>
+                                                Lockable AC circuit breaker mounted within the switchboard to act as the inverter main switch for the PV/inverter system.
+                                            </li>
+                                            <li>
+                                                <input type="checkbox" name="inverter_manufacturer" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                                <input type="checkbox" name="inverter_manufacturer" required="required"
+                                                       t-elif="task.date_worksheet_site and not task.install_saved"/>
+                                                <input type="checkbox" name="inverter_manufacturer" disabled="disabled" checked="checked" t-else=""/>
+                                                Inverter is installed as per manufacturer’s specification.
+                                            </li>
+                                            <li>
+                                                <input type="checkbox" name="inverter_loss" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                                <input type="checkbox" name="inverter_loss" required="required"
+                                                       t-elif="task.date_worksheet_site and not task.install_saved"/>
+                                                <input type="checkbox" name="inverter_loss" disabled="disabled" checked="checked" t-else=""/>
+                                                Inverter ceases supplying power within two seconds of a loss of AC mains.
+                                            </li>
+                                            <li>
+                                                <input type="checkbox" name="inverter_delay" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                                <input type="checkbox" name="inverter_delay" required="required"
+                                                       t-elif="task.date_worksheet_site and not task.install_saved"/>
+                                                <input type="checkbox" name="inverter_delay" disabled="disabled" checked="checked" t-else=""/>
+                                                Inverter does not resume supplying power until mains have been present for more than 60 seconds.
+                                                The inverter shall not go straight to full power. It is required to ramp up from 0%-100% over a 6 minute period.
+                                            </li>
+                                        </ul>
+                                    </t>
+                                    <div class="alert alert-success" style="margin: auto;">
+                                        SYSTEM CHECK<br/>WARNING:<br/>
+                                        <ul>
+                                            <li>IF A STRING IS REVERSED AND CONNECTED TO OTHERS, FIRE MAY RESULT.</li>
+                                            <li>IF POLARITY IS REVERSED AT THE INVERTER DAMAGE MAY OCCUR TO THE INVERTER.</li>
+                                        </ul>
+                                    </div>
+                                    <table class="table table-sm">
+                                        <tr>
+                                            <th/>
+                                            <th>Polarity</th>
+                                            <th>Voltage</th>
+                                            <th>Short Circuit</th>
+                                            <th>Operating Current</th>
+                                        </tr>
+                                        <tr>
+                                            <th>String 1</th>
+                                            <td>
+                                                <input type="text" name="s1_polarity" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                                <input type="text" name="s1_polarity" t-att-value="task.s1_polarity" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
+                                                <input type="text" name="s1_polarity" t-att-value="task.s1_polarity" disabled="disabled" t-else=""/>
+                                            </td>
+                                            <td>
+                                                <input type="number" name="s1_voltage" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                                <input type="number" name="s1_voltage" t-att-value="task.s1_voltage" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
+                                                <input type="number" name="s1_voltage" t-att-value="task.s1_voltage" disabled="disabled" t-else=""/> V
+                                            </td>
+                                            <td>
+                                                <input type="number" name="s1_short_circuit" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                                <input type="number" name="s1_short_circuit" t-att-value="task.s1_short_circuit" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
+                                                <input type="number" name="s1_short_circuit" t-att-value="task.s1_short_circuit" disabled="disabled" t-else=""/> A
+                                            </td>
+                                            <td>
+                                                <input type="number" name="s1_operating_current" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                                <input type="number" name="s1_operating_current" t-att-value="task.s1_operating_current" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
+                                                <input type="number" name="s1_operating_current" t-att-value="task.s1_operating_current" disabled="disabled" t-else=""/> A
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>String 2</th>
+                                            <td>
+                                                <input type="text" name="s2_polarity" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                                <input type="text" name="s2_polarity" t-att-value="task.s2_polarity" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
+                                                <input type="text" name="s2_polarity" t-att-value="task.s2_polarity" disabled="disabled" t-else=""/>
+                                            </td>
+                                            <td>
+                                                <input type="number" name="s2_voltage" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                                <input type="number" name="s2_voltage" t-att-value="task.s2_voltage" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
+                                                <input type="number" name="s2_voltage" t-att-value="task.s2_voltage" disabled="disabled" t-else=""/> V
+                                            </td>
+                                            <td>
+                                                <input type="number" name="s2_short_circuit" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                                <input type="number" name="s2_short_circuit" t-att-value="task.s2_short_circuit" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
+                                                <input type="number" name="s2_short_circuit" t-att-value="task.s2_short_circuit" disabled="disabled" t-else=""/> A
+                                            </td>
+                                            <td>
+                                                <input type="number" name="s2_operating_current" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                                <input type="number" name="s2_operating_current" t-att-value="task.s2_operating_current" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
+                                                <input type="number" name="s2_operating_current" t-att-value="task.s2_operating_current" disabled="disabled" t-else=""/> A
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>String 3</th>
+                                            <td>
+                                                <input type="text" name="s3_polarity" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                                <input type="text" name="s3_polarity" t-att-value="task.s3_polarity" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
+                                                <input type="text" name="s3_polarity" t-att-value="task.s3_polarity" disabled="disabled" t-else=""/>
+                                            </td>
+                                            <td>
+                                                <input type="number" name="s3_voltage" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                                <input type="number" name="s3_voltage" t-att-value="task.s3_voltage" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
+                                                <input type="number" name="s3_voltage" t-att-value="task.s3_voltage" disabled="disabled" t-else=""/> V
+                                            </td>
+                                            <td>
+                                                <input type="number" name="s3_short_circuit" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                                <input type="number" name="s3_short_circuit" t-att-value="task.s3_short_circuit" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
+                                                <input type="number" name="s3_short_circuit" t-att-value="task.s3_short_circuit" disabled="disabled" t-else=""/> A
+                                            </td>
+                                            <td>
+                                                <input type="number" name="s3_operating_current" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                                <input type="number" name="s3_operating_current" t-att-value="task.s3_operating_current" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
+                                                <input type="number" name="s3_operating_current" t-att-value="task.s3_operating_current" disabled="disabled" t-else=""/> A
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>String 4</th>
+                                            <td>
+                                                <input type="text" name="s4_polarity" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                                <input type="text" name="s4_polarity" t-att-value="task.s4_polarity" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
+                                                <input type="text" name="s4_polarity" t-att-value="task.s4_polarity" disabled="disabled" t-else=""/>
+                                            </td>
+                                            <td>
+                                                <input type="number" name="s4_voltage" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                                <input type="number" name="s4_voltage" t-att-value="task.s4_voltage" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
+                                                <input type="number" name="s4_voltage" t-att-value="task.s4_voltage" disabled="disabled" t-else=""/> V
+                                            </td>
+                                            <td>
+                                                <input type="number" name="s4_short_circuit" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                                <input type="number" name="s4_short_circuit" t-att-value="task.s4_short_circuit" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
+                                                <input type="number" name="s4_short_circuit" t-att-value="task.s4_short_circuit" disabled="disabled" t-else=""/> A
+                                            </td>
+                                            <td>
+                                                <input type="number" name="s4_operating_current" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                                <input type="number" name="s4_operating_current" t-att-value="task.s4_operating_current" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
+                                                <input type="number" name="s4_operating_current" t-att-value="task.s4_operating_current" disabled="disabled" t-else=""/> A
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Max Voltage</th>
+                                            <td/>
+                                            <td>
+                                                <input type="number" name="tot_voltage" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                                <input type="number" name="tot_voltage" t-att-value="task.tot_voltage" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
+                                                <input type="number" name="tot_voltage" t-att-value="task.tot_voltage" disabled="disabled" t-else=""/> V
+                                            </td>
+                                            <td/>
+                                            <td/>
+                                        </tr>
+                                    </table>
+                                    <h4>Insulation Resistance Measurements</h4>
+                                    <p>
+                                        Array positive to earth
+                                        <input type="number" name="positive_resistance" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                        <input type="number" name="positive_resistance" t-att-value="task.positive_resistance" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
+                                        <input type="number" name="positive_resistance" t-att-value="task.positive_resistance" disabled="disabled" t-else=""/>
+                                        MΩ<br/><br/>
+                                        Array negative to earth
+                                        <input type="number" name="negative_resistance" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                        <input type="number" name="negative_resistance" t-att-value="task.negative_resistance" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
+                                        <input type="number" name="negative_resistance" t-att-value="task.negative_resistance" disabled="disabled" t-else=""/>
+                                        MΩ<br/><br/>
+                                    </p>
+                                    Notes:<br/>
+                                    <textarea name="install_notes" disabled="disabled" t-if="not task.date_worksheet_site" style="width: 100%"/>
+                                    <textarea name="install_notes" t-esc="task.install_notes or ''" t-elif="task.date_worksheet_site and not task.date_worksheet_install" style="width: 100%"/>
+                                    <textarea name="install_notes" disabled="disabled" t-esc="task.install_notes" t-else="" style="width: 100%"/>
+                                    <br/>
+                                    <button class="btn btn-primary" type="submit" t-if="task.date_worksheet_site and not task.date_worksheet_install">Save</button>
                                 </form>
+                                <br/>
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#installSignModal" t-if="task.install_saved and not task.date_worksheet_install">Sign &amp; Submit (Save First)</button>
                             </div>
 
                             <div id="tab-handover" t-attf-class="tab-pane fade {{'show active' if task.date_worksheet_install and not task.date_worksheet_handover else ''}}">

@@ -95,9 +95,65 @@ class Task(CustomerPortal):
         if not task.exists():
             return http.request.not_found()
 
-        task.date_worksheet_install = datetime.now()
+        fields = {
+            'array_1_tilt': 'x_studio_array_1_tilt_angle',
+            'array_1_azimuth': 'x_studio_array_1_azimuth',
+            'array_2_tilt': 'x_studio_array_2_tilt_angle',
+            'array_2_azimuth': 'x_studio_array_2_azimuth',
+            'array_3_tilt': 'x_studio_array_3_tilt_angle',
+            'array_3_azimuth': 'x_studio_array_3_azimuth',
+            'array_4_tilt': 'x_studio_array_4_tilt_angle',
+            'array_4_azimuth': 'x_studio_array_4_azimuth',
+            's1_polarity': 's1_polarity',
+            's1_voltage': 's1_voltage',
+            's1_short_circuit': 's1_short_circuit',
+            's1_operating_current': 's1_operating_current',
+            's2_polarity': 's2_polarity',
+            's2_voltage': 's2_voltage',
+            's2_short_circuit': 's2_short_circuit',
+            's2_operating_current': 's2_operating_current',
+            's3_polarity': 's3_polarity',
+            's3_voltage': 's3_voltage',
+            's3_short_circuit': 's3_short_circuit',
+            's3_operating_current': 's3_operating_current',
+            's4_polarity': 's4_polarity',
+            's4_voltage': 's4_voltage',
+            's4_short_circuit': 's4_short_circuit',
+            's4_operating_current': 's4_operating_current',
+            'tot_voltage': 'tot_voltage',
+            'positive_resistance': 'positive_resistance',
+            'negative_resistance': 'negative_resistance',
+            'modules_in_string': 'modules_in_string',
+            'strings_in_parallel': 'strings_in_parallel',
+            'inverter_count': 'inverter_count',
+            'mppt_count': 'mppt_count',
+            'install_notes': 'install_notes',
+        }
+
+        for field in fields:
+            if field in kwargs:
+                task[fields[field]] = kwargs[field]
+
+        task.install_saved = True
 
         return request.redirect(f'/my/task/{id}#worksheets?t={int(time.time())}')
+
+    @http.route('/my/task/<int:id>/worksheet/install/signature', type='json', website=True)
+    def task_worksheet_install_signature(self, id, name=None, signature=None, **kwargs):
+        task = request.env['project.task'].browse(id)
+        if not task.exists():
+            return http.request.not_found()
+
+        task.write({
+            'date_worksheet_install': datetime.now(),
+            'install_signed_by': name or request.env.user.name,
+            'install_signature': signature,
+        })
+
+        return {
+            'force_refresh': True,
+            'redirect_url': f'/my/task/{id}#worksheets?t={int(time.time())}',
+        }
 
     @http.route('/my/task/<int:id>/worksheet/handover', type='http', auth='user', website=True)
     def task_worksheet_handover(self, id, **kwargs):
