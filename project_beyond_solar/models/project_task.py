@@ -36,6 +36,9 @@ class ProjectTask(models.Model):
     inverter_count = fields.Integer(string="Number of Inverters")
     mppt_count = fields.Integer(string="Number of MPPTs")
 
+    customer_name = fields.Char(string="Customer Signature Name")
+    customer_signature = fields.Char(string="Customer Signature")
+
     pv_details = fields.Char(string="PV Details", compute='_compute_sale_details')
     inv_details = fields.Char(string="Inverter Details", compute='_compute_sale_details')
 

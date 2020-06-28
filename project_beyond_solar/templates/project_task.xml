@@ -123,6 +123,27 @@
                 </div>
             </div>
 
+            <!-- Sign Client Modal -->
+            <div class="modal fade" id="clientSignModal" tabindex="-1" role="dialog" aria-labelledby="clientSignModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="clientSignModalLabel">Initial Client Signature</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">x</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="o_portal_signature_form"
+                                t-attf-data-call-url="/my/task/{{task.id}}/worksheet/check/signature"
+                                data-signature-type="signature"
+                                />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <t t-call="portal.portal_record_layout">
                 <t t-set="card_header">
                     <div class="row no-gutters">
@@ -448,23 +469,24 @@
 
                         <div class="tab-content mt16" id="worksheets" style="padding: 15px;">
                             <div id="tab-check" t-attf-class="tab-pane fade {{'show active' if not task.date_worksheet_check else ''}}">
+                                <t t-if="task.date_worksheet_start and not task.customer_signature"><button class="btn btn-primary" data-toggle="modal" data-target="#clientSignModal">Get Client Signature</button><br/></t>
                                 <form t-attf-action="/my/task/{{task.id}}/worksheet/check">
                                     <ul>
                                         <li>
-                                            <input type="checkbox" name="labelling" disabled="disabled" t-if="not task.date_worksheet_start"/>
+                                            <input type="checkbox" name="labelling" disabled="disabled" t-if="not task.date_worksheet_start or not task.customer_signature"/>
                                             <input type="checkbox" name="labelling" required="required" t-elif="task.date_worksheet_start and not task.date_worksheet_check"/>
                                             <input type="checkbox" name="labelling" disabled="disabled" checked="checked" t-else=""/>
                                             Confirm Quantity of Materials
                                         </li>
                                         <li>
-                                            <input type="checkbox" name="eta" disabled="disabled" t-if="not task.date_worksheet_start"/>
+                                            <input type="checkbox" name="eta" disabled="disabled" t-if="not task.date_worksheet_start or not task.customer_signature"/>
                                             <input type="checkbox" name="eta" required="required" t-elif="task.date_worksheet_start and not task.date_worksheet_check"/>
                                             <input type="checkbox" name="eta" disabled="disabled" checked="checked" t-else=""/>
                                             Contact the Customer to Provide ETA
                                         </li>
                                     </ul>
                                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
-                                    <button class="btn btn-primary ml16" type="submit" t-if="task.date_worksheet_start and not task.date_worksheet_check">Submit</button>
+                                    <button class="btn btn-primary ml16" type="submit" t-if="task.date_worksheet_start and not task.date_worksheet_check and task.customer_signature">Submit</button>
                                 </form>
                             </div>
 

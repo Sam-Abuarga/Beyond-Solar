@@ -63,6 +63,19 @@ class Task(CustomerPortal):
 
         return request.redirect(f'/my/task/{id}#worksheets?t={int(time.time())}')
 
+    @http.route('/my/task/<int:id>/worksheet/check/signature', type='json', website=True)
+    def task_worksheet_check_signature(self, id, name=None, signature=None, **kwargs):
+        task = request.env['project.task'].browse(id)
+        if not task.exists():
+            return http.request.not_found()
+
+        task.customer_name = name
+        task.customer_signature = signature
+
+        return {
+            'force_refresh': True,
+        }
+
     @http.route('/my/task/<int:id>/worksheet/swms', type='http', auth='user', website=True)
     def task_worksheet_swms(self, id, **kwargs):
         task = request.env['project.task'].browse(id)
