@@ -14,7 +14,7 @@ class Task(CustomerPortal):
             return http.request.not_found()
 
         task.date_worksheet_start = datetime.now()
-        task.status = 'progress'
+        task.install_status = 'progress'
 
         return request.redirect(f'/my/task/{id}#worksheets?t={int(time.time())}')
 
@@ -24,7 +24,7 @@ class Task(CustomerPortal):
         if not task.exists():
             return http.request.not_found()
 
-        task.status = 'rescheduled'
+        task.install_status = 'rescheduled'
         task.user_id = task.project_id.user_id
         task.message_post(body=f"Task rescheduled. Reason: {kwargs.get('reason','')}", message_type="comment", subtype="mail.mt_note")
 
@@ -36,7 +36,7 @@ class Task(CustomerPortal):
         if not task.exists():
             return http.request.not_found()
 
-        task.status = 'incomplete'
+        task.install_status = 'incomplete'
         task.user_id = task.project_id.user_id
         task.message_post(body=f"Task marked incomplete. Reason: {kwargs.get('reason','')}", message_type="comment", subtype="mail.mt_note")
 
@@ -49,7 +49,7 @@ class Task(CustomerPortal):
             return http.request.not_found()
 
         task.date_worksheet_finish = datetime.now()
-        task.status = 'done'
+        task.install_status = 'done'
 
         return request.redirect(f'/my/task/{id}#worksheets?t={int(time.time())}')
 
@@ -72,6 +72,42 @@ class Task(CustomerPortal):
         task.date_worksheet_swms = datetime.now()
 
         return request.redirect(f'/my/task/{id}#worksheets?t={int(time.time())}')
+
+    @http.route('/my/task/<int:id>/worksheet/swms/save', type='http', auth='user', website=True)
+    def task_worksheet_swms_save(self, id, **kwargs):
+        task = request.env['project.task'].browse(id)
+        if not task.exists():
+            return http.request.not_found()
+
+        if 'additional_swms' in kwargs:
+            task.additional_swms = kwargs['additional_swms']
+        if 'recommended_swms' in kwargs:
+            task.recommended_swms = kwargs['recommended_swms']
+
+        return request.redirect(f'/my/task/{id}#worksheets?t={int(time.time())}')
+
+    @http.route('/my/task/<int:id>/worksheet/swms/signature', type='json', website=True)
+    def task_worksheet_swms_signature(self, id, name=None, signature=None, **kwargs):
+        task = request.env['project.task'].browse(id)
+        if not task.exists():
+            return http.request.not_found()
+
+        name = name or request.env.user.name
+
+        if not task.swms_signature_names:
+            task.swms_signature_names = name
+        else:
+            task.swms_signature_names += "\n" + name
+
+        task.swms_signature_ids += request.env['ir.attachment'].sudo().create({
+            'datas': signature,
+            'name': name + '.png',
+        })
+
+        return {
+            'force_refresh': True,
+            'redirect_url': f'/my/task/{id}#worksheets?t={int(time.time())}',
+        }
 
     @http.route('/my/task/<int:id>/worksheet/site', type='http', auth='user', website=True)
     def task_worksheet_site(self, id, **kwargs):

@@ -39,6 +39,9 @@ class ProjectTask(models.Model):
     pv_details = fields.Char(string="PV Details", compute='_compute_sale_details')
     inv_details = fields.Char(string="Inverter Details", compute='_compute_sale_details')
 
+    swms_signature_ids = fields.Many2many(comodel_name='ir.attachment', string="Signatures")
+    swms_signature_names = fields.Text(string="Current Signatures", readonly=1)
+
     install_notes = fields.Text(string="Installation Notes")
     install_signature = fields.Binary(string="Installation Signature")
     install_signed_by = fields.Char(string="Installation Signature Name")

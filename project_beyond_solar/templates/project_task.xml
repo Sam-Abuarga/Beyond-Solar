@@ -81,6 +81,27 @@
                 </div>
             </div>
 
+            <!-- Sign SWMS Modal -->
+            <div class="modal fade" id="swmsSignModal" tabindex="-1" role="dialog" aria-labelledby="swmsSignModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="swmsSignModalLabel">Add Signature</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">x</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="o_portal_signature_form"
+                                t-attf-data-call-url="/my/task/{{task.id}}/worksheet/swms/signature"
+                                data-signature-type="signature"
+                                />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Sign Install Modal -->
             <div class="modal fade" id="installSignModal" tabindex="-1" role="dialog" aria-labelledby="installSignModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -770,21 +791,25 @@
                                         <td>Workers</td>
                                     </tr>
                                 </table>
-                                <form t-attf-action="/my/task/{{task.id}}/worksheet/swms_details" class="mb16">
-                                    Additional Site Specific Requirements:
+                                <form t-attf-action="/my/task/{{task.id}}/worksheet/swms/save" class="mb16">
+                                    Additional Site Specific Requirements:<br/>
+                                    <textarea name="additional_swms" disabled="disabled" t-if="not task.date_worksheet_check" style="width: 100%"/>
+                                    <textarea name="additional_swms" t-esc="task.additional_swms or ''" t-elif="task.date_worksheet_check and not task.date_worksheet_swms" style="width: 100%"/>
+                                    <textarea name="additional_swms" disabled="disabled" t-esc="task.additional_swms" t-else="" style="width: 100%"/>
                                     <br/>
-                                    <textarea name="additional_swms" t-attf-value="{{task.additional_swms or ''}}" style="width: 100%;"/>
-                                    Recommendations for Improvements to this Document:
-                                    <br/>
-                                    <textarea name="recommended_swms" t-attf-value="{{task.additional_swms or ''}}" style="width: 100%;"/>
-                                    <button class="btn btn-primary ml16" type="submit" t-if="task.date_worksheet_check and not task.date_worksheet_swms">Save Changes</button>
+                                    Recommendations for Improvements to this Document:<br/>
+                                    <textarea name="recommended_swms" disabled="disabled" t-if="not task.date_worksheet_check" style="width: 100%"/>
+                                    <textarea name="recommended_swms" t-esc="task.recommended_swms or ''" t-elif="task.date_worksheet_check and not task.date_worksheet_swms" style="width: 100%"/>
+                                    <textarea name="recommended_swms" disabled="disabled" t-esc="task.recommended_swms" t-else="" style="width: 100%"/>
+                                    <button class="btn btn-primary " type="submit" t-if="task.date_worksheet_check and not task.date_worksheet_swms">Save Changes</button>
                                 </form>
-                                <form t-attf-action="/my/task/{{task.id}}/worksheet/swms_signature" class="mb16">
-                                    <h4>Signatures</h4>
-                                    <button class="btn btn-primary ml16" type="submit" t-if="task.date_worksheet_check and not task.date_worksheet_swms">Add Signature</button>
-                                </form>
+                                <h4>Signatures</h4>
+                                Current Signatures:
+                                <p t-field="task.swms_signature_names"/>
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#swmsSignModal" t-if="task.date_worksheet_check and not task.date_worksheet_swms">Add Signature</button>
                                 <form t-attf-action="/my/task/{{task.id}}/worksheet/swms" class="m616">
-                                    <button class="btn btn-primary ml16" type="submit" t-if="task.date_worksheet_check and not task.date_worksheet_swms">Submit</button>
+                                    <br/>
+                                    <button class="btn btn-primary " type="submit" t-if="task.date_worksheet_check and not task.date_worksheet_swms and task.swms_signature_names">Submit</button>
                                 </form>
                             </div>
 
