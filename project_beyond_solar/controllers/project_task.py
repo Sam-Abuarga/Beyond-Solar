@@ -106,7 +106,6 @@ class Task(CustomerPortal):
 
         return {
             'force_refresh': True,
-            'redirect_url': f'/my/task/{id}#worksheets?t={int(time.time())}',
         }
 
     @http.route('/my/task/<int:id>/worksheet/site', type='http', auth='user', website=True)
@@ -188,7 +187,6 @@ class Task(CustomerPortal):
 
         return {
             'force_refresh': True,
-            'redirect_url': f'/my/task/{id}#worksheets?t={int(time.time())}',
         }
 
     @http.route('/my/task/<int:id>/worksheet/handover', type='http', auth='user', website=True)
