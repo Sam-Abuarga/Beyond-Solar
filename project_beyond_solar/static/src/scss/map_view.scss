@@ -1,15 +1,11 @@
-.map_pin_done {
-
+.map_pin_draft {
+  filter: grayscale(100%);
 }
 
-.map_pin_done {
-
+.map_pin_ready {
+  filter: hue-rotate(210deg) saturate(8);
 }
 
-.map_pin_done {
-
-}
-
-.map_pin_done {
-
+.map_pin_booked {
+  filter: hue-rotate(250deg);
 }

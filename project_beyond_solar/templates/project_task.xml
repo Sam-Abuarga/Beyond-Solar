@@ -24,7 +24,7 @@
         </xpath>
         <xpath expr="//span[@t-esc='task.stage_id.name']//parent::td" position="after">
             <td>
-                <span class="badge badge-pill badge-info" title="Status of the current task" t-field="task.status"/>
+                <span class="badge badge-pill badge-info" title="Status of the current task" t-field="task.install_status"/>
             </td>
         </xpath>
     </template>
@@ -116,23 +116,23 @@
                             <small class="text-right">Stage:</small>
                             <span t-field="task.stage_id.name" class=" badge badge-pill badge-info" title="Current stage of this task"/>
                             <small class="text-right" style="padding-left: 10px;">Status:</small>
-                            <span t-field="task.status" class=" badge badge-pill badge-info" title="Current status of this task"/>
+                            <span t-field="task.install_status" class=" badge badge-pill badge-info" title="Current status of this task"/>
                         </div>
                     </div>
                     <div class="row no-gutters mt16">
                         <div class="col-md">
-                            <form t-attf-action="/my/task/{{task.id}}/start" t-if="task.status == 'pending'">
+                            <form t-attf-action="/my/task/{{task.id}}/start" t-if="task.install_status == 'pending'">
                                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                 <button class="btn btn-primary" type="submit">Start</button>
                             </form>
-                            <form t-attf-action="/my/task/{{task.id}}/finish" t-elif="task.date_worksheet_handover and task.status == 'progress'">
+                            <form t-attf-action="/my/task/{{task.id}}/finish" t-elif="task.date_worksheet_handover and task.install_status == 'progress'">
                                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                 <button class="btn btn-primary" type="submit">Mark Completed</button>
                             </form>
                         </div>
                         <div class="col-md text-md-right">
-                            <button class="btn btn-primary" data-toggle="modal" data-target="#rescheduleModal" t-if="task.status == 'pending'">Reschedule</button>
-                            <button class="btn btn-primary" data-toggle="modal" data-target="#incompleteModal" t-if="task.status == 'progress'">Mark Incomplete</button>
+                            <button class="btn btn-primary" data-toggle="modal" data-target="#rescheduleModal" t-if="task.install_status == 'pending'">Reschedule</button>
+                            <button class="btn btn-primary" data-toggle="modal" data-target="#incompleteModal" t-if="task.install_status == 'progress'">Mark Incomplete</button>
                         </div>
                     </div>
                 </t>

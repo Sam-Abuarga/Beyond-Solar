@@ -14,8 +14,13 @@
                     <field name="planned_date_end" string="Assigned End Date" widget="datetime"/>
                     <field name="x_studio_installation_completed" string="Installation Complete" widget="boolean"/>
                     <field name="x_studio_proposed_date" string="Proposed Start Date" widget="invisible|planned_date_begin|datetime"/>
+<<<<<<< HEAD
                     <field name="x_studio_proposed_end_date" string="Proposed End Date" widget="invisible|planned_date_begin|datetime"/>
                     <field name="status" string="Status" widget="invisible|create_date|char"/>
+=======
+                    <field name="x_studio_proposed_end_date" string="Proposed End Date" widget="invisible|planned_date_end|datetime"/>
+                    <field name="job_status" string="Job Status" widget="invisible|create_date|char"/>
+>>>>>>> 136af1b8d83668ad5c8b40ed64198ee36edc1959
                 </marker-popup>
             </xpath>
         </field>

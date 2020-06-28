@@ -4,12 +4,18 @@ from odoo import api, fields, models
 class ProjectTask(models.Model):
     _inherit = 'project.task'
 
-    status = fields.Selection(string="Status", required=True, default='pending', selection=lambda self: [
+    install_status = fields.Selection(string="Status", required=True, default='pending', selection=lambda self: [
         ('pending', "Pending"),
         ('progress', "In Progress"),
         ('done', "Installation Complete"),
         ('incomplete', "Incomplete"),
         ('rescheduled', "Rescheduled"),
+    ])
+    job_status = fields.Selection(string="Job Status", compute='_compute_job_status', selection=[
+        ('draft', "Not Ready"),
+        ('ready', "Ready to Book"),
+        ('booked', "Booked"),
+        ('done', "Done"),
     ])
     date_worksheet_start = fields.Datetime(string="Worksheets Started")
     date_worksheet_check = fields.Datetime(string="In House Check Completed")
@@ -84,6 +90,17 @@ class ProjectTask(models.Model):
                 rec.inv_details = inverter.name
             else:
                 rec.inv_details = ''
+
+    def _compute_job_status(self):
+        for rec in self:
+            if rec.x_studio_installation_completed:
+                rec.job_status = 'done'
+            elif rec.x_studio_booked_for_installation:
+                rec.job_status = 'booked'
+            elif rec.x_studio_ready_for_booking:
+                rec.job_status = 'ready'
+            else:
+                rec.job_status = 'draft'
 
     def get_status(self):
         self.ensure_one()

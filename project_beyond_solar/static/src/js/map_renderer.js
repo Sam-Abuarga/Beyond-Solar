@@ -42,7 +42,7 @@ odoo.define('project_beyond_solar.MapRenderer', function (require) {
                     var offset;
                     if (self.numbering) {
                         var number = L.divIcon({
-                            className: 'o_numbered_marker map_pin_' + record.status,
+                            className: 'o_numbered_marker map_pin_' + record.job_status,
                             html: '<p class ="o_number_icon">' + (self.state.records.indexOf(record) + 1) + '</p>'
                         });
                         marker = L.marker([record.partner.partner_latitude, record.partner.partner_longitude], { icon: number });
