@@ -20,4 +20,31 @@
             </xpath>
         </field>
     </record>
+
+    <record id="project_task_simplified_form_view" model="ir.ui.view">
+        <field name="name">project.task.simplified.form.view</field>
+        <field name="model">project.task</field>
+        <field name="arch" type="xml">
+            <form>
+                <label for="Name" class="oe_edit_only" string="Name"/>
+                <h2><field name="name"/></h2>
+                <group>
+                    <group>
+                        <field name="company_id" invisible="1"/>
+                        <field name="partner_id"/>
+                        <field name="x_studio_ready_for_booking"/>
+                        <field name="x_studio_installation_completed"/>
+                    </group>
+                    <group>
+                        <field name="user_id"/>
+                        <field name="planned_date_begin"/>
+                        <field name="planned_date_end"/>
+                        <field name="x_studio_proposed_date"/>
+                        <field name="x_studio_proposed_end_date"/>
+                    </group>
+                </group>
+
+            </form>
+        </field>
+    </record>
 </odoo>

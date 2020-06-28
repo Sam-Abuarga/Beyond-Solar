@@ -135,3 +135,6 @@ class ProjectTask(models.Model):
                 vals['planned_date_end'] = rec.x_studio_proposed_end_date
             if vals:
                 rec.write(vals)
+
+    def get_formview_id(self, access_uid=None):
+        return self.env.ref('project_beyond_solar.project_task_simplified_form_view').id
