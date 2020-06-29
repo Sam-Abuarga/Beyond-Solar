@@ -5,7 +5,7 @@ class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
     has_battery = fields.Boolean(string="Has Battery", compute='_compute_line_categories')
-    has_micro_inverter = fields.Boolean(string="Has Inverter", compute='_compute_line_categories')
+    has_micro_inverter = fields.Boolean(string="Has Micro Inverter", compute='_compute_line_categories')
     has_inverter = fields.Boolean(string="Has Inverter", compute='_compute_line_categories')
     has_panel = fields.Boolean(string="Has Panel", compute='_compute_line_categories')
 
