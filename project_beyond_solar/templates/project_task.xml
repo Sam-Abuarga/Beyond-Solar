@@ -275,7 +275,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th style="padding-right: 10px;">Meter Boc Phase</th>
+                                    <th style="padding-right: 10px;">Meter Box Phase</th>
                                     <td>
                                         <span t-field="task.x_studio_7_meter_box_phase"/>
                                     </td>
