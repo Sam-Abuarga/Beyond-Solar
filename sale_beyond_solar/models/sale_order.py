@@ -4,10 +4,10 @@ from odoo import api, fields, models
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
-    has_battery = fields.Boolean(string="Has Battery", compute='_compute_line_categories')
-    has_micro_inverter = fields.Boolean(string="Has Micro Inverter", compute='_compute_line_categories')
-    has_inverter = fields.Boolean(string="Has Inverter", compute='_compute_line_categories')
-    has_panel = fields.Boolean(string="Has Panel", compute='_compute_line_categories')
+    has_battery = fields.Boolean(string="Has Battery", compute='_compute_line_categories', store=True)
+    has_micro_inverter = fields.Boolean(string="Has Micro Inverter", compute='_compute_line_categories', store=True)
+    has_inverter = fields.Boolean(string="Has Inverter", compute='_compute_line_categories', store=True)
+    has_panel = fields.Boolean(string="Has Panel", compute='_compute_line_categories', store=True)
 
     filtered_sale_order_option_ids = fields.One2many(comodel_name='sale.order.option', inverse_name='order_id', domain=[('is_present', '=', True)],
                                                      string='Optional Products Lines', copy=True, readonly=False)

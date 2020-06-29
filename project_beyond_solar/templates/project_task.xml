@@ -445,52 +445,52 @@
                             <li class="nav-item">
                                 <a t-attf-class="nav-link {{'active' if not task.date_worksheet_check else ''}}" data-toggle="tab" href="#tab-check">In House Check</a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item" t-if="task.date_worksheet_check">
                                 <a t-attf-class="nav-link {{'active' if task.date_worksheet_check and not task.date_worksheet_swms else ''}}" data-toggle="tab" href="#tab-swms">
                                     SWMS
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a t-attf-class="nav-link {{'active' if task.date_worksheet_swms and not task.date_worksheet_site else ''}}" data-toggle="tab" href="#tab-site">Site
-                                    Condition
+                            <li class="nav-item" t-if="task.date_worksheet_swms">
+                                <a t-attf-class="nav-link {{'active' if task.date_worksheet_swms and not task.customer_signature else ''}}" data-toggle="tab" href="#tab-site">
+                                    Site Condition
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a t-attf-class="nav-link {{'active' if task.date_worksheet_site and not task.date_worksheet_install else ''}}" data-toggle="tab"
-                                   href="#tab-install">Installation and Commissioning
+                            <li class="nav-item" t-if="task.customer_signature">
+                                <a t-attf-class="nav-link {{'active' if task.customer_signature and not task.date_worksheet_install else ''}}" data-toggle="tab" href="#tab-install">
+                                    Installation and Commissioning
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a t-attf-class="nav-link {{'active' if task.date_worksheet_install and not task.date_worksheet_handover else ''}}" data-toggle="tab"
-                                   href="#tab-handover">Handover
+                            <li class="nav-item" t-if="task.date_worksheet_install">
+                                <a t-attf-class="nav-link {{'active' if task.date_worksheet_install and not task.date_worksheet_handover else ''}}" data-toggle="tab" href="#tab-handover">
+                                    Handover
                                 </a>
                             </li>
                         </ul>
 
                         <div class="tab-content mt16" id="worksheets" style="padding: 15px;">
                             <div id="tab-check" t-attf-class="tab-pane fade {{'show active' if not task.date_worksheet_check else ''}}">
-                                <t t-if="task.date_worksheet_start and not task.customer_signature"><button class="btn btn-primary" data-toggle="modal" data-target="#clientSignModal">Get Client Signature</button><br/></t>
+
                                 <form t-attf-action="/my/task/{{task.id}}/worksheet/check">
                                     <ul>
                                         <li>
-                                            <input type="checkbox" name="labelling" disabled="disabled" t-if="not task.date_worksheet_start or not task.customer_signature"/>
+                                            <input type="checkbox" name="labelling" disabled="disabled" t-if="not task.date_worksheet_start"/>
                                             <input type="checkbox" name="labelling" required="required" t-elif="task.date_worksheet_start and not task.date_worksheet_check"/>
                                             <input type="checkbox" name="labelling" disabled="disabled" checked="checked" t-else=""/>
                                             Confirm Quantity of Materials
                                         </li>
                                         <li>
-                                            <input type="checkbox" name="eta" disabled="disabled" t-if="not task.date_worksheet_start or not task.customer_signature"/>
+                                            <input type="checkbox" name="eta" disabled="disabled" t-if="not task.date_worksheet_start"/>
                                             <input type="checkbox" name="eta" required="required" t-elif="task.date_worksheet_start and not task.date_worksheet_check"/>
                                             <input type="checkbox" name="eta" disabled="disabled" checked="checked" t-else=""/>
                                             Contact the Customer to Provide ETA
                                         </li>
                                     </ul>
                                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
-                                    <button class="btn btn-primary ml16" type="submit" t-if="task.date_worksheet_start and not task.date_worksheet_check and task.customer_signature">Submit</button>
+                                    <button class="btn btn-primary ml16" type="submit" t-if="task.date_worksheet_start and not task.date_worksheet_check">Submit</button>
                                 </form>
                             </div>
 
-                            <div id="tab-swms" t-attf-class="tab-pane fade {{'show active' if task.date_worksheet_check and not task.date_worksheet_swms else ''}}">
+                            <div id="tab-swms" t-attf-class="tab-pane fade {{'show active' if task.date_worksheet_check and not task.date_worksheet_swms else ''}}" t-if="task.date_worksheet_check">
                                 <h4>Hazards</h4>
                                 <table class="table table-sm">
                                     <tr>
@@ -835,7 +835,7 @@
                                 </form>
                             </div>
 
-                            <div id="tab-site" t-attf-class="tab-pane fade {{'show active' if task.date_worksheet_swms and not task.date_worksheet_site else ''}}">
+                            <div id="tab-site" t-attf-class="tab-pane fade {{'show active' if task.date_worksheet_swms and not task.customer_signature else ''}}" t-if="task.date_worksheet_swms">
                                 <form t-attf-action="/my/task/{{task.id}}/worksheet/site">
                                     <ul>
                                         <li>
@@ -900,11 +900,12 @@
                                             <textarea name="variation_description" disabled="disabled" t-esc="task.variation_description" t-elif="task.variation_description"/>
                                         </li>
                                     </ul>
-                                    <button class="btn btn-primary ml16" type="submit" t-if="task.date_worksheet_swms and not task.date_worksheet_site">Submit</button>
+                                    <button class="btn btn-primary" type="submit" t-if="task.date_worksheet_swms and not task.date_worksheet_site">Submit</button>
                                 </form>
+                                <t t-if="task.date_worksheet_site and not task.customer_signature"><button class="btn btn-primary" data-toggle="modal" data-target="#clientSignModal">Get Client Signature</button><br/></t>
                             </div>
 
-                            <div id="tab-install" t-attf-class="tab-pane fade {{'show active' if task.date_worksheet_site and not task.date_worksheet_install else ''}}">
+                            <div id="tab-install" t-attf-class="tab-pane fade {{'show active' if task.customer_signature and not task.date_worksheet_install else ''}}" t-if="task.customer_signature">
                                 <form t-attf-action="/my/task/{{task.id}}/worksheet/install">
                                     <h4>Installation Details</h4>
                                     <table>
@@ -1327,7 +1328,7 @@
                                 <button class="btn btn-primary" data-toggle="modal" data-target="#installSignModal" t-if="task.install_saved and not task.date_worksheet_install">Sign &amp; Submit (Save First)</button>
                             </div>
 
-                            <div id="tab-handover" t-attf-class="tab-pane fade {{'show active' if task.date_worksheet_install and not task.date_worksheet_handover else ''}}">
+                            <div id="tab-handover" t-attf-class="tab-pane fade {{'show active' if task.date_worksheet_install and not task.date_worksheet_handover else ''}}" t-if="task.date_worksheet_install">
                                 <form t-attf-action="/my/task/{{task.id}}/worksheet/handover">
                                     <ul>
                                         <li>
