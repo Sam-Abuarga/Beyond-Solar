@@ -144,33 +144,14 @@ class Task(CustomerPortal):
             return http.request.not_found()
 
         fields = {
-            'array_1_tilt': 'x_studio_array_1_tilt_angle',
             'array_1_azimuth': 'x_studio_array_1_azimuth',
-            'array_2_tilt': 'x_studio_array_2_tilt_angle',
             'array_2_azimuth': 'x_studio_array_2_azimuth',
-            'array_3_tilt': 'x_studio_array_3_tilt_angle',
             'array_3_azimuth': 'x_studio_array_3_azimuth',
-            'array_4_tilt': 'x_studio_array_4_tilt_angle',
             'array_4_azimuth': 'x_studio_array_4_azimuth',
             's1_polarity': 's1_polarity',
-            's1_voltage': 's1_voltage',
-            's1_short_circuit': 's1_short_circuit',
-            's1_operating_current': 's1_operating_current',
             's2_polarity': 's2_polarity',
-            's2_voltage': 's2_voltage',
-            's2_short_circuit': 's2_short_circuit',
-            's2_operating_current': 's2_operating_current',
             's3_polarity': 's3_polarity',
-            's3_voltage': 's3_voltage',
-            's3_short_circuit': 's3_short_circuit',
-            's3_operating_current': 's3_operating_current',
             's4_polarity': 's4_polarity',
-            's4_voltage': 's4_voltage',
-            's4_short_circuit': 's4_short_circuit',
-            's4_operating_current': 's4_operating_current',
-            'tot_voltage': 'tot_voltage',
-            'positive_resistance': 'positive_resistance',
-            'negative_resistance': 'negative_resistance',
             'modules_in_string': 'modules_in_string',
             'strings_in_parallel': 'strings_in_parallel',
             'inverter_count': 'inverter_count',
@@ -178,9 +159,34 @@ class Task(CustomerPortal):
             'install_notes': 'install_notes',
         }
 
+        float_fields = {
+            's1_voltage': 's1_voltage',
+            's1_short_circuit': 's1_short_circuit',
+            's1_operating_current': 's1_operating_current',
+            's2_voltage': 's2_voltage',
+            's2_short_circuit': 's2_short_circuit',
+            's2_operating_current': 's2_operating_current',
+            's3_voltage': 's3_voltage',
+            's3_short_circuit': 's3_short_circuit',
+            's3_operating_current': 's3_operating_current',
+            's4_voltage': 's4_voltage',
+            's4_short_circuit': 's4_short_circuit',
+            's4_operating_current': 's4_operating_current',
+            'tot_voltage': 'tot_voltage',
+            'positive_resistance': 'positive_resistance',
+            'negative_resistance': 'negative_resistance',
+            'array_1_tilt': 'x_studio_array_1_tilt_angle',
+            'array_2_tilt': 'x_studio_array_2_tilt_angle',
+            'array_3_tilt': 'x_studio_array_3_tilt_angle',
+            'array_4_tilt': 'x_studio_array_4_tilt_angle',
+        }
         for field in fields:
             if field in kwargs:
                 task[fields[field]] = kwargs[field]
+
+        for field in float_fields:
+            if field in kwargs:
+                task[float_fields[field]] = float(kwargs[field] or 0)
 
         task.install_saved = True
 
