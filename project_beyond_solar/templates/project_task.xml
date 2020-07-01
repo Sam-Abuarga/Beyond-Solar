@@ -942,10 +942,7 @@
                                         <tr t-if="task.sale_order_id.has_inverter">
                                             <th>Number of inverters:</th>
                                             <td>
-                                                <input type="number" name="inverter_count" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                                <input type="number" name="inverter_count" required="required" t-att-value="task.inverter_count"
-                                                       t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                                <input type="number" name="inverter_count" disabled="disabled" t-att-value="task.inverter_count" t-else=""/><br/>
+                                                <span t-field="task.inverter_count"/><br/>
                                             </td>
                                         </tr>
                                         <tr t-if="task.sale_order_id.has_inverter">

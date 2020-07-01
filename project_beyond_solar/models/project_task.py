@@ -33,7 +33,7 @@ class ProjectTask(models.Model):
 
     modules_in_string = fields.Integer(string="Modules in Series in a String")
     strings_in_parallel = fields.Integer(string="Strings in Parallel in PV Array")
-    inverter_count = fields.Integer(string="Number of Inverters")
+    inverter_count = fields.Integer(string="Number of Inverters", compute='_compute_inverter_count')
     mppt_count = fields.Integer(string="Number of MPPTs")
 
     customer_name = fields.Char(string="Customer Signature Name")
@@ -107,6 +107,13 @@ class ProjectTask(models.Model):
                 rec.job_status = 'ready'
             else:
                 rec.job_status = 'draft'
+
+    def _compute_inverter_count(self):
+        inverter_cat = self.env['product.category'].search([('name', '=', "Inverters")], limit=1)
+        inverter_cat_ids = self.env['product.category'].search([('id', 'child_of', inverter_cat.id)]).ids
+
+        for rec in self:
+            rec.inverter_count = len(rec.sale_order_id.order_line.filtered(lambda l: l.product_id.categ_id.id in inverter_cat_ids))
 
     def get_status(self):
         self.ensure_one()
