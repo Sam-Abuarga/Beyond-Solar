@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_global_search_users" model="ir.ui.view">
+        <field name="name">Global Search Batch Users</field>
+        <field name="model">global.search.batch.users</field>
+        <field name="arch" type="xml">
+            <form string="Global Search by Users">
+                <header>
+                    <button icon="fa-cogs" string="Generate" name="generate_global_searches" type="object" class="oe_highlight"  />
+                </header>
+                <group>
+                    <label for="" colspan="4" nolabel="1" string="This wizard will generate global search for all selected user(s) based on template specified on global searches." />
+                </group>
+                <group colspan="4" >
+                    <separator string="Users" colspan="4"/>
+                    <newline/>
+                    <field name="user_ids" nolabel="1"/>
+                </group>
+           </form>
+        </field>
+    </record>
+
+    <record id="action_global_search_batch_users" model="ir.actions.act_window">
+        <field name="name">Global Search Batch Users</field>
+        <field name="res_model">global.search.batch.users</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_global_search_users"/>
+        <field name="target">new</field>
+    </record>
+</odoo>

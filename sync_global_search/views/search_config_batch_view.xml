@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.ui.view" id="global_search_batch_form_view">
+        <field name="name">global.search.config.batch.form.view</field>
+        <field name="model">global.search.config.batch</field>
+        <field name="arch" type="xml">
+            <form string="Global Search">
+                <header>
+                    <button name="%(action_global_search_batch_users)d" type="action" string="Generate Global Searches" class="oe_highlight"/>
+                    <button name="apply_changes_in_searches" type="object" string="Apply Changes to Global Searches" class="oe_highlight"/>
+                </header>
+                <sheet> 
+                    <group>
+                        <group>
+                            <field name="template_id"/>
+                            <field name="customized" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="model_id" attrs="{'readonly': [('template_id','!=',False)]}" options="{'no_create':True, 'no_create_edit':True}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Fields">
+                            <field name="field_ids" widget="many2many_tags" options="{'no_create':True, 'no_create_edit':True}"/>
+                        </page>
+                        <page name='search_ids' string="Searches">
+                            <field name="searches_ids">
+                                <tree>
+                                    <field name="user_id"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="global_search_batch_tree_view">
+        <field name="name">global.search.config.batch.tree.view</field>
+        <field name="model">global.search.config.batch</field>
+        <field name="arch" type="xml">
+            <tree string="Global Search">
+                <field name="model_id"/>
+                <field name="template_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="global_search_user_batch_action" model="ir.actions.act_window">
+        <field name="name">Global Search Batches</field>
+        <field name="res_model">global.search.config.batch</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem action="global_search_user_batch_action" id="menu_global_search_user_batches" parent="menu_global_search" name="Global Search Batches" sequence="2" groups="sync_global_search.group_global_search_manager"/>
+</odoo>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.ui.view" id="global_search_config_template_view">
+        <field name="name">global.search.config.template.form.view</field>
+        <field name="model">global.search.config.template</field>
+        <field name="arch" type="xml">
+            <form string="Global Search Template">
+                <header>
+                    <button name="apply_changes_in_searches" type="object" string="Apply Changes to Global Searches" class="oe_highlight"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="model_id" options="{'no_create':True, 'no_create_edit':True}"/>
+                        </group>
+                        <group></group>
+                    </group>
+                    <notebook>
+                        <page string="Fields">
+                            <separator/>
+                            <field name="field_ids" widget="many2many_tags" options="{'no_create':True, 'no_create_edit':True}"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="global_search_form_view">
+        <field name="name">global.search.config.form.view</field>
+        <field name="model">global.search.config</field>
+        <field name="arch" type="xml">
+            <form string="Global Search">
+                <sheet>
+                    <div class="oe_button_box" name="button_box" attrs="{'invisible': [('template_id','=',False)]}">
+                        <button name="set_default_template_batch" type="object" class="oe_stat_button" icon="fa-undo">
+                            <span>Set default</span>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="user_id" widget="selection" required="True" readonly="True"/>
+                            <field name="model_id" attrs="{'readonly': [('template_id','!=',False)]}" options="{'no_create':True, 'no_create_edit':True}" context="{'global_search_config': True}"/>
+                        </group>
+                        <group>
+                            <field name="template_id"/>
+                            <field name="customized" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Fields">
+                            <field name="field_ids" widget="many2many_tags" options="{'no_create':True, 'no_create_edit':True}" context="{'global_search_config': True}"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="global_search_user_form_view">
+        <field name="name">global.search.config.user.form.view</field>
+        <field name="model">global.search.config</field>
+        <field name="inherit_id" ref="global_search_form_view"/>
+        <field name="groups_id" eval="[(6, 0, [ref('sync_global_search.group_global_search_manager')])]"/>
+        <field name="arch" type="xml">
+            <field name="user_id" position="attributes">
+                <attribute name="readonly">False</attribute>
+            </field>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="global_search_tree_view">
+        <field name="name">global.search.config.tree.view</field>
+        <field name="model">global.search.config</field>
+        <field name="arch" type="xml">
+            <tree string="Global Search">
+                <field name="model_id"/>
+                <field name="template_id"/>
+                <field name="user_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="global_search_template_action" model="ir.actions.act_window">
+        <field name="name">Global Search Template</field>
+        <field name="res_model">global.search.config.template</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="global_search_user_action" model="ir.actions.act_window">
+        <field name="name">Global Search</field>
+        <field name="res_model">global.search.config</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_global_search" sequence="307" name="Global Search" groups="sync_global_search.group_global_search_user,base.group_portal"/>
+    <menuitem action="global_search_user_action" id="menu_global_search_user" parent="menu_global_search" name="Global Searches" icon="fa-search" sequence="2" groups="sync_global_search.group_global_search_user,base.group_portal"/>
+    <menuitem id="sub_menu_global_search" parent="menu_global_search" name="Configuration" groups="sync_global_search.group_global_search_user,base.group_portal"/>
+    <menuitem action="global_search_template_action" id="menu_global_search_template" parent="sub_menu_global_search" name="Settings" sequence="1" groups="sync_global_search.group_global_search_manager"/>
+
+</odoo>
