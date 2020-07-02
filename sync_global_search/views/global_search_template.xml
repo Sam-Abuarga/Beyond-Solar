@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="global_search_assets_backend" name="global_search assets" inherit_id="web.assets_backend">
+        <xpath expr="script[last()]" position="after">
+            <script type="text/javascript" src="/sync_global_search/static/src/js/global_search.js"></script>
+            <script type="text/javascript" src="/sync_global_search/static/src/js/global_auto_complete.js"></script>
+        </xpath>
+        <xpath expr="link[last()]" position="after">
+            <link rel="stylesheet" href="/sync_global_search/static/src/scss/input_search.scss"/>
+        </xpath>
+    </template>
+</odoo>

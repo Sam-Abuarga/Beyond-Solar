@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="AddRecord">
+        <li class="record_li">
+            <span>Add a record</span>
+        </li>
+    </t>
+    <t t-name="GlobalSearch">
+        <li class="o_global_search_systray_item">
+            <a class="dropdown-toggle o-no-caret global-search-a" data-toggle="dropdown" data-display="static" aria-expanded="false" title="Global Search" href="#" role="button">
+                <i class="fa fa-search" role="img" aria-label="global-search-results"/>
+            </a>
+            <div class="o_global_search_systray_dropdown dropdown-menu dropdown-menu-right" role="menu">
+                <div class="global-search-header-input">
+                    <div class="cu_back"><i class="fa fa-arrow-left"/></div>
+                    <input class="global-search" placeholder="Search" type="text"/>
+                    <div class="cu_close"><i class="fa fa-times"/></div>
+                    <div class="cu_search"><i class="fa fa-search"/></div>
+                </div>
+                <div class="global-search-results"/>
+            </div>
+        </li>
+    </t>
+    <div t-name="GlobalSearch.AutoComplete" class="oe-global-autocomplete oe-autocomplete pull-left">
+        <ul></ul>
+    </div>
+</templates>
