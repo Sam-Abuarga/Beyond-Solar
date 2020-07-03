@@ -222,13 +222,17 @@
                     <td/>
                     <td/>
                 </tr>
-                <tr>
+                <tr t-if="doc.positive_resistance">
                     <td colspan="4">Array positive to earth</td>
                     <td><span t-field="doc.positive_resistance"/> MΩ</td>
                 </tr>
-                <tr>
+                <tr t-if="doc.negative_resistance">
                     <td colspan="4">Array negative to earth</td>
                     <td><span t-field="doc.negative_resistance"/> MΩ</td>
+                </tr>
+                <tr t-if="doc.install_notes">
+                    <td>Notes</td>
+                    <td colspan="4"><div t-field="doc.install_notes"/></td>
                 </tr>
             </table>
         </div>
