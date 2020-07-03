@@ -895,9 +895,9 @@
                                             <br/>
                                             If so, please describe:
                                             <br/>
-                                            <textarea name="variation_description" disabled="disabled" t-if="not task.date_worksheet_swms"/>
-                                            <textarea name="variation_description" t-esc="task.variation_description or ''" t-elif="task.date_worksheet_swms and not task.date_worksheet_site"/>
-                                            <textarea name="variation_description" disabled="disabled" t-esc="task.variation_description" t-elif="task.variation_description"/>
+                                            <textarea name="variation_description" disabled="disabled" t-if="not task.date_worksheet_swms" style="width: 100%;"/>
+                                            <textarea name="variation_description" t-esc="task.variation_description or ''" t-elif="task.date_worksheet_swms and not task.date_worksheet_site" style="width: 100%;"/>
+                                            <textarea name="variation_description" disabled="disabled" t-esc="task.variation_description" t-elif="task.variation_description" style="width: 100%;"/>
                                         </li>
                                     </ul>
                                     <button class="btn btn-primary" type="submit" t-if="task.date_worksheet_swms and not task.date_worksheet_site">Submit</button>
