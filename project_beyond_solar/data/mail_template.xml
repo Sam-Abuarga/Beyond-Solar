@@ -1,4 +1,4 @@
-<odoo noupdate="0">
+<odoo noupdate="1">
     <record id="mail_template_project_task_installation" model="mail.template">
             <field name="name">Project Task Installation</field>
             <field name="model_id" ref="project.model_project_task"/>

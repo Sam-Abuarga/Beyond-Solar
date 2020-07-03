@@ -19,14 +19,14 @@
     'data': [
         'assets.xml',
 
-        'data/mail_template.xml',
-
         'reports/project_task.xml',
 
         'templates/project_task.xml',
 
         'views/project_project.xml',
         'views/project_task.xml',
+
+        'data/mail_template.xml',
     ],
     'qweb': ['static/src/xml/*.xml'],
     'installable': True,
