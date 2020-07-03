@@ -1340,12 +1340,6 @@
                                             <input type="checkbox" name="training" disabled="disabled" checked="checked" t-else=""/>
                                             Customer Explanation and Training Completed.
                                         </li>
-                                        <li>
-                                            <input type="checkbox" name="inspection" disabled="disabled" t-if="not task.date_worksheet_install"/>
-                                            <input type="checkbox" name="inspection" required="required" t-elif="task.date_worksheet_install and not task.date_worksheet_handover"/>
-                                            <input type="checkbox" name="inspection" disabled="disabled" checked="checked" t-else=""/>
-                                            Customer Acceptance Signature.
-                                        </li>
                                     </ul>
                                     <button class="btn btn-primary ml16" type="submit" t-if="task.date_worksheet_install and not task.date_worksheet_handover">Submit</button>
                                 </form>
