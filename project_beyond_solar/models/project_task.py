@@ -4,6 +4,9 @@ from odoo import api, fields, models
 class ProjectTask(models.Model):
     _inherit = 'project.task'
 
+    calendar_date_begin = fields.Datetime(string="Calendar Date Start", compute='_compute_calendar_begin', inverse='_set_calendar_begin', store=True)
+    calendar_date_end = fields.Datetime(string="Calendar Date End", compute='_compute_calendar_end', inverse='_set_calendar_end', store=True)
+
     install_status = fields.Selection(string="Status", required=True, default='pending', selection=lambda self: [
         ('pending', "Pending"),
         ('progress', "In Progress"),
@@ -69,6 +72,30 @@ class ProjectTask(models.Model):
     tot_voltage = fields.Float(string="Total Voltage")
     positive_resistance = fields.Float(string="Array Positive to Earth")
     negative_resistance = fields.Float(string="Array Negative to Earth")
+
+    @api.depends('planned_date_begin', 'x_studio_proposed_date')
+    def _compute_calendar_begin(self):
+        for rec in self:
+            rec.calendar_date_begin = rec.planned_date_begin or rec.x_studio_proposed_date
+
+    @api.depends('planned_date_end', 'x_studio_proposed_end_date')
+    def _compute_calendar_end(self):
+        for rec in self:
+            rec.calendar_date_end = rec.planned_date_end or rec.x_studio_proposed_end_date
+
+    def _set_calendar_begin(self):
+        for rec in self:
+            if rec.planned_date_begin:
+                rec.planned_date_begin = rec.calendar_date_begin
+            else:
+                rec.x_studio_proposed_date = rec.calendar_date_begin
+
+    def _set_calendar_end(self):
+        for rec in self:
+            if rec.planned_date_end:
+                rec.planned_date_end = rec.calendar_date_end
+            else:
+                rec.x_studio_proposed_end_date = rec.calendar_date_end
 
     def _compute_sale_details(self):
         inverter_cat = self.env['product.category'].search([('name', '=', "Inverters")], limit=1)

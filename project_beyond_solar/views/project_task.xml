@@ -49,4 +49,18 @@
             </form>
         </field>
     </record>
+
+    <record id="project_task_calendar_view" model="ir.ui.view">
+        <field name="name">project.task.calendar.view</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_calendar"/>
+        <field name="arch" type="xml">
+            <xpath expr="//calendar" position="attributes">
+                <attribute name="date_start">calendar_date_begin</attribute>
+                <attribute name="date_stop">calendar_date_end</attribute>
+                <attribute name="event_open_popup">1</attribute>
+                <attribute name="form_view_id">%(project_task_simplified_form_view)d</attribute>
+            </xpath>
+        </field>
+    </record>
 </odoo>
