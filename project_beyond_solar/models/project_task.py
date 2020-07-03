@@ -172,3 +172,17 @@ class ProjectTask(models.Model):
 
     def get_formview_id(self, access_uid=None):
         return self.env.ref('project_beyond_solar.project_task_simplified_form_view').id
+
+    def action_email_installation(self):
+        ctx = dict(
+            default_use_template=True,
+            default_template_id=self.env.ref('project_beyond_solar.mail_template_project_task_installation').id,
+        )
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'mail.compose.message',
+            'view_mode': 'form',
+            'view_type': 'form',
+            'target': 'new',
+            'context': ctx
+        }

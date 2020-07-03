@@ -249,5 +249,5 @@
     </template>
 
     <report id="action_report_project_task_installation" model="project.task" string="Installation &amp; Commissioning" report_type="qweb-pdf"
-            name="project_beyond_solar.report_project_task_installation" file="project_beyond_solar.report_project_task_installation"/>
+            name="project_beyond_solar.report_project_task_installation" file="project_beyond_solar.report_project_task_installation" print_report_name="'Installation'"/>
 </odoo>

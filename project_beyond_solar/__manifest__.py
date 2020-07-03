@@ -19,6 +19,8 @@
     'data': [
         'assets.xml',
 
+        'data/mail_template.xml',
+
         'reports/project_task.xml',
 
         'templates/project_task.xml',
