@@ -14,6 +14,7 @@
         'payment',
         'sale',
         'sale_timesheet',
+        'web_studio',
     ],
     'data': [
         'templates/sale_order_portal.xml',

@@ -12,6 +12,13 @@ class SaleOrder(models.Model):
     filtered_sale_order_option_ids = fields.One2many(comodel_name='sale.order.option', inverse_name='order_id', domain=[('is_present', '=', True)],
                                                      string='Optional Products Lines', copy=True, readonly=False)
 
+    peak_power = fields.Float(string="Peak DC Power (kW)", compute='_compute_peak_power')
+
+    @api.depends('order_line.product_id.x_studio_panel_power_class_watts', 'order_line.product_uom_qty')
+    def _compute_peak_power(self):
+        for rec in self:
+            rec.peak_power = sum([line.product_id.x_studio_panel_power_class_watts * line.product_uom_qty for line in rec.order_line if line.product_id])
+
     @api.depends('order_line.product_id')
     def _compute_line_categories(self):
         battery_cat = self.env['product.category'].search([('name', '=', "Storage")], limit=1)
