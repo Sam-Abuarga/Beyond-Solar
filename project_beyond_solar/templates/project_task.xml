@@ -27,6 +27,9 @@
                 <span class="badge badge-pill badge-info" title="Status of the current task" t-field="task.install_status"/>
             </td>
         </xpath>
+
+        <!-- Remove Project for project: -->
+        <xpath expr="//em" position="replace"/>
     </template>
 
     <template inherit_id="project.portal_my_task" id="portal_my_task">
