@@ -186,3 +186,11 @@ class ProjectTask(models.Model):
             'target': 'new',
             'context': ctx
         }
+
+    @api.model
+    def search(self, args, offset=0, limit=None, order=None, count=False):
+        if order == 'create_date desc':
+            order = 'calendar_date_begin'
+        elif order == 'project_id, create_date desc':
+            order = 'project_id, calendar_date_begin'
+        return super(ProjectTask, self).search(args, offset, limit, order, count)
