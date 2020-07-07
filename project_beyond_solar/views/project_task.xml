@@ -43,7 +43,7 @@
                             <field name="additional_swms" attrs="{'invisible': ['|', ('additional_swms', '=', ''), ('additional_swms', '=', False)]}"/>
                             <field name="recommended_swms" attrs="{'invisible': ['|', ('recommended_swms', '=', ''), ('recommended_swms', '=', False)]}"/>
                             <field name="swms_signature_names" string="SWMS Signatures"/>
-                            <button type="object" name="action_download_swms" string="Download SWMS" class="btn btn-primary" colspan="2" attrs="{'invisible': [('date_worksheet_swms', '=', False)]}"/>
+                            <button type="action" name="%(project_beyond_solar.action_report_project_task_swms)d" string="Download SWMS" class="btn btn-primary" colspan="2" attrs="{'invisible': [('date_worksheet_swms', '=', False)]}"/>
                         </group>
                         <group string="Installation">
                             <field name="variation_description" attrs="{'invisible': ['|', ('variation_description', '=', ''), ('variation_description', '=', False)]}"/>
