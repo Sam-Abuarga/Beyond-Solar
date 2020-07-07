@@ -24,6 +24,7 @@ class ProjectTask(models.Model):
     date_worksheet_check = fields.Datetime(string="In House Check Completed")
     date_worksheet_swms = fields.Datetime(string="SWMS Completed")
     date_worksheet_site = fields.Datetime(string="Site Condition Completed")
+    date_worksheet_client_signature = fields.Datetime(string="Client Signature Completed")
     date_worksheet_install = fields.Datetime(string="Installation and Commissioning Completed")
     date_worksheet_handover = fields.Datetime(string="Handover Completed")
     date_worksheet_finish = fields.Datetime(string="Worksheets Finished")
@@ -45,8 +46,8 @@ class ProjectTask(models.Model):
     pv_details = fields.Char(string="PV Details", compute='_compute_sale_details')
     inv_details = fields.Char(string="Inverter Details", compute='_compute_sale_details')
 
-    swms_signature_ids = fields.Many2many(comodel_name='ir.attachment', string="Signatures")
-    swms_signature_names = fields.Text(string="Current Signatures", readonly=1)
+    swms_signature_ids = fields.Many2many(comodel_name='ir.attachment', string="SWMS Signatures")
+    swms_signature_names = fields.Text(string="SWMS Signatures Names", readonly=1)
 
     install_notes = fields.Text(string="Installation Notes")
     install_signature = fields.Binary(string="Installation Signature")

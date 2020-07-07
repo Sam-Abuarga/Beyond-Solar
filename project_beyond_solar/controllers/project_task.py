@@ -71,6 +71,7 @@ class Task(CustomerPortal):
 
         task.customer_name = name
         task.customer_signature = signature
+        task.date_worksheet_client_signature = datetime.now()
 
         return {
             'force_refresh': True,

@@ -25,8 +25,33 @@
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project.view_task_form2"/>
         <field name="arch" type="xml">
-            <xpath expr="//header" position="inside">
-                <button type="object" name="action_email_installation" string="Email Installation" class="btn btn-primary"/>
+            <xpath expr="//notebook" position="inside">
+                <page string="Installation" name="installation">
+                    <group>
+                        <group string="Job Status">
+                            <field name="install_status"/>
+                            <field name="date_worksheet_start"/>
+                            <field name="date_worksheet_check"/>
+                            <field name="date_worksheet_swms"/>
+                            <field name="date_worksheet_site"/>
+                            <field name="date_worksheet_client_signature"/>
+                            <field name="date_worksheet_install"/>
+                            <field name="date_worksheet_handover"/>
+                            <field name="date_worksheet_finish"/>
+                        </group>
+                        <group string="SWMS">
+                            <field name="additional_swms" attrs="{'invisible': ['|', ('additional_swms', '=', ''), ('additional_swms', '=', False)]}"/>
+                            <field name="recommended_swms" attrs="{'invisible': ['|', ('recommended_swms', '=', ''), ('recommended_swms', '=', False)]}"/>
+                            <field name="swms_signature_names" string="SWMS Signatures"/>
+                            <button type="object" name="action_download_swms" string="Download SWMS" class="btn btn-primary" colspan="2" attrs="{'invisible': [('date_worksheet_swms', '=', False)]}"/>
+                        </group>
+                        <group string="Installation">
+                            <field name="variation_description" attrs="{'invisible': ['|', ('variation_description', '=', ''), ('variation_description', '=', False)]}"/>
+                            <field name="install_notes"/>
+                            <button type="object" name="action_email_installation" string="Email Installation" class="btn btn-primary" colspan="2" attrs="{'invisible': [('date_worksheet_install', '=', False)]}"/>
+                        </group>
+                    </group>
+                </page>
             </xpath>
         </field>
     </record>
