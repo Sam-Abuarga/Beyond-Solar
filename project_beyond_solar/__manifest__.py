@@ -20,6 +20,7 @@
         'assets.xml',
 
         'reports/project_task.xml',
+        'reports/project_task_swms.xml',
 
         'templates/project_task.xml',
 
