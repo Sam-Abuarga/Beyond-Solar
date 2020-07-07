@@ -6,7 +6,6 @@
         <field name="arch" type="xml">
             <xpath expr="//marker-popup" position="replace">
                 <marker-popup>
-                    <field name="create_date" string="Creation Date" widget="datetime"/>
                     <field name="partner_id" string="Customer"/>
                     <field name="user_id" string="Assigned To" widget="default|Unassigned"/>
                     <field name="planned_date_begin" string="Assigned Start Date" widget="datetime"/>
@@ -14,7 +13,7 @@
                     <field name="x_studio_proposed_team" string="Proposed Team" widget="invisible|user_id|char"/>
                     <field name="x_studio_proposed_date" string="Proposed Start Date" widget="invisible|planned_date_begin|datetime"/>
                     <field name="x_studio_proposed_end_date" string="Proposed End Date" widget="invisible|planned_date_end|datetime"/>
-                    <field name="job_status" string="Job Status" widget="invisible|create_date|char"/>
+                    <field name="job_status" string="Job Status" widget="invisible|partner_id|char"/>
                 </marker-popup>
             </xpath>
         </field>
