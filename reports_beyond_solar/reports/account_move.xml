@@ -1,0 +1,38 @@
+<odoo>
+    <template id="report_invoice_document" inherit_id="account.report_invoice_document">
+        <xpath expr="//t[@t-call='web.external_layout']" position="inside">
+            <t t-set="minimal_header" t-value="True"/>
+        </xpath>
+
+        <xpath expr="//t[@t-set='address']" position="attributes">
+            <attribute name="t-if">False</attribute>
+        </xpath>
+
+        <xpath expr="//h2" position="before">
+            <div class="row mt16 mb32">
+                <div class="col-5 offset-1" style="border-left: 2px solid #4b7f13">
+                    <b>To</b>
+                    <address t-field="o.partner_id" t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' style="margin-bottom: 0"/>
+                    <div t-if="o.partner_id.vat">
+                        <b t-esc="o.company_id.country_id.vat_label or 'Tax ID'" id="inv_tax_id_label"/>: <span t-field="o.partner_id.vat"/>
+                    </div>
+                </div>
+                <div class="col-5 offset-1" style="border-left: 2px solid #4b7f13">
+                    <b>From</b>
+                    <address t-field="o.company_id.partner_id" t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' style="margin-bottom: 0"/>
+                    <div t-if="o.company_id.partner_id.vat">
+                        <b t-esc="o.company_id.country_id.vat_label or 'Tax ID'" id="inv_tax_id_label"/>: <span t-field="o.company_id.partner_id.vat"/>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+
+        <xpath expr="//div[@name='due_date']" position="replace">
+            <t t-set="install_date" t-value="o.get_install_date()"/>
+            <div class="col-auto mw-100 mb-2" t-if="install_date and o.type == 'out_invoice'" name="due_date">
+                <strong>Due Date:</strong>
+                <p class="m-0" t-esc="'{:%d/%m/%Y}'.format(install_date)"/>
+            </div>
+        </xpath>
+    </template>
+</odoo>
