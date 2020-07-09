@@ -2,7 +2,7 @@
     <record id="project_task_form_view" model="ir.ui.view">
         <field name="name">project.task.form.view</field>
         <field name="model">project.task</field>
-        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="inherit_id" ref="studio_customization.odoo_studio_project__5119c225-c8ce-4217-a856-b219c5cb07ee"/>
         <field name="arch" type="xml">
             <!-- Add invisible fields to control conditional visibility -->
             <xpath expr="//field[@name='partner_id']" position="after">
