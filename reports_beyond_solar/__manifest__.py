@@ -8,7 +8,6 @@
     'description': """    
     """,
     'depends': [
-        'base',
         'account',
         'sale',
     ],
