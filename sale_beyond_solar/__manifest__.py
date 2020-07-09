@@ -18,6 +18,7 @@
         'templates/sale_order_portal.xml',
 
         'views/product_template.xml',
+        'views/project_task.xml',
         'views/sale_order.xml',
     ],
     'installable': True,

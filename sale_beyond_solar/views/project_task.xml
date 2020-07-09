@@ -1,0 +1,41 @@
+<odoo>
+    <record id="project_task_form_view" model="ir.ui.view">
+        <field name="name">project.task.form.view</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <!-- Add invisible fields to control conditional visibility -->
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="has_panel" invisible="1"/>
+                <field name="has_inverter" invisible="1"/>
+                <field name="has_battery" invisible="1"/>
+            </xpath>
+
+            <!-- Add conditional visibility to groups -->
+            <xpath expr="//group[@name='studio_group_xbuAq_left']" position="attributes">
+                <attribute name="attrs">{'invisible': [('has_panel', '=', False)]}</attribute>
+            </xpath>
+            <xpath expr="//group[@name='studio_group_xbuAq_right']" position="attributes">
+                <attribute name="attrs">{'invisible': [('has_panel', '=', False)]}</attribute>
+            </xpath>
+            <xpath expr="//group[@name='studio_group_Fs7YY_left']" position="attributes">
+                <attribute name="attrs">{'invisible': [('has_battery', '=', False)]}</attribute>
+            </xpath>
+            <xpath expr="//group[@name='studio_group_Fs7YY_right']" position="attributes">
+                <attribute name="attrs">{'invisible': [('has_battery', '=', False)]}</attribute>
+            </xpath>
+            <xpath expr="//group[@name='studio_group_cxzHX_left']" position="attributes">
+                <attribute name="attrs">{'invisible': [('has_inverter', '=', False)]}</attribute>
+            </xpath>
+            <xpath expr="//group[@name='studio_group_cxzHX_right']" position="attributes">
+                <attribute name="attrs">{'invisible': [('has_inverter', '=', False)]}</attribute>
+            </xpath>
+            <xpath expr="//group[@name='studio_group_LfqYu_left']" position="attributes">
+                <attribute name="attrs">{'invisible': [('has_battery', '=', False)]}</attribute>
+            </xpath>
+            <xpath expr="//group[@name='studio_group_LfqYu_right']" position="attributes">
+                <attribute name="attrs">{'invisible': [('has_battery', '=', False)]}</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

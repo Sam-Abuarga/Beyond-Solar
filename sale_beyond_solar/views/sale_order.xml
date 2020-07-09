@@ -4,9 +4,31 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
+            <!-- Change to filtered optional products to remove existing -->
             <xpath expr="//field[@name='sale_order_option_ids']" position="attributes">
                 <attribute name="name">filtered_sale_order_option_ids</attribute>
                 <attribute name="context">{'default_order_id': active_id}</attribute>
+            </xpath>
+
+            <!-- Add invisible fields to control conditional visibility -->
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="has_panel" invisible="1"/>
+                <field name="has_inverter" invisible="1"/>
+                <field name="has_battery" invisible="1"/>
+            </xpath>
+
+            <!-- Add conditional visibility to groups -->
+            <xpath expr="//group[@name='studio_group_oxUCi_left']" position="attributes">
+                <attribute name="attrs">{'invisible': [('has_panel', '=', False)]}</attribute>
+            </xpath>
+            <xpath expr="//group[@name='studio_group_oxUCi_right']" position="attributes">
+                <attribute name="attrs">{'invisible': [('has_panel', '=', False)]}</attribute>
+            </xpath>
+            <xpath expr="//group[@name='studio_group_2LjKN_left']" position="attributes">
+                <attribute name="attrs">{'invisible': [('has_inverter', '=', False)]}</attribute>
+            </xpath>
+            <xpath expr="//group[@name='studio_group_2LjKN_right']" position="attributes">
+                <attribute name="attrs">{'invisible': [('has_battery', '=', False)]}</attribute>
             </xpath>
         </field>
     </record>

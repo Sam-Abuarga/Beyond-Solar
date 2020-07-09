@@ -25,7 +25,7 @@
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project.view_task_form2"/>
         <field name="arch" type="xml">
-            <xpath expr="//notebook" position="inside">
+            <xpath expr="//page[@name='studio_page_r1eXn']" position="after">
                 <page string="Installation" name="installation">
                     <group>
                         <group string="Job Status">
