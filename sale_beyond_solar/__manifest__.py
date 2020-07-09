@@ -10,7 +10,6 @@
     - Changed quotation portal view "pay now" to "pay deposit", and made a 10% deposit invoice.    
     """,
     'depends': [
-        'base',
         'payment',
         'sale',
         'sale_timesheet',
