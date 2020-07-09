@@ -1,0 +1,20 @@
+<odoo noupdate="1">
+    <record id="mail_template_project_task_installation" model="mail.template">
+            <field name="name">Project Task Installation</field>
+            <field name="model_id" ref="project.model_project_task"/>
+            <field name="report_template" ref="project_beyond_solar.action_report_project_task_installation"/>
+            <field name="report_name">Installation</field>
+            <field name="email_from">${(user.email or '')|safe}</field>
+            <field name="email_to">${object.partner_id.email}</field>
+            <field name="subject">Solar Installation</field>
+            <field name="auto_delete" eval="False"/>
+            <field name="user_signature" eval="True"/>
+            <field name="body_html"><![CDATA[
+                Hello,<br/>
+                <p>
+                    Please find attached a copy of the installation and commissioning document.
+                </p>
+            ]]>
+            </field>
+    </record>
+</odoo>

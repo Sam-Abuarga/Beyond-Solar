@@ -1,0 +1,100 @@
+<odoo>
+    <record id="project_task_map_view" model="ir.ui.view">
+        <field name="name">project.task.map.view</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project_enterprise.project_task_map_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//marker-popup" position="replace">
+                <marker-popup>
+                    <field name="partner_id" string="Customer"/>
+                    <field name="user_id" string="Assigned To" widget="default|Unassigned"/>
+                    <field name="planned_date_begin" string="Assigned Start Date" widget="invisible|x_studio_installation_completed|datetime"/>
+                    <field name="planned_date_end" string="Assigned End Date" widget="invisible|x_studio_installation_completed|datetime"/>
+                    <field name="x_studio_proposed_team" string="Proposed Team" widget="invisible|user_id|char"/>
+                    <field name="x_studio_proposed_date" string="Proposed Start Date" widget="invisible|planned_date_begin|datetime"/>
+                    <field name="x_studio_proposed_end_date" string="Proposed End Date" widget="invisible|planned_date_end|datetime"/>
+                    <field name="x_studio_installation_completed" string="Installation Completed" widget="invisible|partner_id|char"/>
+                    <field name="job_status" string="Job Status" widget="invisible|partner_id|char"/>
+                </marker-popup>
+            </xpath>
+        </field>
+    </record>
+    
+    <record id="project_task_form_view" model="ir.ui.view">
+        <field name="name">project.task.form.view</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Installation" name="installation">
+                    <group>
+                        <group string="Job Status">
+                            <field name="install_status"/>
+                            <field name="date_worksheet_start"/>
+                            <field name="date_worksheet_check"/>
+                            <field name="date_worksheet_swms"/>
+                            <field name="date_worksheet_site"/>
+                            <field name="date_worksheet_client_signature"/>
+                            <field name="date_worksheet_install"/>
+                            <field name="date_worksheet_handover"/>
+                            <field name="date_worksheet_finish"/>
+                        </group>
+                        <group string="SWMS">
+                            <field name="additional_swms" attrs="{'invisible': ['|', ('additional_swms', '=', ''), ('additional_swms', '=', False)]}"/>
+                            <field name="recommended_swms" attrs="{'invisible': ['|', ('recommended_swms', '=', ''), ('recommended_swms', '=', False)]}"/>
+                            <field name="swms_signature_names" string="SWMS Signatures"/>
+                            <button type="action" name="%(project_beyond_solar.action_report_project_task_swms)d" string="Download SWMS" class="btn btn-primary" colspan="2" attrs="{'invisible': [('date_worksheet_swms', '=', False)]}"/>
+                        </group>
+                        <group string="Installation">
+                            <field name="variation_description" attrs="{'invisible': ['|', ('variation_description', '=', ''), ('variation_description', '=', False)]}"/>
+                            <field name="install_notes"/>
+                            <button type="object" name="action_email_installation" string="Email Installation" class="btn btn-primary" colspan="2" attrs="{'invisible': [('date_worksheet_install', '=', False)]}"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="project_task_simplified_form_view" model="ir.ui.view">
+        <field name="name">project.task.simplified.form.view</field>
+        <field name="model">project.task</field>
+        <field name="arch" type="xml">
+            <form>
+                <label for="Name" class="oe_edit_only" string="Name"/>
+                <h2><field name="name"/></h2>
+                <group>
+                    <group>
+                        <field name="company_id" invisible="1"/>
+                        <field name="partner_id"/>
+                        <field name="x_studio_ready_for_booking"/>
+                        <field name="x_studio_installation_completed"/>
+                    </group>
+                    <group>
+                        <field name="x_studio_proposed_team" string="Proposed Team" widget="invisible|user_id|char"/>
+                        <field name="x_studio_proposed_date"/>
+                        <field name="x_studio_proposed_end_date"/>
+                        <field name="user_id"/>
+                        <field name="planned_date_begin"/>
+                        <field name="planned_date_end"/>
+                    </group>
+                </group>
+
+            </form>
+        </field>
+    </record>
+
+    <record id="project_task_calendar_view" model="ir.ui.view">
+        <field name="name">project.task.calendar.view</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_calendar"/>
+        <field name="arch" type="xml">
+            <xpath expr="//calendar" position="attributes">
+                <attribute name="date_start">calendar_date_begin</attribute>
+                <attribute name="date_stop">calendar_date_end</attribute>
+                <attribute name="event_open_popup">1</attribute>
+                <attribute name="form_view_id">%(project_task_simplified_form_view)d</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

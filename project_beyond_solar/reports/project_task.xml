@@ -1,0 +1,253 @@
+<odoo>
+    <template id="report_project_task_installation_document">
+        <div class="page">
+            <h2>String Inverter Installation and Commissioning</h2>
+            <h4 class="mt32">Installation Details</h4>
+            <table class="table table-bordered table-sm">
+                <tr>
+                    <th>Address of Installation</th>
+                    <td colspan="3">
+                        <t t-if="doc.partner_id.parent_id"><span t-field="doc.partner_id.parent_id.name"/><br/></t>
+                        <span t-field="doc.partner_id.name"/><br/>
+                        <span t-field="doc.partner_id.street"/><br/>
+                        <t t-if="doc.partner_id.street"><span t-field="doc.partner_id.street"/><br/></t>
+                        <t t-if="doc.partner_id.street2"><span t-field="doc.partner_id.street2"/><br/></t>
+                        <span t-field="doc.partner_id.city"/> <span t-field="doc.partner_id.state_id.code"/> <span t-field="doc.partner_id.zip"/><br/>
+                        <t t-if="doc.partner_id.country_id"><span t-field="doc.partner_id.country_id.name"/><br/></t>
+                    </td>
+                </tr>
+                <tr t-if="doc.sale_order_id.has_panel">
+                    <th>PV Module Manufacturer<br/>and Model Number</th>
+                    <td colspan="3"><span t-field="doc.pv_details"/></td>
+                </tr>
+                <tr t-if="doc.sale_order_id.has_panel">
+                    <th width="30%">Number of Modules in<br/>Series in a String</th>
+                    <td width="20%"><span t-field="doc.modules_in_string"/></td>
+                    <th width="30%">Number of Strings in<br/>Parallel in PV Array</th>
+                    <td width="20%"><span t-field="doc.strings_in_parallel"/></td>
+                </tr>
+                <tr t-if="doc.sale_order_id.has_inverter">
+                    <th>Inverter Manufacturer<br/>and Model Number</th>
+                    <td colspan="3"><span t-field="doc.inv_details"/></td>
+                </tr>
+                <tr t-if="doc.sale_order_id.has_inverter">
+                    <th>Number of Inverters</th>
+                    <td><span t-field="doc.inverter_count"/></td>
+                    <th>Number of MPPTs</th>
+                    <td><span t-field="doc.mppt_count"/></td>
+                </tr>
+            </table>
+
+            <h4 class="mt32" t-if="doc.sale_order_id.has_panel">PV Array</h4>
+            <table class="table table-bordered table-sm" t-if="doc.sale_order_id.has_panel">
+                <tr>
+                    <td>PV Array 1 Tilt<sup>o</sup> <div t-field="doc.x_studio_array_1_tilt_angle" style="display: inline-block; margin-left: 32px;"/></td>
+                    <td>PV Array 1 Azimuth<sup>o</sup> <div t-field="doc.x_studio_array_1_azimuth" style="display: inline-block; margin-left: 32px;"/></td>
+                </tr>
+                <tr t-if="doc.x_studio_number_of_arrays in ['2', '3', '4']">
+                    <td>PV Array 2 Tilt<sup>o</sup> <div t-field="doc.x_studio_array_2_tilt_angle" style="display: inline-block; margin-left: 32px;"/></td>
+                    <td>PV Array 2 Azimuth<sup>o</sup> <div t-field="doc.x_studio_array_2_azimuth" style="display: inline-block; margin-left: 32px;"/></td>
+                </tr>
+                <tr t-if="doc.x_studio_number_of_arrays in ['3', '4']">
+                    <td>PV Array 3 Tilt<sup>o</sup> <div t-field="doc.x_studio_array_3_tilt_angle" style="display: inline-block; margin-left: 32px;"/></td>
+                    <td>PV Array 3 Azimuth<sup>o</sup> <div t-field="doc.x_studio_array_3_azimuth" style="display: inline-block; margin-left: 32px;"/></td>
+                </tr>
+                <tr t-if="doc.x_studio_number_of_arrays in ['4']">
+                    <td>PV Array 4 Tilt<sup>o</sup> <div t-field="doc.x_studio_array_4_tilt_angle" style="display: inline-block; margin-left: 32px;"/></td>
+                    <td>PV Array 4 Azimuth<sup>o</sup> <div t-field="doc.x_studio_array_4_azimuth" style="display: inline-block; margin-left: 32px;"/></td>
+                </tr>
+                <tr>
+                    <td width="50%">
+                        <div style="width: 80%; display: inline-block;">Array frame is certified to AS1170.2:2011 for installation location</div>
+                        <div style="display: inline-block; float: right" class="fa fa-check-square-o"/>
+                    </td>
+                    <td width="50%">
+                        <div style="width: 80%; display: inline-block;">Array frame is installed to manufacturer’s instructions</div>
+                        <div style="display: inline-block; float: right" class="fa fa-check-square-o"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="width: 80%; display: inline-block;">No galvanically dissimilar metals are in contact with the array frames or supports</div>
+                        <div style="display: inline-block; float: right" class="fa fa-check-square-o"/>
+                    </td>
+                    <td>
+                        <div style="width: 80%; display: inline-block;">Roof penetrations are suitably sealed and weatherproofed</div>
+                        <div style="display: inline-block; float: right" class="fa fa-check-square-o"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="width: 80%; display: inline-block;">PV wiring losses are less than 3% at the maximum current output of the array</div>
+                        <div style="display: inline-block; float: right" class="fa fa-check-square-o"/>
+                    </td>
+                    <td>
+                        <div style="width: 80%; display: inline-block;">Where PV array comprises multiple strings- string protection has been provided if required.</div>
+                        <div style="display: inline-block; float: right" class="fa fa-check-square-o"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="width: 80%; display: inline-block;">Wiring is protected from mechanical damage and is appropriately supported</div>
+                        <div style="display: inline-block; float: right" class="fa fa-check-square-o"/>
+                    </td>
+                    <td>
+                        <div style="width: 80%; display: inline-block;">Weatherproof PV array isolator mounted adjacent to the array</div>
+                        <div style="display: inline-block; float: right" class="fa fa-check-square-o"/>
+                    </td>
+                </tr>
+            </table>
+
+            <h4 class="mt32" t-if="doc.sale_order_id.has_panel">LV DC and AC Installation</h4>
+            <table class="table table-bordered table-sm" t-if="doc.sale_order_id.has_panel">
+                <tr>
+                    <td width="50%">
+                        <div style="width: 80%; display: inline-block;">All low voltage wiring has been installed by a licensed electrical tradesperson</div>
+                        <div style="display: inline-block; float: right" class="fa fa-check-square-o"/>
+                    </td>
+                    <td width="50%">
+                        <div style="width: 80%; display: inline-block;">All wiring has been tested and approved by qualified electrical tradesperson</div>
+                        <div style="display: inline-block; float: right" class="fa fa-check-square-o"/>
+                    </td>
+                </tr>
+            </table>
+
+            <h4 class="mt32" t-if="doc.sale_order_id.has_inverter">Inverter</h4>
+            <table class="table table-bordered table-sm" t-if="doc.sale_order_id.has_inverter">
+                <t t-if="doc.sale_order_id.has_micro_inverter">
+                    <tr>
+                        <td width="50%">
+                            <div style="width: 80%; display: inline-block;">AC isolator mounted adjacent to each group of micro inverters</div>
+                            <div style="display: inline-block; float: right" class="fa fa-check-square-o"/>
+                        </td>
+                        <td width="50%">
+                            <div style="width: 80%; display: inline-block;">Inverter communications device has been installed inverter (where required)</div>
+                            <div style="display: inline-block; float: right" class="fa fa-check-square-o"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="50%">
+                            <div style="width: 80%; display: inline-block;">Lockable AC circuit breaker mounted within the switchboard to act as the inverter main switch for the PV/inverter system</div>
+                            <div style="display: inline-block; float: right" class="fa fa-check-square-o"/>
+                        </td>
+                        <td width="50%">
+                            <div style="width: 80%; display: inline-block;">Inverter is installed as per manufacturer’s specification</div>
+                            <div style="display: inline-block; float: right" class="fa fa-check-square-o"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="50%">
+                            <div style="width: 80%; display: inline-block;">Inverter ceases supplying power within two seconds of a loss of AC mains</div>
+                            <div style="display: inline-block; float: right" class="fa fa-check-square-o"/>
+                        </td>
+                        <td width="50%">
+                            <div style="width: 80%; display: inline-block;">Inverter does not resume supplying power until mains have been present for more than 60 seconds.</div>
+                            <div style="display: inline-block; float: right" class="fa fa-check-square-o"/>
+                        </td>
+                    </tr>
+                </t>
+                <t t-else="">
+                    <tr>
+                        <td width="50%">
+                            <div style="width: 80%; display: inline-block;">PV array isolator mounted adjacent to the inverter</div>
+                            <div style="display: inline-block; float: right" class="fa fa-check-square-o"/>
+                        </td>
+                        <td width="50%">
+                            <div style="width: 80%; display: inline-block;">Isolator is mounted on output of the inverter (where required)	</div>
+                            <div style="display: inline-block; float: right" class="fa fa-check-square-o"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="50%">
+                            <div style="width: 80%; display: inline-block;">Lockable AC circuit breaker mounted within the switchboard to act as the inverter main switch for the PV/inverter system</div>
+                            <div style="display: inline-block; float: right" class="fa fa-check-square-o"/>
+                        </td>
+                        <td width="50%">
+                            <div style="width: 80%; display: inline-block;">Inverter is installed as per manufacturer’s specification</div>
+                            <div style="display: inline-block; float: right" class="fa fa-check-square-o"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="50%">
+                            <div style="width: 80%; display: inline-block;">Inverter ceases supplying power within two seconds of a loss of AC mains</div>
+                            <div style="display: inline-block; float: right" class="fa fa-check-square-o"/>
+                        </td>
+                        <td width="50%">
+                            <div style="width: 80%; display: inline-block;">Inverter does not resume supplying power until mains have been present for more than 60 seconds. The inverter shall not go straight to full power. It is required to ramp up from 0%-100% over a 6 minute period.</div>
+                            <div style="display: inline-block; float: right" class="fa fa-check-square-o"/>
+                        </td>
+                    </tr>
+                </t>
+            </table>
+            <table class="table table-bordered table-sm" t-if="doc.sale_order_id.has_inverter">
+                <tr>
+                    <th width="40%"/>
+                    <th width="15%">Polarity</th>
+                    <th width="15%">Voltage</th>
+                    <th width="15%">Short Circuit</th>
+                    <th width="15%">Operating Current</th>
+                </tr>
+                <tr t-if="doc.s1_polarity or doc.s1_voltage or doc.s1_short_circuit or doc.s1_operating_current">
+                    <td>String 1</td>
+                    <td><span t-field="doc.s1_polarity"/></td>
+                    <td><span t-field="doc.s1_voltage"/></td>
+                    <td><span t-field="doc.s1_short_circuit"/></td>
+                    <td><span t-field="doc.s1_operating_current"/></td>
+                </tr>
+                <tr t-if="doc.s2_polarity or doc.s2_voltage or doc.s2_short_circuit or doc.s2_operating_current">
+                    <td>String 2</td>
+                    <td><span t-field="doc.s2_polarity"/></td>
+                    <td><span t-field="doc.s2_voltage"/></td>
+                    <td><span t-field="doc.s2_short_circuit"/></td>
+                    <td><span t-field="doc.s2_operating_current"/></td>
+                </tr>
+                <tr t-if="doc.s3_polarity or doc.s3_voltage or doc.s3_short_circuit or doc.s3_operating_current">
+                    <td>String 3</td>
+                    <td><span t-field="doc.s3_polarity"/></td>
+                    <td><span t-field="doc.s3_voltage"/></td>
+                    <td><span t-field="doc.s3_short_circuit"/></td>
+                    <td><span t-field="doc.s3_operating_current"/></td>
+                </tr>
+                <tr t-if="doc.s4_polarity or doc.s4_voltage or doc.s4_short_circuit or doc.s4_operating_current">
+                    <td>String 4</td>
+                    <td><span t-field="doc.s4_polarity"/></td>
+                    <td><span t-field="doc.s4_voltage"/></td>
+                    <td><span t-field="doc.s4_short_circuit"/></td>
+                    <td><span t-field="doc.s4_operating_current"/></td>
+                </tr>
+                <tr>
+                    <td>Calculated PV array maximum voltage</td>
+                    <td/>
+                    <td><span t-field="doc.tot_voltage"/></td>
+                    <td/>
+                    <td/>
+                </tr>
+                <tr t-if="doc.positive_resistance">
+                    <td colspan="4">Array positive to earth</td>
+                    <td><span t-field="doc.positive_resistance"/> MΩ</td>
+                </tr>
+                <tr t-if="doc.negative_resistance">
+                    <td colspan="4">Array negative to earth</td>
+                    <td><span t-field="doc.negative_resistance"/> MΩ</td>
+                </tr>
+                <tr t-if="doc.install_notes">
+                    <td>Notes</td>
+                    <td colspan="4"><div t-field="doc.install_notes"/></td>
+                </tr>
+            </table>
+        </div>
+    </template>
+
+    <template id="report_project_task_installation">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <t t-call="project_beyond_solar.report_project_task_installation_document"/>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <report id="action_report_project_task_installation" model="project.task" string="Installation &amp; Commissioning" report_type="qweb-pdf"
+            name="project_beyond_solar.report_project_task_installation" file="project_beyond_solar.report_project_task_installation" print_report_name="'Installation'"/>
+</odoo>

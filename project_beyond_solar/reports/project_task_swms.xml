@@ -1,0 +1,354 @@
+<odoo>
+    <template id="report_project_task_swms_document">
+        <div class="page">
+            <h2>SWMS</h2>
+            <table class="table table-sm">
+                <tr>
+                    <th>Activity</th>
+                    <th>Hazard</th>
+                    <th>Initial Risk</th>
+                    <th>Control Measure</th>
+                    <th>Residual Risk</th>
+                    <th>Responsible Person</th>
+                </tr>
+                <tr>
+                    <th colspan="6" style="background-color: #75bda7; color: white;">Preparation</th>
+                </tr>
+                <tr>
+                    <th>Induct worker and check competency</th>
+                    <td>Competency, personal injury, substances</td>
+                    <td>High</td>
+                    <td>Induct workers into business, check workers competency &amp; experience, train as required, supervise work if inexperienced.</td>
+                    <td>Low</td>
+                    <td>Manager</td>
+                </tr>
+                <tr>
+                    <th>Discuss work process with workers</th>
+                    <td>Incorrect Equipment use, Personal injury</td>
+                    <td>Medium</td>
+                    <td>Ensure worker familiar with equipment, tool and installation operation &amp; wears suitable PPE e.g. boots</td>
+                    <td>Low</td>
+                    <td>Manager and Workers</td>
+                </tr>
+                <tr>
+                    <th colspan="6" style="background-color: #75bda7; color: white;">Setting Up</th>
+                </tr>
+                <tr>
+                    <th>Parking and setting up work area</th>
+                    <td>Inadequate access/ High egress for workers &amp; pedestrian</td>
+                    <td>High</td>
+                    <td>Assess area for best place to park and set up away from pedestrian walkways, set up bollards if required</td>
+                    <td>Low</td>
+                    <td>Manager and Workers</td>
+                </tr>
+                <tr>
+                    <th/>
+                    <td>Slip, trip, strain, sprain, Hand injuries</td>
+                    <td>Medium</td>
+                    <td>Clear all work areas, use suitable gloves, correct manual handling technique, share load with team lifts, use mechanical aid if required
+                        e.g lifting trolley
+                    </td>
+                    <td>Low</td>
+                    <td>Workers</td>
+                </tr>
+                <tr>
+                    <th/>
+                    <td>Other workers, pedestrians</td>
+                    <td>Medium</td>
+                    <td>Identify obstacles and other work activates (pedestrians, other workers, etc) around work location. As required, remove obstacles and
+                        set up exclusion zone around work
+                    </td>
+                    <td>Low</td>
+                    <td>Manager and Workers</td>
+                </tr>
+                <tr>
+                    <th colspan="6" style="background-color: #75bda7; color: white;">Setting up &amp; using fall arrest system</th>
+                </tr>
+                <tr>
+                    <th>Select ‘right’ fall restraint/arrest system</th>
+                    <td>Incorrect fall restraint / arrest system will not work effectively and cause injury to person</td>
+                    <td>High</td>
+                    <td>Use fall restraints to prevent person becoming close to unprotected edge. When fall arrest system used, ensure shock absorber fitted,
+                        but only for falls greater than the length of lanyard and chock absorber combined. Inertia reels only used when fall restraint and fall
+                        areas systems impractical. (second fall protection)
+                    </td>
+                    <td>Medium</td>
+                    <td>Workers</td>
+                </tr>
+                <tr>
+                    <th>Select anchorage type</th>
+                    <td>Person injured by incorrect or inadequate anchorage</td>
+                    <td>High</td>
+                    <td>Select most suitable system, restraint device such as static line, SWL rated sling for tile installed around truss of house or a
+                        temporary screwed anchorage point for tin roof
+                    </td>
+                    <td>Medium</td>
+                    <td>Workers</td>
+                </tr>
+                <tr>
+                    <th/>
+                    <td>Person injured by anchorage failing</td>
+                    <td>High</td>
+                    <td>Where possible, anchorage point to be located directly above user on peak of roof. Provide safe access anchorage point. Check, confirm
+                        anchorage point can support the imposed load of falling worker anchorage points only installed by competent person
+                    </td>
+                    <td>Medium</td>
+                    <td>Workers</td>
+                </tr>
+                <tr>
+                    <th>Installing anchorage point on roof</th>
+                    <td>Ladder slipping off roof</td>
+                    <td>High</td>
+                    <td>Use ladder mate then secure ladder to roof. Ensure ladder is on firm even ground .</td>
+                    <td>Medium</td>
+                    <td>Workers</td>
+                </tr>
+                <tr>
+                    <th/>
+                    <td>Fall from height</td>
+                    <td>High</td>
+                    <td>Install anchor point on opposite side roof form ladder, throw rope over roof and connect to anchor point, connect to that rope on other
+                        side of roof and use to install 2nd roof anchor point on peak of roof above work area
+                    </td>
+                    <td>Medium</td>
+                    <td>Manager and Workers</td>
+                </tr>
+                <tr>
+                    <th colspan="6" style="background-color: #75bda7; color: white;">Installing rail, wiring &amp; installing panels</th>
+                </tr>
+                <tr>
+                    <th>Working on Roof</th>
+                    <td>Fall from roof</td>
+                    <td>High</td>
+                    <td>Install anchor point on opposite side roof form ladder, throw rope over roof and connect to anchor point, connect to that rope on other
+                        side of roof and use to install 2nd roof anchor point on peak of roof above work area
+                    </td>
+                    <td>Medium</td>
+                    <td>Manager and Workers</td>
+                </tr>
+                <tr>
+                    <th/>
+                    <td>Incorrect fall restraint / arrest system will not work effectively and cause injury to person</td>
+                    <td>High</td>
+                    <td>Install anchor point on opposite side roof form ladder, throw rope over roof and connect to anchor point, connect to that rope on other
+                        side of roof and use to install 2nd roof anchor point on peak of roof above work area
+                    </td>
+                    <td>Medium</td>
+                    <td>Manager and Workers</td>
+                </tr>
+                <tr>
+                    <th/>
+                    <td>UV Exposure, dehydration, Heat &amp; sun stress</td>
+                    <td>Medium</td>
+                    <td>Provide cool drinking water, consume liquids. Keep hydrated. Provide and use suitable PPE including</td>
+                    <td>Low</td>
+                    <td>Workers</td>
+                </tr>
+                <tr>
+                    <th/>
+                    <td>High Wind exposure</td>
+                    <td>High</td>
+                    <td>All tools and materials that are not fixed and could be blown away from an elevated position, should be relocated to an unexposed and
+                        secure area
+                    </td>
+                    <td>Low</td>
+                    <td>Workers</td>
+                </tr>
+                <tr>
+                    <th/>
+                    <td>Wet weather causing slippery surface</td>
+                    <td>High</td>
+                    <td>If roof becomes slippery, stop works and remove all personal off roof</td>
+                    <td>Medium</td>
+                    <td>Workers</td>
+                </tr>
+                <tr>
+                    <th>Screwing in feet and rail</th>
+                    <td>Manual handling</td>
+                    <td>Medium</td>
+                    <td>Use correct lifting techniques, 2 person lift if too heavy</td>
+                    <td>Low</td>
+                    <td>Workers</td>
+                </tr>
+                <tr>
+                    <th/>
+                    <td>Repetitive strain injury</td>
+                    <td>Medium</td>
+                    <td>Stretch in regular intervals, take regular breaks if required, stop &amp; stretch if feeling stiff or soreness</td>
+                    <td>Low</td>
+                    <td>Workers</td>
+                </tr>
+                <tr>
+                    <th>Grinding tiles</th>
+                    <td>Dust, inhalation form drilling</td>
+                    <td>Medium</td>
+                    <td>Use goggles, dust mask, gloves, good ventilation, have first aid kit nearby</td>
+                    <td>Low</td>
+                    <td>Workers</td>
+                </tr>
+                <tr>
+                    <th/>
+                    <td>Noise</td>
+                    <td>Medium</td>
+                    <td>Wear hearing protection and wan other immediate Area</td>
+                    <td>Low</td>
+                    <td>Workers</td>
+                </tr>
+                <tr>
+                    <th>Carrying Panels</th>
+                    <td>High wind exposure</td>
+                    <td>High</td>
+                    <td>If wind is to high stop panelling and wait till wind dies off. Ensure all panels are screwed down or removed. All tools and materials
+                        that are not fixed and could be blown away from and elevated position, should be relocated to an unexposed and secure ares
+                    </td>
+                    <td>Low</td>
+                    <td>Workers</td>
+                </tr>
+                <tr>
+                    <th/>
+                    <td>Wet weather causing slippery surface</td>
+                    <td>High</td>
+                    <td>If roof becomes slippery, stop works and remove all personal off roof</td>
+                    <td>Low</td>
+                    <td>Workers</td>
+                </tr>
+                <tr>
+                    <th>Mounting Panels</th>
+                    <td>Manual handling</td>
+                    <td>Medium</td>
+                    <td>Use correct lifting techniques, 2 person lift if to heavy</td>
+                    <td>Low</td>
+                    <td>Workers</td>
+                </tr>
+                <tr>
+                    <th/>
+                    <td>Repetitive strain injury</td>
+                    <td>Medium</td>
+                    <td>Stretch in regular intervals, take regular breaks if required, stop &amp; stretch feeling stiff or soreness</td>
+                    <td>Low</td>
+                    <td>Workers</td>
+                </tr>
+                <tr>
+                    <th colspan="6" style="background-color: #75bda7; color: white;">Installing Inverter</th>
+                </tr>
+                <tr>
+                    <th>Working in switch board</th>
+                    <td>Working near live electrical cables and services</td>
+                    <td>Extreme</td>
+                    <td>Isolate switch board so all circuits are dead. Test circuits for dead and confirm tester functionality. If working near line side of
+                        main switch pull service fuse and test for dead and confirm tester functionality. Ensure someone is close by while isolating circuits.
+                    </td>
+                    <td>Medium</td>
+                    <td>Workers</td>
+                </tr>
+                <tr>
+                    <th/>
+                    <td>Electrocutions</td>
+                    <td>Extreme</td>
+                    <td>Treat all Boards, devices &amp; wiring as Live until status confirmed as NOT LIVE. Wear suitable protective clothing, carry test
+                        equipment.
+                    </td>
+                    <td>Medium</td>
+                    <td>Workers</td>
+                </tr>
+                <tr>
+                    <th/>
+                    <td>Physical &amp; mental fatigue</td>
+                    <td>High</td>
+                    <td>Consult with workers on workloads and schedules. Workers involved in repetitive tasks exceeding one hour must take regular hourly
+                        breaks, at least 5 minutes, every hour or earlier where the worker feels bodily tired
+                    </td>
+                    <td>Medium</td>
+                    <td>Manager and Workers</td>
+                </tr>
+                <tr>
+                    <th/>
+                    <td>Inadequate competency or knowledge of procedure, substances, etc may cause personal injury</td>
+                    <td>Medium</td>
+                    <td>Check worker competency &amp; experience, ensure worker familiar with welder operations, trains as required, supervise worker if
+                        inexperienced
+                    </td>
+                    <td>Low</td>
+                    <td>Manager and Workers</td>
+                </tr>
+                <tr>
+                    <th>Installing Inverters</th>
+                    <td>Dust, inhalation from drilling</td>
+                    <td>Medium</td>
+                    <td>Use goggles, gloves, good ventilation, have first aid kit nearby</td>
+                    <td>Low</td>
+                    <td>Workers</td>
+                </tr>
+                <tr>
+                    <th/>
+                    <td>Strain from manual Handling</td>
+                    <td>Medium</td>
+                    <td>Use correct lifting techniques, 2 person lift if too heavy. Mechanical aid if required</td>
+                    <td>Low</td>
+                    <td>Workers</td>
+                </tr>
+                <tr>
+                    <th/>
+                    <td>Hand, foot, head, &amp; eye injuries</td>
+                    <td>Medium</td>
+                    <td>PPE worn such as gloves, safety boots, hard hats, high visibility clothing &amp; protective eyewear</td>
+                    <td>Low</td>
+                    <td>Workers</td>
+                </tr>
+                <tr>
+                    <th/>
+                    <td>Cuts &amp; punctures from drilling</td>
+                    <td>Medium</td>
+                    <td>Drill away from body, secure piece you are drilling into. Wear gloves if required</td>
+                    <td>Low</td>
+                    <td>Workers</td>
+                </tr>
+                <tr>
+                    <th colspan="6" style="background-color: #75bda7; color: white;">Commissioning</th>
+                </tr>
+                <tr>
+                    <th>Turning on inverters</th>
+                    <td>Electrocution</td>
+                    <td>Extreme</td>
+                    <td>Ensure all covers have been put back in place and that there are no exposed live parts. All screws are down up Tight</td>
+                    <td>Medium</td>
+                    <td>Workers</td>
+                </tr>
+                <tr>
+                    <th/>
+                    <td>Arc Flash</td>
+                    <td>High</td>
+                    <td>Ensure all covers have been put back in place and that there are no exposed live parts. All screws are down up Tight.</td>
+                    <td>Medium</td>
+                    <td>Workers</td>
+                </tr>
+            </table>
+        </div>
+        <h4 t-if="doc.additional_swms or doc.recommended_swms">Notes</h4>
+        <p t-if="doc.additional_swms" t-field="doc.additional_swms"/>
+        <p t-if="doc.recommended_swms" t-field="doc.recommended_swms"/>
+        <h4 t-if="doc.swms_signature_ids">Signatures</h4>
+        <div t-foreach="doc.swms_signature_ids" t-as="signature" class="row mt16">
+            <div class="col-6">
+                <img t-att-src="image_data_uri(signature.datas)" string="Signature" style="max-width: 100%;"/>
+            </div>
+            <div class="col-6">
+                Signed by: <span t-esc="signature.name[:-4]"/><br/>
+                Signed on: <span t-field="signature.create_date"/>
+            </div>
+        </div>
+    </template>
+
+    <template id="report_project_task_swms">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <t t-call="project_beyond_solar.report_project_task_swms_document"/>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <report id="action_report_project_task_swms" model="project.task" string="SMWS" report_type="qweb-pdf"
+            name="project_beyond_solar.report_project_task_swms" file="project_beyond_solar.report_project_task_swms" print_report_name="'SWMS'"/>
+</odoo>

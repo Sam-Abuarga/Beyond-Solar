@@ -1,0 +1,9 @@
+<?xml version ="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-extend="map-popup">
+        <t t-jquery="a[target='_blank']" t-operation="after">
+            <div class="divider"/>
+            <button class ="btn btn-secondary copy_dates" t-att-data-id="rec_id" t-if="records.records.toString().split(',').indexOf('Installation Complete') % 2 != 0">Copy Dates</button>
+        </t>
+    </t>
+</templates>
