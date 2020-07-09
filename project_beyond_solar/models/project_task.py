@@ -6,7 +6,6 @@ class ProjectTask(models.Model):
 
     calendar_date_begin = fields.Datetime(string="Calendar Date Start", compute='_compute_calendar_begin', inverse='_set_calendar_begin', store=True)
     calendar_date_end = fields.Datetime(string="Calendar Date End", compute='_compute_calendar_end', inverse='_set_calendar_end', store=True)
-    calendar_user_id = fields.Many2one(comodel_name='res.users', compute='_compute_calendar_user', inverse='_set_calendar_user', store=True)
 
     install_status = fields.Selection(string="Status", required=True, default='pending', copy=False, selection=lambda self: [
         ('pending', "Pending"),
@@ -85,11 +84,6 @@ class ProjectTask(models.Model):
         for rec in self:
             rec.calendar_date_end = rec.planned_date_end or rec.x_studio_proposed_end_date
 
-    @api.depends('user_id', 'x_studio_proposed_team')
-    def _compute_calendar_user(self):
-        for rec in self:
-            rec.calendar_user_id = rec.user_id or rec.x_studio_proposed_team
-
     def _set_calendar_begin(self):
         for rec in self:
             if rec.planned_date_begin:
@@ -103,13 +97,6 @@ class ProjectTask(models.Model):
                 rec.planned_date_end = rec.calendar_date_end
             else:
                 rec.x_studio_proposed_end_date = rec.calendar_date_end
-
-    def _set_calendar_user(self):
-        for rec in self:
-            if rec.user_id:
-                rec.user_id = rec.calendar_user_id
-            else:
-                rec.x_studio_proposed_team = rec.calendar_user_id
 
     def _compute_sale_details(self):
         inverter_cat = self.env['product.category'].search([('name', '=', "Inverters")], limit=1)
