@@ -6,7 +6,7 @@ class AccountMove(models.Model):
 
     def get_install_date(self):
         self.ensure_one()
-        projects = self.mapped('invoice_line_ids.sale_line_ids.task_id').filtered(lambda p: p.planned_date_begin or p.x_studio_proposed_date)
+        projects = self.mapped('invoice_line_ids.sale_line_ids.task_id')
         if projects:
-            return projects[0].planned_date_begin or projects[0].x_studio_proposed_date
+            return projects.filtered(lambda p: p.planned_date_begin)[0].planned_date_begin or 'Upon Installation'
         return self.invoice_date_due
