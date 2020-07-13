@@ -19,10 +19,10 @@
                 <attribute name="attrs">{'invisible': [('has_panel', '=', False)]}</attribute>
             </xpath>
             <xpath expr="//group[@name='studio_group_Fs7YY_left']" position="attributes">
-                <attribute name="attrs">{'invisible': ['|', ('has_battery', '=', False), '&amp;', ('has_panel', '=', False), ('has_inverter', '=', False)]}</attribute>
+                <attribute name="attrs">{'invisible': ['&amp;', ('has_battery', '=', False), '|', ('has_panel', '=', False), ('has_inverter', '=', False)]}</attribute>
             </xpath>
             <xpath expr="//group[@name='studio_group_Fs7YY_right']" position="attributes">
-                <attribute name="attrs">{'invisible': ['|', ('has_battery', '=', False), '&amp;', ('has_panel', '=', False), ('has_inverter', '=', False)]}</attribute>
+                <attribute name="attrs">{'invisible': ['&amp;', ('has_battery', '=', False), '|', ('has_panel', '=', False), ('has_inverter', '=', False)]}</attribute>
             </xpath>
             <xpath expr="//group[@name='studio_group_cxzHX_left']" position="attributes">
                 <attribute name="attrs">{'invisible': [('has_inverter', '=', False)]}</attribute>
