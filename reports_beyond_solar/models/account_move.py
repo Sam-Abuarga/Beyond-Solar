@@ -8,5 +8,5 @@ class AccountMove(models.Model):
         self.ensure_one()
         projects = self.mapped('invoice_line_ids.sale_line_ids.task_id')
         if projects:
-            return projects.filtered(lambda p: p.planned_date_begin)[:1].planned_date_begin or 'Upon Installation'
+            return projects.filtered(lambda p: p.planned_date_begin)[0].planned_date_begin if projects.filtered(lambda p: p.planned_date_begin) else False
         return self.invoice_date_due

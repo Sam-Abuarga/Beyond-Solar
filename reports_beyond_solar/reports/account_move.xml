@@ -29,9 +29,10 @@
 
         <xpath expr="//div[@name='due_date']" position="replace">
             <t t-set="install_date" t-value="o.get_install_date()"/>
-            <div class="col-auto mw-100 mb-2" t-if="install_date and o.type == 'out_invoice'" name="due_date">
+            <div class="col-auto mw-100 mb-2" t-if="o.type == 'out_invoice'" name="due_date">
                 <strong>Due Date:</strong>
-                <p class="m-0" t-esc="'{:%d/%m/%Y}'.format(install_date)"/>
+                <p class="m-0" t-esc="'{:%d/%m/%Y}'.format(install_date)" t-if="install_date"/>
+                <p class="m-0" t-else="">Upon Installation</p>
             </div>
         </xpath>
     </template>
