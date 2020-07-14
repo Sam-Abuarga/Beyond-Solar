@@ -6,13 +6,17 @@
         <field name="arch" type="xml">
             <xpath expr="//marker-popup" position="replace">
                 <marker-popup>
+                    <field name="create_date" string="Creation Date" widget="invisible|x_studio_installation_completed|datetime"/>
                     <field name="partner_id" string="Customer"/>
-                    <field name="user_id" string="Assigned To" widget="default|Unassigned"/>
+                    <field name="user_id" string="Assigned To"/>
+                    <field name="project_id" string="Type of Service"/>
+                    <field name="x_studio_system_size_kw" string="System Size (KW)"/>
                     <field name="planned_date_begin" string="Assigned Start Date" widget="invisible|x_studio_installation_completed|datetime"/>
-                    <field name="planned_date_end" string="Assigned End Date" widget="invisible|x_studio_installation_completed|datetime"/>
-                    <field name="x_studio_proposed_team" string="Proposed Team" widget="invisible|user_id|char"/>
-                    <field name="x_studio_proposed_date" string="Proposed Start Date" widget="invisible|planned_date_begin|datetime"/>
-                    <field name="x_studio_proposed_end_date" string="Proposed End Date" widget="invisible|planned_date_end|datetime"/>
+                    <field name="planned_date_end" string="Assigned End Date" widget="datetime"/>
+                    <field name="x_studio_proposed_team" string="Proposed Team" widget="invisible|x_studio_booked_for_installation|char"/>
+                    <field name="x_studio_proposed_date" string="Proposed Start Date" widget="invisible|x_studio_booked_for_installation|datetime"/>
+                    <field name="x_studio_proposed_end_date" string="Proposed End Date" widget="invisible|x_studio_booked_for_installation|datetime"/>
+                    <field name="x_studio_booked_for_installation" string="Booking Completed" widget="invisible|partner_id|char"/>
                     <field name="x_studio_installation_completed" string="Installation Completed" widget="invisible|partner_id|char"/>
                     <field name="job_status" string="Job Status" widget="invisible|partner_id|char"/>
                 </marker-popup>
