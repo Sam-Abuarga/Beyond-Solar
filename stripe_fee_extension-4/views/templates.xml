@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="payment_tokens_list_inherit" inherit_id="payment.payment_tokens_list">
+        <xpath expr="//t[@t-foreach='pms']/t/div[hasclass('card-body', 'o_payment_acquirer_select')]/label" position="inside">
+            <t t-if="acq_extra_fees and acq_extra_fees.get(pm.acquirer_id)">
+                <span class="badge badge-pill badge-secondary"> + <t t-esc="acq_extra_fees[pm.acquirer_id]" t-options='{"widget": "monetary", "display_currency": acq_extra_fees["currency_id"]}'/> Fee </span>
+            </t>
+            <t t-elif="pm.acquirer_id.fees_active">
+                <small class="text-muted">(Some fees may apply)</small>
+            </t>
+        </xpath>
+        <xpath expr="//t[@t-foreach='acquirers']/div[hasclass('card-body','o_payment_acquirer_select')]/label/t[@t-elif='acq.fees_active']" position="attributes">
+            <attribute name="t-elif">acq_extra_fees and acq.fees_active and acq_extra_fees.get(acq)</attribute>
+        </xpath>
+    </template>
+</odoo>
