@@ -15,6 +15,8 @@
         'sale',
         'sale_timesheet',
         'web_studio',
+
+        'sale_beyond_solar',
     ],
     'data': [
         'assets.xml',
