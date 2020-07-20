@@ -42,17 +42,6 @@ class Task(CustomerPortal):
 
         return request.redirect(f'/my/task/{id}#worksheets?t={int(time.time())}')
 
-    @http.route('/my/task/<int:id>/finish', type='http', auth='user', website=True)
-    def task_finish(self, id, **kwargs):
-        task = request.env['project.task'].browse(id)
-        if not task.exists():
-            return http.request.not_found()
-
-        task.date_worksheet_finish = datetime.now()
-        task.install_status = 'done'
-
-        return request.redirect(f'/my/task/{id}#worksheets?t={int(time.time())}')
-
     @http.route('/my/task/<int:id>/worksheet/check', type='http', auth='user', website=True)
     def task_worksheet_check(self, id, **kwargs):
         task = request.env['project.task'].browse(id)
@@ -216,5 +205,7 @@ class Task(CustomerPortal):
             return http.request.not_found()
 
         task.date_worksheet_handover = datetime.now()
+        task.date_worksheet_finish = datetime.now()
+        task.install_status = 'done'
 
         return request.redirect(f'/my/task/{id}#worksheets?t={int(time.time())}')

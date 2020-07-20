@@ -170,10 +170,6 @@
                                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                 <button class="btn btn-primary" type="submit">Start</button>
                             </form>
-                            <form t-attf-action="/my/task/{{task.id}}/finish" t-elif="task.date_worksheet_handover and task.install_status == 'progress'">
-                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
-                                <button class="btn btn-primary" type="submit">Mark Completed</button>
-                            </form>
                         </div>
                         <div class="col-md text-md-right">
                             <button class="btn btn-primary" data-toggle="modal" data-target="#rescheduleModal" t-if="task.install_status == 'pending'">Reschedule</button>
