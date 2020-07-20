@@ -54,6 +54,23 @@ class ProjectTask(models.Model):
     install_signed_by = fields.Char(string="Installation Signature Name", copy=False)
     install_saved = fields.Boolean(string="Installation Saved", copy=False)
 
+    install_array_frame = fields.Boolean(string="Installation Array Frame")
+    install_array_install = fields.Boolean(string="Installation Array Installation")
+    install_array_dissimilar = fields.Boolean(string="Installation Array Dissimilar Metals")
+    install_array_penetrations = fields.Boolean(string="Installation Array Penetrations")
+    install_array_losses = fields.Boolean(string="Installation Array Wiring Losses")
+    install_array_protection = fields.Boolean(string="Installation Array String Protection")
+    install_array_mechanical = fields.Boolean(string="Installation Array Mechanical Damage")
+    install_array_weatherproof = fields.Boolean(string="Installation Array Weatherproof Isolator")
+    install_acdc_install = fields.Boolean(string="Installation LV DC & AC Installed")
+    install_acdc_tested = fields.Boolean(string="Installation LV DC & AC Tested")
+    install_inverter_pv_isolator = fields.Boolean(string="Installation Inverter PV Isolator")
+    install_inverter_ac_isolator = fields.Boolean(string="Installation Inverter AC Isolator")
+    install_inverter_breaker = fields.Boolean(string="Installation Inverter Circuit Breaker")
+    install_inverter_install = fields.Boolean(string="Installation Inverter Installed")
+    install_inverter_power = fields.Boolean(string="Installation Inverter Mains Loss")
+    install_inverter_resume = fields.Boolean(string="Installation Inverter Resume")
+
     s1_polarity = fields.Char(string="String 1 Polarity", copy=False)
     s1_voltage = fields.Float(string="String 1 Voltage", copy=False)
     s1_short_circuit = fields.Float(string="String 1 Short Circuit", copy=False)
@@ -73,6 +90,32 @@ class ProjectTask(models.Model):
     tot_voltage = fields.Float(string="Total Voltage", copy=False)
     positive_resistance = fields.Float(string="Array Positive to Earth", copy=False)
     negative_resistance = fields.Float(string="Array Negative to Earth", copy=False)
+
+    show_submit_install = fields.Boolean(string="Show Installation Submit", compute='_compute_show_submit_install')
+
+    def _compute_show_submit_install(self):
+        for rec in self:
+            rec.show_submit_install = rec.install_saved and not rec.date_worksheet_install and all([
+                rec.tot_voltage,
+                rec.positive_resistance,
+                rec.negative_resistance,
+                rec.install_array_frame,
+                rec.install_array_install,
+                rec.install_array_dissimilar,
+                rec.install_array_penetrations,
+                rec.install_array_losses,
+                rec.install_array_protection,
+                rec.install_array_mechanical,
+                rec.install_array_weatherproof,
+                rec.install_acdc_install,
+                rec.install_acdc_tested,
+                rec.install_inverter_pv_isolator,
+                rec.install_inverter_ac_isolator,
+                rec.install_inverter_breaker,
+                rec.install_inverter_install,
+                rec.install_inverter_power,
+                rec.install_inverter_resume
+            ])
 
     @api.depends('planned_date_begin', 'x_studio_proposed_date')
     def _compute_calendar_begin(self):

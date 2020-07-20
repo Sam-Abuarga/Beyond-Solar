@@ -147,6 +147,23 @@ class Task(CustomerPortal):
             'inverter_count': 'inverter_count',
             'mppt_count': 'mppt_count',
             'install_notes': 'install_notes',
+
+            'certified': 'install_array_frame',
+            'manufacturer': 'install_array_install',
+            'metals': 'install_array_dissimilar',
+            'weatherproof': 'install_array_penetrations',
+            'current': 'install_array_losses',
+            'protection': 'install_array_protection',
+            'supported': 'install_array_mechanical',
+            'mounted': 'install_array_weatherproof',
+            'installed_electrician': 'install_acdc_install',
+            'tested_electrician': 'install_acdc_tested',
+            'isolator': 'install_inverter_pv_isolator',
+            'isolator_output': 'install_inverter_ac_isolator',
+            'breaker': 'install_inverter_breaker',
+            'inverter_manufacturer': 'install_inverter_install',
+            'inverter_loss': 'install_inverter_power',
+            'inverter_delay': 'install_inverter_resume',
         }
 
         float_fields = {
