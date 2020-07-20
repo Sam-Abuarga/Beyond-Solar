@@ -1197,7 +1197,7 @@
                                     <table class="table table-sm">
                                         <tr>
                                             <th/>
-                                            <th>Polarity</th>
+                                            <th>Polarity (+/-)</th>
                                             <th>Voltage</th>
                                             <th>Short Circuit</th>
                                             <th>Operating Current</th>
