@@ -1,12 +1,14 @@
 <odoo>
     <template inherit_id="project.portal_my_tasks" id="portal_my_tasks">
+        <!-- Remove Stage + Ref -->
+        <xpath expr="//th[last()]" position="replace"/>
+        <xpath expr="//th[last()]" position="replace"/>
+
         <!-- Add additional title fields -->
-        <xpath expr="//th[hasclass('text-center')]" position="before">
+        <xpath expr="//th[last()]" position="after">
             <th>Address</th>
             <th>Start Date</th>
             <th>End Date</th>
-        </xpath>
-        <xpath expr="//th[last()]" position="before">
             <th>Status</th>
         </xpath>
 
@@ -27,6 +29,10 @@
                 <span class="badge badge-pill badge-info" title="Status of the current task" t-field="task.install_status"/>
             </td>
         </xpath>
+
+        <!-- Remove Stage + Ref -->
+        <xpath expr="//span[@t-esc='task.stage_id.name']//parent::td" position="replace"/>
+        <xpath expr="//span[@t-esc='task.id']//parent::td" position="replace"/>
 
         <!-- Remove Project for project: -->
         <xpath expr="//em" position="replace"/>
