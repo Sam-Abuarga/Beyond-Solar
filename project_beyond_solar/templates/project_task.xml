@@ -893,9 +893,10 @@
                                         </li>
                                         <li>
                                             <input type="checkbox" name="variations" disabled="disabled" t-if="not task.date_worksheet_swms"/>
-                                            <input type="checkbox" name="variations" t-elif="task.date_worksheet_swms and not task.date_worksheet_site and task.has_variation"/>
+                                            <input type="checkbox" name="variations" t-elif="task.date_worksheet_swms and not task.date_worksheet_site and task.has_variation" checked="checked"/>
                                             <input type="checkbox" name="variations" t-elif="task.date_worksheet_swms and not task.date_worksheet_site and not task.has_variation"/>
-                                            <input type="checkbox" name="variations" disabled="disabled" checked="checked" t-else=""/>
+                                            <input type="checkbox" name="variations" disabled="disabled" t-elif="task.has_variation" checked="checked"/>
+                                            <input type="checkbox" name="variations" disabled="disabled" t-else=""/>
                                             Are there any variations to the Panel Layout?
                                             <br/>
                                             If so, please describe:
