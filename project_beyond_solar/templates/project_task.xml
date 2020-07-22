@@ -971,6 +971,11 @@
                                             <input type="number" name="array_1_azimuth" disabled="disabled" t-if="not task.date_worksheet_site"/>
                                             <input type="number" name="array_1_azimuth" t-att-value="task.x_studio_array_1_azimuth" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
                                             <input type="number" name="array_1_azimuth" disabled="disabled" t-att-value="task.x_studio_array_1_azimuth" t-else=""/>
+
+                                            # of Panels
+                                            <input type="number" name="array_1_count" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                            <input type="number" name="array_1_count" t-att-value="task.x_studio_array_1_number_of_panels" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
+                                            <input type="number" name="array_1_count" disabled="disabled" t-att-value="task.x_studio_array_1_number_of_panels" t-else=""/>
                                         </li>
                                         <li t-if="task.x_studio_number_of_arrays in ['2', '3', '4']">
                                             PV array 2 tilt<sup>o</sup>
@@ -982,6 +987,11 @@
                                             <input type="number" name="array_2_azimuth" disabled="disabled" t-if="not task.date_worksheet_site"/>
                                             <input type="number" name="array_2_azimuth" t-att-value="task.x_studio_array_2_azimuth" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
                                             <input type="number" name="array_2_azimuth" disabled="disabled" t-att-value="task.x_studio_array_2_azimuth" t-else=""/>
+
+                                            # of Panels
+                                            <input type="number" name="array_2_count" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                            <input type="number" name="array_2_count" t-att-value="task.x_studio_array_2_number_of_panels" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
+                                            <input type="number" name="array_2_count" disabled="disabled" t-att-value="task.x_studio_array_2_number_of_panels" t-else=""/>
                                         </li>
                                         <li t-if="task.x_studio_number_of_arrays in ['3', '4']">
                                             PV array 3 tilt<sup>o</sup>
@@ -993,6 +1003,11 @@
                                             <input type="number" name="array_3_azimuth" disabled="disabled" t-if="not task.date_worksheet_site"/>
                                             <input type="number" name="array_3_azimuth" t-att-value="task.x_studio_array_3_azimuth" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
                                             <input type="number" name="array_3_azimuth" disabled="disabled" t-att-value="task.x_studio_array_3_azimuth" t-else=""/>
+
+                                            # of Panels
+                                            <input type="number" name="array_3_count" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                            <input type="number" name="array_3_count" t-att-value="task.x_studio_array_3_number_of_panels" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
+                                            <input type="number" name="array_3_count" disabled="disabled" t-att-value="task.x_studio_array_3_number_of_panels" t-else=""/>
                                         </li>
                                         <li t-if="task.x_studio_number_of_arrays in ['4']">
                                             PV array 4 tilt<sup>o</sup>
@@ -1004,6 +1019,11 @@
                                             <input type="number" name="array_4_azimuth" disabled="disabled" t-if="not task.date_worksheet_site"/>
                                             <input type="number" name="array_4_azimuth" t-att-value="task.x_studio_array_4_azimuth" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
                                             <input type="number" name="array_4_azimuth" disabled="disabled" t-att-value="task.x_studio_array_4_azimuth" t-else=""/>
+
+                                            # of Panels
+                                            <input type="number" name="array_4_count" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                            <input type="number" name="array_4_count" t-att-value="task.x_studio_array_4_number_of_panels" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
+                                            <input type="number" name="array_4_count" disabled="disabled" t-att-value="task.x_studio_array_4_number_of_panels" t-else=""/>
                                         </li>
 
                                         <li>
