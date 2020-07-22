@@ -919,11 +919,11 @@
                                             <th>Address of Installation:</th>
                                             <td><address t-field="task.partner_id" t-options='{"widget": "contact", "fields": ["address"], "no_marker": True}' style="margin-bottom: 0"/></td>
                                         </tr>
-                                        <tr>
+                                        <tr t-if="task.show_all_install">
                                             <th style="padding-right: 10px;">PV module manufacturer and model number:</th>
                                             <td><span t-field="task.pv_details"/></td>
                                         </tr>
-                                        <tr>
+                                        <tr t-if="task.show_all_install">
                                             <th>Number of modules in series in a string:</th>
                                             <td>
                                                 <input type="number" name="modules_in_string" disabled="disabled" t-if="not task.date_worksheet_site"/>
@@ -931,7 +931,7 @@
                                                 <input type="number" name="modules_in_string" disabled="disabled" t-att-value="task.modules_in_string" t-else=""/><br/>
                                             </td>
                                         </tr>
-                                        <tr>
+                                        <tr t-if="task.show_all_install">
                                             <th>Number of strings in parallel in PV array:</th>
                                             <td>
                                                 <input type="number" name="strings_in_parallel" disabled="disabled" t-if="not task.date_worksheet_site"/>
@@ -959,8 +959,8 @@
                                         </tr>
                                     </table>
                                     <br/>
-                                    <h4>PV Array</h4>
-                                    <ul>
+                                    <h4 t-if="task.show_all_install">PV Array</h4>
+                                    <ul t-if="task.show_all_install">
                                         <li>
                                             PV array 1 tilt<sup>o</sup>
                                             <input type="number" step="any" name="array_1_tilt" disabled="disabled" t-if="not task.date_worksheet_site"/>
@@ -1180,9 +1180,9 @@
                                                 <input type="checkbox" name="isolator_output" disabled="disabled" t-if="not task.date_worksheet_site"/>
                                                 <input type="checkbox" name="isolator_output" checked="checked" t-elif="task.date_worksheet_site and task.install_inverter_ac_isolator and not task.date_worksheet_install"/>
                                                 <input type="checkbox" name="isolator_output" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                                <input type="checkbox" name="isolator_output" disabled="disabled" checked="checked" t-else=""/>
-                                                <b style="color: red;" t-if="task.install_saved and not task.date_worksheet_install and not task.install_inverter_ac_isolator">* </b>
-                                                AC Isolator is mounted on output of the inverter (where required).
+                                                <input type="checkbox" name="isolator" disabled="disabled" checked="checked" t-elif="task.install_inverter_pv_isolator"/>
+                                                <input type="checkbox" name="isolator" disabled="disabled" t-else=""/>
+                                                AC isolator mounted adjacent to each group of micro inverters.
                                             </li>
                                             <li>
                                                 <input type="checkbox" name="breaker" disabled="disabled" t-if="not task.date_worksheet_site"/>
@@ -1219,14 +1219,14 @@
                                             </li>
                                         </ul>
                                     </t>
-                                    <div class="alert alert-success" style="margin: auto;">
+                                    <div class="alert alert-success" style="margin: auto;" t-if="task.show_all_install">
                                         SYSTEM CHECK<br/>WARNING:<br/>
                                         <ul>
                                             <li>IF A STRING IS REVERSED AND CONNECTED TO OTHERS, FIRE MAY RESULT.</li>
                                             <li>IF POLARITY IS REVERSED AT THE INVERTER DAMAGE MAY OCCUR TO THE INVERTER.</li>
                                         </ul>
                                     </div>
-                                    <table class="table table-sm">
+                                    <table class="table table-sm" t-if="task.show_all_install">
                                         <tr>
                                             <th/>
                                             <th>Polarity (+/-)</th>
@@ -1338,8 +1338,8 @@
                                             <td/>
                                         </tr>
                                     </table>
-                                    <h4>Insulation Resistance Measurements</h4>
-                                    <p>
+                                    <h4 t-if="task.show_all_install">Insulation Resistance Measurements</h4>
+                                    <p t-if="task.show_all_install">
                                         Array positive to earth
                                         <input type="number" step="any" name="positive_resistance" disabled="disabled" t-if="not task.date_worksheet_site"/>
                                         <input type="number" step="any" name="positive_resistance" t-att-value="task.positive_resistance" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>

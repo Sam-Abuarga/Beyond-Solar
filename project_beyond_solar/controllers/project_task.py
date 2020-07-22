@@ -150,8 +150,10 @@ class Task(CustomerPortal):
             'strings_in_parallel': 'strings_in_parallel',
             'inverter_count': 'inverter_count',
             'mppt_count': 'mppt_count',
-            'install_notes': 'install_notes',
+            'install_notes': 'install_notes'
+        }
 
+        boolean_fields = {
             'certified': 'install_array_frame',
             'manufacturer': 'install_array_install',
             'metals': 'install_array_dissimilar',
@@ -194,6 +196,9 @@ class Task(CustomerPortal):
         for field in fields:
             if field in kwargs:
                 task[fields[field]] = kwargs[field]
+
+        for field in boolean_fields:
+            task[boolean_fields[field]] = field in kwargs
 
         for field in float_fields:
             if field in kwargs:

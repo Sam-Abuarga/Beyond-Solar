@@ -92,29 +92,48 @@ class ProjectTask(models.Model):
     negative_resistance = fields.Float(string="Array Negative to Earth", copy=False)
 
     show_submit_install = fields.Boolean(string="Show Installation Submit", compute='_compute_show_submit_install')
+    show_all_install = fields.Boolean(string="Show All Installation Fields", compute='_compute_show_all_install')
+
+    def _compute_show_all_install(self):
+        for rec in self:
+            if "Replacement" in rec.project_id.name and not rec.has_battery and not rec.has_panel:
+                rec.show_all_install = False
+            else:
+                rec.show_all_install = True
 
     def _compute_show_submit_install(self):
         for rec in self:
-            rec.show_submit_install = rec.install_saved and not rec.date_worksheet_install and all([
-                rec.tot_voltage,
-                rec.positive_resistance,
-                rec.negative_resistance,
-                rec.install_array_frame,
-                rec.install_array_install,
-                rec.install_array_dissimilar,
-                rec.install_array_penetrations,
-                rec.install_array_losses,
-                rec.install_array_protection,
-                rec.install_array_mechanical,
-                rec.install_array_weatherproof,
-                rec.install_acdc_install,
-                rec.install_acdc_tested,
-                rec.install_inverter_pv_isolator,
-                rec.install_inverter_breaker,
-                rec.install_inverter_install,
-                rec.install_inverter_power,
-                rec.install_inverter_resume
-            ])
+            if rec.show_all_install:
+                rec.show_submit_install = rec.install_saved and not rec.date_worksheet_install and all([
+                    rec.tot_voltage,
+                    rec.positive_resistance,
+                    rec.negative_resistance,
+                    rec.install_array_frame,
+                    rec.install_array_install,
+                    rec.install_array_dissimilar,
+                    rec.install_array_penetrations,
+                    rec.install_array_losses,
+                    rec.install_array_protection,
+                    rec.install_array_mechanical,
+                    rec.install_array_weatherproof,
+                    rec.install_acdc_install,
+                    rec.install_acdc_tested,
+                    rec.install_inverter_pv_isolator,
+                    rec.install_inverter_breaker,
+                    rec.install_inverter_install,
+                    rec.install_inverter_power,
+                    rec.install_inverter_resume
+                ])
+            else:
+                rec.show_submit_install = rec.install_saved and not rec.date_worksheet_install and all([
+                    rec.install_acdc_install,
+                    rec.install_acdc_tested,
+                    rec.install_inverter_pv_isolator,
+                    rec.install_inverter_breaker,
+                    rec.install_inverter_install,
+                    rec.install_inverter_power,
+                    rec.install_inverter_resume
+                ])
 
     @api.depends('planned_date_begin', 'x_studio_proposed_date')
     def _compute_calendar_begin(self):
