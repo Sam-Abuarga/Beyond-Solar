@@ -1,12 +1,14 @@
 from odoo import api, fields, models, _
 
+from odoo.http import request
+
 
 class PaymentTransaction(models.Model):
     _inherit = 'payment.transaction'
 
     @api.model
     def create(self, vals):
-        if 'sale_order_ids' in vals and 'amount' in vals:
+        if 'website_payment' not in request.httprequest.base_url and 'sale_order_ids' in vals and 'amount' in vals:
             vals['amount'] = round(vals['amount'] * 0.1, 2)
         return super(PaymentTransaction, self).create(vals)
 
