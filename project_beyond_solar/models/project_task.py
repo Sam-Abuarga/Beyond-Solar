@@ -110,7 +110,6 @@ class ProjectTask(models.Model):
                 rec.install_acdc_install,
                 rec.install_acdc_tested,
                 rec.install_inverter_pv_isolator,
-                rec.install_inverter_ac_isolator,
                 rec.install_inverter_breaker,
                 rec.install_inverter_install,
                 rec.install_inverter_power,

@@ -1119,8 +1119,8 @@
                                                 <input type="checkbox" name="isolator" disabled="disabled" t-if="not task.date_worksheet_site"/>
                                                 <input type="checkbox" name="isolator" checked="checked" t-elif="task.date_worksheet_site and task.install_inverter_pv_isolator and not task.date_worksheet_install"/>
                                                 <input type="checkbox" name="isolator" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                                <input type="checkbox" name="isolator" disabled="disabled" checked="checked" t-else=""/>
-                                                <b style="color: red;" t-if="task.install_saved and not task.date_worksheet_install and not task.install_inverter_pv_isolator">* </b>
+                                                <input type="checkbox" name="isolator" disabled="disabled" checked="checked" t-elif="task.install_inverter_pv_isolator"/>
+                                                <input type="checkbox" name="isolator" disabled="disabled" t-else=""/>
                                                 AC isolator mounted adjacent to each group of micro inverters.
                                             </li>
                                             <li>
