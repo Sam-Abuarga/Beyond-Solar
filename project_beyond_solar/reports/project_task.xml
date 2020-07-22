@@ -9,7 +9,6 @@
                     <td colspan="3">
                         <t t-if="doc.partner_id.parent_id"><span t-field="doc.partner_id.parent_id.name"/><br/></t>
                         <span t-field="doc.partner_id.name"/><br/>
-                        <span t-field="doc.partner_id.street"/><br/>
                         <t t-if="doc.partner_id.street"><span t-field="doc.partner_id.street"/><br/></t>
                         <t t-if="doc.partner_id.street2"><span t-field="doc.partner_id.street2"/><br/></t>
                         <span t-field="doc.partner_id.city"/> <span t-field="doc.partner_id.state_id.code"/> <span t-field="doc.partner_id.zip"/><br/>
