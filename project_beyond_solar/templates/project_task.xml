@@ -1341,7 +1341,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th>Max Voltage</th><td/>
+                                            <th>Calculated<br/>Max Voltage</th><td/>
                                             <td>
                                                 <input type="number" step="any" name="tot_voltage" t-att-value="task.tot_voltage" disabled="disabled"/> V
                                             </td>
