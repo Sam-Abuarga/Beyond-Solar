@@ -386,6 +386,14 @@
                                     </td>
                                 </tr>
                             </table>
+                            <table t-if="task.x_studio_array_compatibility_notes">
+                                <tr>
+                                    <th style="padding-right: 10px;">Array Notes</th>
+                                    <td>
+                                        <span t-field="task.x_studio_array_compatibility_notes"/>
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
 
                         <div class="col-12 col-md-6 mb16" t-if="task.sale_order_id.has_inverter">
@@ -409,10 +417,16 @@
                                         <span t-field="task.x_studio_mounting_wall_type_1"/>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr t-if="task.x_studio_inverter_location_notes">
                                     <th style="padding-right: 10px;">Inverter Location Notes</th>
                                     <td>
                                         <span t-field="task.x_studio_inverter_location_notes"/>
+                                    </td>
+                                </tr>
+                                <tr t-if="task.x_studio_switch_board_notes">
+                                    <th style="padding-right: 10px;">Switch Board Notes</th>
+                                    <td>
+                                        <span t-field="task.x_studio_switch_board_notes"/>
                                     </td>
                                 </tr>
                             </table>
@@ -435,7 +449,7 @@
                                         <span t-field="task.x_studio_mounting_wall_type"/>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr t-if="task.x_studio_battery_location_notes">
                                     <th style="padding-right: 10px;">Battery Location Notes</th>
                                     <td>
                                         <span t-field="task.x_studio_battery_location_notes"/>
