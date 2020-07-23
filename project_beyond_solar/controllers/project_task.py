@@ -28,7 +28,7 @@ class Task(CustomerPortal):
         task.user_id = task.project_id.user_id
         task.message_post(body=f"Task rescheduled. Reason: {kwargs.get('reason','')}", message_type="comment", subtype="mail.mt_note")
 
-        return request.redirect(f'/my/task/{id}#worksheets?t={int(time.time())}')
+        return request.redirect('/my/tasks')
 
     @http.route('/my/task/<int:id>/incomplete', type='http', auth='user', website=True)
     def task_incomplete(self, id, **kwargs):
@@ -40,7 +40,7 @@ class Task(CustomerPortal):
         task.user_id = task.project_id.user_id
         task.message_post(body=f"Task marked incomplete. Reason: {kwargs.get('reason','')}", message_type="comment", subtype="mail.mt_note")
 
-        return request.redirect(f'/my/task/{id}#worksheets?t={int(time.time())}')
+        return request.redirect('/my/tasks')
 
     @http.route('/my/task/<int:id>/worksheet/check', type='http', auth='user', website=True)
     def task_worksheet_check(self, id, **kwargs):
