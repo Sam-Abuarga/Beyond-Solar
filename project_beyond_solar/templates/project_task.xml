@@ -1341,15 +1341,11 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th>Max Voltage</th>
-                                            <td/>
+                                            <th>Max Voltage</th><td/>
                                             <td>
-                                                <input type="number" step="any" name="tot_voltage" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                                <input type="number" step="any" name="tot_voltage" t-att-value="task.tot_voltage" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                                <input type="number" step="any" name="tot_voltage" t-att-value="task.tot_voltage" disabled="disabled" t-else=""/> V
+                                                <input type="number" step="any" name="tot_voltage" t-att-value="task.tot_voltage" disabled="disabled"/> V
                                             </td>
-                                            <td/>
-                                            <td/>
+                                            <td/><td/>
                                         </tr>
                                     </table>
                                     <h4 t-if="task.show_all_install">Insulation Resistance Measurements</h4>

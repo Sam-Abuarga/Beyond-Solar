@@ -87,12 +87,17 @@ class ProjectTask(models.Model):
     s4_voltage = fields.Float(string="String 4 Voltage", copy=False)
     s4_short_circuit = fields.Float(string="String 4 Short Circuit", copy=False)
     s4_operating_current = fields.Float(string="String 4 Operating Current", copy=False)
-    tot_voltage = fields.Float(string="Total Voltage", copy=False)
+    tot_voltage = fields.Float(string="Total Voltage", compute='_compute_tot_voltage')
     positive_resistance = fields.Float(string="Array Positive to Earth", copy=False)
     negative_resistance = fields.Float(string="Array Negative to Earth", copy=False)
 
     show_submit_install = fields.Boolean(string="Show Installation Submit", compute='_compute_show_submit_install')
     show_all_install = fields.Boolean(string="Show All Installation Fields", compute='_compute_show_all_install')
+
+    @api.depends('s1_voltage', 's2_voltage', 's3_voltage', 's4_voltage')
+    def _compute_tot_voltage(self):
+        for rec in self:
+            rec.tot_voltage = rec.s1_voltage + rec.s2_voltage + rec.s3_voltage + rec.s4_voltage
 
     def _compute_show_all_install(self):
         for rec in self:
@@ -105,7 +110,6 @@ class ProjectTask(models.Model):
         for rec in self:
             if rec.show_all_install:
                 rec.show_submit_install = rec.install_saved and not rec.date_worksheet_install and all([
-                    rec.tot_voltage,
                     rec.positive_resistance,
                     rec.negative_resistance,
                     rec.install_array_frame,
