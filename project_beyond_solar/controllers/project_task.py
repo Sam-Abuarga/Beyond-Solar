@@ -24,9 +24,11 @@ class Task(CustomerPortal):
         if not task.exists():
             return http.request.not_found()
 
-        task.install_status = 'rescheduled'
-        task.user_id = task.project_id.user_id
         task.message_post(body=f"Task rescheduled. Reason: {kwargs.get('reason','')}", message_type="comment", subtype="mail.mt_note")
+        task.write({
+            'install_status': 'rescheduled',
+            'user_id': task.project_id.user_id.id
+        })
 
         return request.redirect('/my/tasks')
 
@@ -36,9 +38,11 @@ class Task(CustomerPortal):
         if not task.exists():
             return http.request.not_found()
 
-        task.install_status = 'incomplete'
-        task.user_id = task.project_id.user_id
         task.message_post(body=f"Task marked incomplete. Reason: {kwargs.get('reason','')}", message_type="comment", subtype="mail.mt_note")
+        task.write({
+            'install_status': 'incomplete',
+            'user_id': task.project_id.user_id.id
+        })
 
         return request.redirect('/my/tasks')
 
