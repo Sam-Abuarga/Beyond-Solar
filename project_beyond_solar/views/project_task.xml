@@ -65,6 +65,9 @@
         <field name="model">project.task</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button name="action_open" string="Open" class="btn btn-primary" type="object"/>
+                </header>
                 <label for="Name" class="oe_edit_only" string="Name"/>
                 <h2><field name="name"/></h2>
                 <group>

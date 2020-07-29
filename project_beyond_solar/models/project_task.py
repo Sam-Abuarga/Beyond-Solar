@@ -236,6 +236,15 @@ class ProjectTask(models.Model):
             if vals:
                 rec.write(vals)
 
+    def action_open(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'project.task',
+            'res_id': self.id,
+            'view_mode': 'form',
+            'target': 'self'
+        }
+
     def get_formview_id(self, access_uid=None):
         return self.env.ref('project_beyond_solar.project_task_simplified_form_view').id
 
