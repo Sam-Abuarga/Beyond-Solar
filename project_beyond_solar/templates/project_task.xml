@@ -1244,7 +1244,7 @@
                                         <tr>
                                             <th/>
                                             <th>Polarity (+/-)</th>
-                                            <th>Voltage</th>
+                                            <th>Operating Voltage</th>
                                             <th>Short Circuit</th>
                                             <th>Operating Current</th>
                                         </tr>
@@ -1343,7 +1343,7 @@
                                         <tr>
                                             <th>Calculated<br/>Max Voltage</th><td/>
                                             <td>
-                                                <input type="number" step="any" name="tot_voltage" t-att-value="task.tot_voltage" disabled="disabled"/> V
+                                                <input type="number" step="any" name="tot_voltage" t-att-value="task.tot_voltage"/> V
                                             </td>
                                             <td/><td/>
                                         </tr>
