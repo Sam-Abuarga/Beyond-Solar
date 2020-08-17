@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.http import request
 
 
 class ProjectTask(models.Model):
@@ -264,3 +265,9 @@ class ProjectTask(models.Model):
         elif order == 'project_id, create_date desc':
             order = 'project_id, calendar_date_begin'
         return super(ProjectTask, self).search(args, offset, limit, order, count)
+
+    @api.returns('mail.message', lambda value: value.id)
+    def message_post(self, **kwargs):
+        if 'mail/chatter_post' in request.httprequest.base_url:
+            kwargs['subtype'] = 'mail.mt_note'
+        return super(ProjectTask, self.with_context(mail_post_autofollow=True)).message_post(**kwargs)
