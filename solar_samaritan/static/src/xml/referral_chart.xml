@@ -26,7 +26,7 @@
 
 <t t-name="referral_chart">
     <div id="o_employee_right">
-        <div t-if='referred_by.length' class="o_org_chart_group_up">
+        <div t-if='referred_by and referred_by.length' class="o_org_chart_group_up">
             <t t-foreach="referred_by" t-as="partner">
                 <t t-call="referral_chart_partner">
                     <t t-set="type" t-value="'up'"/>
