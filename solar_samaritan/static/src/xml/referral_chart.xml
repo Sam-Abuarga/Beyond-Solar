@@ -34,12 +34,12 @@
             </t>
         </div>
 
-        <t t-call="referral_chart_partner">
+        <t t-call="referral_chart_partner" t-if="main_partner">
             <t t-set="partner" t-value="main_partner"/>
             <t t-set="type" t-value="'self'"/>
         </t>
 
-        <div t-if="referrals.length" class="o_org_chart_group_down">
+        <div t-if="referrals and referrals.length" class="o_org_chart_group_down">
             <t t-foreach="referrals" t-as="partner">
                 <t t-call="referral_chart_partner">
                     <t t-set="type" t-value="'down'"/>
