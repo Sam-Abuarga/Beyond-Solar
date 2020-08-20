@@ -30,3 +30,9 @@ class CrmLead(models.Model):
                     'lead_id': rec.id,
                     'partner_id': rec.referral_partner_id.id
                 })
+
+    def action_set_lost(self, **additional_values):
+        result = super(CrmLead, self).action_set_lost(**additional_values)
+        for rec in self:
+            rec.referral_id.mark_cancel()
+        return result
