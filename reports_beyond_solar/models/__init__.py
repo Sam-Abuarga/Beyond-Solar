@@ -1,4 +1,4 @@
 from . import account_move
 from . import product_product
-from . import sale_order
+from . import project_task
 from . import sale_order_line
