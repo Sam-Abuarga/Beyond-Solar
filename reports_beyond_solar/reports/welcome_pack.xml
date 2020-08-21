@@ -1,0 +1,1228 @@
+<odoo>
+    <template id="report_welcome_pack_document">
+        <div class="page">
+            <h2 style="text-align: center; margin-top: 64px;">
+                <strong>Solar PV System</strong>
+            </h2>
+            <p style="text-align: center;">Welcome Pack</p>
+            <p>
+                <img style="display: block; margin-left: auto; margin-right: auto;" src="https://www.beyondsolar.com.au/wp-content/uploads/2018/05/logo.png"/>
+            </p>
+            <div id="id1_1">
+                <p class="p2 ft2" style="text-align: center;">Addressed to:
+                    <br/>
+                    <strong>
+                        <span t-esc="doc.partner_id.name"/>
+                    </strong>
+                    <t t-if="doc.partner_id.street">
+                        <br/>
+                        <span t-esc="doc.partner_id.street"/>
+                    </t>
+                    <t t-if="doc.partner_id.street2">
+                        <br/>
+                        <span t-esc="doc.partner_id.street2"/>
+                    </t>
+                    <t t-if="doc.partner_id.city or doc.partner_id.state_id or doc.partner_id.zip">
+                        <br/>
+                        <span t-esc="doc.partner_id.city"/>
+                        <span t-esc="doc.partner_id.state_id.code"/>
+                        <span t-esc="doc.partner_id.zip"/>
+                    </t>
+                    <t t-if="doc.partner_id.country_id">
+                        <br/>
+                        <span t-esc="doc.partner_id.country_id.name"/>
+                    </t>
+                </p>
+                <p class="p3 ft2" style="text-align: center; margin-top: 32px;">Beyond Solar</p>
+                <p class="p4 ft2" style="text-align: center;">2/79 Williamson Rd, Ingleburn NSW 2565</p>
+                <p class="p5 ft2" style="text-align: center;">1300237684</p>
+            </div>
+        </div>
+        <div class="page" style="page-break-before:always;">
+            <p>Thank you for choosing Beyond Solar for designing and installing rooftop solar PV system at your building.</p>
+            <p>This Owner's Manual is compiled under the guidelines mentioned in the Solar PV Retailer Code of Conduct put together by the Clean Energy Council.</p>
+            <p>The Clean Energy Council (CEC) is the peak body representing Australia's renewable energy and energy efficiency industry.</p>
+        </div>
+        <div class="page" style="page-break-before:always;">
+            <h1>Table of Contents</h1>
+            <ol>
+                <li>Table of Content</li>
+                <li>Contact Information</li>
+                <li>Important Safety Information</li>
+                <li>Important Signs</li>
+                <li>List of Equipment Supplied</li>
+                <li>Your PV System</li>
+                <li>System Performance Estimate</li>
+                <li>Connection Diagram</li>
+                <li>Shutdown Procedure</li>
+                <li>Start-up Procedure</li>
+                <li>Actions During Earth Fault</li>
+                <li>Maintenance</li>
+                <li>Engineering Certificate for the PV Mounting Frame System</li>
+                <li>Mounting System Installation Details</li>
+                <li>Testing and Commissioning</li>
+                <li>Certifcate of Electrical Safety</li>
+                <li>Permission to Connect Letter</li>
+                <li>Small Technology Certifcate</li>
+                <li>Annexures</li>
+            </ol>
+        </div>
+        <div class="page" style="page-break-before:always;">
+            <h1>Contact Information</h1>
+            <div style="padding: 5px 20px; background-color: #efefef;">
+                <h2>Installation Company</h2>
+                <p>Beyond Solar
+                    <br/>
+                    <br/>Address: 2/79 Williamson Rd, Ingleburn NSW 2565
+                    <br/>
+                    <br/>Phone: 1300 237 684
+                </p>
+            </div>
+
+        </div>
+        <div class="page" style="page-break-before:always;">
+            <h1>Important Safety Information</h1>
+            <p>A rooftop PV system can produce hundreds or thousands of watts of power at any given time, that can be extremely dangerous and even fatal. There are several
+                important precautions that must be followed by the Owners of the PV system for their own safety.
+            </p>
+            <p>Avoid touching the panels and do not put pressure on them. They might break or produce electrical shock. Do not attempt to carry out any kind of electrical
+                maintenance or repair work on or near your system. Please make sure that only certified personnel should undertake any electrical or repair work on the systems.
+            </p>
+            <p>This manual is in accordance with the Clean Energy Council requirements. In addition to important safety information, it sets out details of your PV system,
+                estimated system performance, warranty information, maintenance requirements, commission reports, etc. It is strongly recommended that any kind or maintenance
+                or
+                system upgrades be carried out by <strong>Beyond Solar</strong> or, if unavailable, another qualified or CEC accredited installation company.
+            </p>
+            <p>Your installed system contains signage including warnings, information on open- circuit and closed-circuit voltages, equipment location details and system
+                shutdown
+                procedure. It is strongly recommended that you acquaint yourself with the signage. This manual is only for Grid Connected PV systems without any battery
+                storage.
+            </p>
+        </div>
+        <div class="page" style="page-break-before:always;">
+            <h1>Important Signs</h1>
+            <p>
+                <img class="fr-fic fr-dib" style="width: 700px;" src="https://www.beyondsolar.com.au/wp-content/uploads/2020/08/PV-Labels-transparent.png"/>
+            </p>
+        </div>
+        <div class="page" style="page-break-before:always;">
+            <h1>List of Equipment Supplied &amp;Warranties</h1>
+            <t t-foreach="doc.order_line" t-as="line">
+                <tr t-if="line.product_id.is_equipment()">
+                    <strong t-esc="line.product_id.name"/>
+                    <t t-set="serials" t-value="line.get_serials()"/>
+                    <t t-if="serials"><br/>Serial(s):
+                        <span t-esc="serials"/>
+                        <br/>
+                        <br/>
+                    </t>
+                </tr>
+            </t>
+        </div>
+        <div class="page" style="page-break-before:always;">
+            <h1>Your PV System</h1>
+            <p>How Solar PV System Works:
+                <br/>
+                <br/>In a grid connected system without battery storage, the PV system works in 4 broad steps.
+            </p>
+            <ol>
+                <li>The sun radiations falling on the PV modules generate DC electricity.</li>
+                <li>A DC to AC solar inverter converts the energy generated by the modules into AC, typically 230V at 50Hz which is suitable for the household appliances.
+
+                </li>
+                <li>The AC output of the inverter is used to power household appliances.</li>
+                <li>Surplus electricity is fed into the main grid.</li>
+            </ol>
+
+            <h2>Components of Rooftop Grid Connected System</h2>
+            <h3>Solar Panels</h3>
+            <p>The primary component of a PV system, solar panels generate DC electricity from the sunlight that falls on the modules. They will generate electricity even when
+                the
+                panels are not directly receiving sunlight (clouds, shadow, etc.) and therefore it is important to not touch them directly. The rating output of a solar panel
+                is
+                given in Watts. This is the maximum possible power that a panel can generate in ideal STC conditions.
+            </p>
+            <h3>Solar Inverter</h3>
+            <p>Inverter is a power electronic device that converts DC electricity to AC. The electricity produced by solar (PV) panels is DC (direct current) whereas the
+                household
+                appliances require AC (Alternate current) supply. The inverter is used to convert the DC supply generated by the solar panels to AC that can be used by the
+                household appliances and the surplus can be fed back into the main grid. The type of inverter varies based on the type of system (AC coupled, DC coupled,
+                off-grid,
+                etc).
+            </p>
+            <h3>Solar Array Mounting Structure</h3>
+            <p>Solar panels are connected into arrays and mounted on rigid structures facing the direction of the Sun (southwards for locations in northern hemisphere and
+                northwards for locations in southern hemisphere). There are several different mounting structures out of which rooftop systems are the most common. They can be
+                broadly divided into three types:
+            </p>
+            <ol>
+                <li>Sloped Roof Mounting System: These systems require some type of penetration or anchoring into the roof. This could be attaching to rafters or directly to
+                    the
+                    decking.
+                </li>
+                <li>Flat Roof Mounting System: Mainly seen in commercial and industrial roofs, flat roof mounitng system are also common in residential apartments that have a
+                    flat
+                    roof. This includes roofs with a slight tilt, but not as much as sloped residential roofs. Flat roof systems are usually ballasted with a few penetrations.
+
+                </li>
+                <li>Solar Shingles (BIPV): Solar Shingles are a part of Building Integrated PV (BIPV) systems (buildings that have solar PV system integrated into its
+                    structure).
+                    They are gaining traction because of increased focus on aesthetics. They do not need any mounting system because they are integrated as a part of the roof.
+
+                </li>
+            </ol>
+            <h3>Miscellaneous</h3>
+            <p>Other components of your system includes cabling, junction box, conduits, connectors, switches, etc. These components comprise all the things needed to connect
+                each
+                element of a PV system together safely and securely. Like any other specialised technology, there are several components and tools involved in the proper
+                installation of a safe and effective PV system.
+            </p>
+            <h3>Battery Storage (for battery integrated systems only)</h3>
+            <p>Battery storage systems provide the ability to store excess energy generated by solar PV panels for later use. This helps in offsetting electricity demand for
+                use
+                during times when solar PV is not generating energy. Batteries can also charge themselves through grid during off-peak hours and supply energy to the house
+                during
+                peak hours, saving costs. While some batteries come with inbuilt inverters, other batteries may need an extra inverter for charging/supplying load and/or a
+                charge
+                controller for directly charging through the PV panels. Batteries are expensive and needs special maintenance as described in the maintenance section of this
+                Owner's Manual.
+            </p>
+            <h3>Solar Charge Controller (for battery integrated systems only)</h3>
+            <p>If batteries are connected directly with the PV panels, they must have a charge controllers attached. Solar charge controller regulates the amount of current the
+                PV
+                panels feed into the battery storage. In addition to their primary function of preventing overcharging of the batteries, charge controllers also acts as a valve
+                and
+                blocks stored current from leaking back into the PV panels during times of no generation.
+            </p>
+        </div>
+        <div class="page" style="page-break-before:always;">
+            <h1>System Performance Estimate</h1>
+            <strong>System Size:</strong>
+            <span t-esc="doc.x_studio_peak_dc_power_kw"/>
+            kW
+            <br/>
+            <strong>Estimated Annual Energy Generated:</strong>
+            <span t-esc="doc.x_studio_annual_energy_yield"/>
+            kWh
+
+            <p class="p41 ft10"><span class="ft24">System Size</span>refers to the total power output by the PV panels under ideal sunlight and temperature conditions. The
+                system size is calculated by multiplying the number of PV panels installed with the nominal power output of each panel.
+            </p>
+            <p class="p42 ft5"><span class="ft25">Estimated Annual Energy Generated</span>is the best guess of the total energy generated by your system in a year based on
+                the panel orientation and the location's irradiation.
+            </p>
+            <p class="p43 ft26" t-if="doc.x_studio_performance_chart">Table: Estimated daily kWh production of your system.</p>
+            <img t-if="doc.x_studio_performance_chart" style="max-width: 80%; margin-left: 10%;" t-attf-src="/web/image/sale.order/#{doc.id}/x_studio_performance_chart/"
+                 alt="Performance Chart"/>
+        </div>
+
+        <div class="page" style="page-break-before:always;">
+            <h1>Connection Diagram</h1>
+            <p>{{embed_images_for_connection_diagram_SLD BASED ON AN IF STATEMENT }}</p><!-- TODO: Implement -->
+        </div>
+
+        <div class="page" style="page-break-before:always;">
+            <h1>Shutdown Procedure</h1>
+            <p>PV panels can produce electrical current even when the system is not operating and therefore it must always be treated as live. As a result, even when a system
+                has
+                been shut down, parts of the system may be electrically live. Caution must be exercised while handling these systems.
+            </p>
+
+            <table style="width: 100%; border: 1px solid black;">
+                <tbody>
+                    <tr>
+                        <td style="width: 100.0000%; padding: 0 10px;">
+                            <p>
+                                <strong>SHUTDOWN PROCEDURE</strong>
+                            </p>
+                            <ol>
+                                <li>Turn off the "Solar Supply Main Switch" located on the switchboard.</li>
+                                <li>Turn off the "DC PV Array Isolator" located next to the inverter.</li>
+                            </ol>
+                            <p>WARNING: Do not open plug and socket connectors or PV array DC isolator under no load.</p>
+                            <p>WARNING: PV array DC isolator do no de-energize the PV array and array cabling.</p>
+                            <p>Start-up procedure is the reverse of shutdown procedure.</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h1>Startup Procedure</h1>
+            <p>Start-up procedure is the reverse of shutdown procedure</p>
+
+            <h1>Actions During Earth Fault</h1>
+            <p>All PV systems with an array peak power of less than 240 kWp at STC are required to have an Earth Fault Alarm system in compliance with the Australian Standard
+                AS/NZS 5033. An earth fault alarm is a safety requirement that detects whenever there is a fault or short-circuit between the DC circuit(s) of a PV system and
+                ground (earth).
+            </p>
+            <p>Respond immediately to the alarm with the following actions.</p>
+            <ol>
+                <li>Follow the shutdown procedure given above.</li>
+                <li>Do not touch the panels or other conductive parts (such as metal, cables, etc.) of the system to avoid shocks caused by leakage currents.
+
+                </li>
+                <li>Contact <strong>Beyond Solar</strong> or, if unavailable, another CEC-accredited installer. You may also call your state's electrical authority, details of
+                    which can be found on CEC website.
+                </li>
+            </ol>
+        </div>
+        <div class="page" style="page-break-before:always;">
+            <h1>Maintenance</h1>
+            <p>A properly designed and installed PV system can have fault free operation for several years. Like any other hardware, performing normal upkeep and inspection of
+                PV
+                system components will help guarantee its performance and reduce disruptions due to component failure. It is important to know that all kind of maintenance and
+                repair work should be carried out by Beyond Solar, or, if unavailable, another CEC-accredited installer.
+            </p>
+            <h2>Grid Connected System</h2>
+            <p>When operating correctly, Solar power systems can be overall considered safe. Nevertheless, there are some system components that can be potentially dangerous
+                hazards. These include solar modules, batteries, etc. Since the grid voltage at residential level is set at 240V AC single phase, a grid-connected solar system
+                operates at the same voltage level. Even though 240V AC power is dangerous and fatal when live exposed wires/terminals are touched, it is generally safe when
+                properly insulated and kept in good working condition. According to Australian Standards, Low voltage (LV) is specified as any voltage that is equal to or
+                higher
+                than 50V AC or 120V DC. Any maintenance work that require LV wiring must be undertaken by a certified electrician or contractor. The owner of the system MUST
+                NOT
+                undertake any maintenance to LV wiring systems or the output terminals of equipment that produces low voltage (LV) or above. It is also the duty of the owner to
+                accustom themselves with the danger and warning signs and pay special attention when around system components that carry these signs.
+            </p>
+            <p>WARNING: The maintenance details provided below are for knowledge purposes only. Other than visual inspections, please make sure that any kind of maintenance on
+                your
+                system should be carried out by Beyond Solar, or, if unavailable, another CEC-accredited organisation only.
+            </p>
+            <p>A typical grid connected system includes:</p>
+            <ul>
+                <li>PV Modules</li>
+                <li>Inverter</li>
+                <li>BOS equipment- including switching equipment, meters and system wiring.</li>
+            </ul>
+            <p>
+                <strong>PV Modules</strong>
+            </p>
+            <p>There are several reasons a PV panel may not output expected power. These include shading, dirt on the panels, cracks, improper connections, etc. A combination
+                of
+                different solar panels is called a solar array. If the output of one module is limited by the factors stated above, that affected module may limit the text
+                output
+                of the whole array even when other modules aren't affected by the loss mechanisms above. This is in contrast to the common assumption that PV systems are
+                maintenance free. Nevertheless, with occasional inspections and maintenance, the performance of all the solar modules and thereby the whole system can be
+                assured.
+            </p>
+            <p>The primary maintenance work for solar modules is the cleaning of the glass panel to remove the dirt that might have accumulated on its surface. In most cases,
+                cleaning is only required during the long dry periods where there is no rain to naturally clean the modules. To remove a layer of dust and dirt from the
+                modules,
+                the panels are simply washed with water. If the modules have thick dirt on the surface that is not getting removed by normal washing, a sponge and warm water
+                can be
+                used. Use of any detergent or compounds is not recommended.
+            </p>
+            <p>After cleaning all the modules, a visual inspection of the PV system can help finding any defects on the modules including cracks, discolouration, chips, etc. In
+                case any defects are found, their location should be noted in the logbook provided. This would help in monitoring the system and whether the defects affect the
+                system output in the future. In most of the cases the module output will not be affected, but such defects should not be ignored. If defects on the modules have
+                worsened, you may inform and discuss with Beyond Solar.
+            </p>
+            <p>During the inspection of the solar arrays and modules by the certified personnel, the inspection of the array mounting frame should also be carried out. Special
+                attention should be paid to items such as array mounting bolts. Checks should be carried out to ensure that the frame and modules are firmly secured.
+            </p>
+            <p>WARNING: Your system modules are located on a roof and therefore there is a risk of falling. Make sure that the maintenance is only carried out by certified
+                personnels and are wearing some form of fall protection equipment (eg. harness or scaffolding).
+            </p>
+            <p>
+                <strong>Inverter</strong>
+            </p>
+            <p>Unlike modules, the inverters generally require very little maintenance but special attention must be paid when performing maintenance on other parts of the
+                system:
+
+            </p>
+            <ul>
+                <li>Keep the inverters clean and properly covered. Minimise the possibility of dirt and dust being blown over the equipment - If required, clean with dry cloth.
+
+                </li>
+                <li>Make sure that the inverter system is not infested by insects or rodents.</li>
+                <li>check inverter operation by monitoring the LED indicator, meter or other displays on the inverter.</li>
+            </ul>
+            <p>
+                <strong>Balance of Systems (BOS)</strong>
+            </p>
+            <p>As stated earlier, these items include wiring, junction box, meter, etc that are paramount for the system connectivity and operation. They generally require
+                minimum maintenance but when maintenance work is being conducted on other parts of the system then the following should be undertaken:
+            </p>
+            <ul>
+                <li>Make sure that all cables/conduits and interconnections are mechanically secure.</li>
+                <li>Verify proper operation of all switches and circuit breakers.</li>
+                <li>confirm that the meters are operating properly.</li>
+            </ul>
+            <p>Normally modern PV modules use "plug" cables for interconnection in the array and because of roof mounts these are often hidden behind. Therefore visually
+                inspected
+                them is not feasible.The only cables that can be inspected are the ones going from the array to the inverter or the inverter to the switchboard.
+            </p>
+            <p>
+                <strong>Battery Storage (Battery integrated systems only)</strong>
+            </p>
+            <p>Battery systems are a serious safety risk if incorrectly installed or not properly maintained. They can lead to:</p>
+            <ul>
+                <li>electric shock</li>
+                <li>flash burns</li>
+                <li>fire</li>
+                <li>explosion</li>
+                <li>exposure to hazardous chemicals</li>
+            </ul>
+            <p>Therefore it is paramount to avoid clutter around the battery. Do not keep anything near or on top of the battery bank other than the safety equipment required
+                for
+                the maintenance of the battery. Plenty of ventilation in the battery enclosure and the room must be ensured at all times.
+            </p>
+            <p>WARNING: Before any maintenance is carried out on the battery system, it is extremely important that the battery storage is isolated from the system and is
+                shutdown.
+            </p>
+            <p>The specified battery shutdown procedure mentioned in this owner's manual or the sign installed on site must be followed.</p>
+            <p>During maintenance, some of the things that the certified personnel must ensure includes:</p>
+            <ul>
+                <li>Battery system terminals should be free of dirt and electrolyte.</li>
+                <li>Ensuring electrical terminals are set to correct torque settings.</li>
+                <li>Ensuring battery accommodation integrity is maintained (eg. not damaged, free from debris/ rubbish; and, access is not obstructed)
+                </li>
+                <li>Ensure proper functioning of over-current and isolation devices.</li>
+                <li>Check charge and discharge parameters are correctly set</li>
+                <li>Ensure correct ventilation has been provided and is maintained</li>
+                <li>Check cable mechanical support, protection and penetration is maintained</li>
+            </ul>
+            <p>Any maintenance conducted and discrepancy must be noted in the logbook provided.</p>
+        </div>
+        <div class="page" style="page-break-before:always;">
+            <h2>Maintenance Schedule</h2>
+            <p>The table below shows the maintenance frequency based on activity.</p>
+
+            <table style="width: 75%; margin: auto;" cellspacing="0" cellpadding="0">
+                <tbody>
+                    <tr>
+                        <td style="border-bottom: 1px solid grey; border-top: 1px solid grey; font-weight: bold; font-size: 12px;">Activity</td>
+                        <td style="border-bottom: 1px solid grey; border-top: 1px solid grey; font-weight: bold; font-size: 12px;">Frequency</td>
+                    </tr>
+                    <tr>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">Visual inspection (modules, battery, inverter, cabling)</td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">Monthly</td>
+                    </tr>
+                    <tr>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">Site</td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">Quarterly</td>
+                    </tr>
+                    <tr>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">Clean Modules</td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">Quarterly or depending on site and condition</td>
+                    </tr>
+                    <tr>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">Battery Maintenance</td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">Quarterly</td>
+                    </tr>
+                    <tr>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">Check mechanical integrity of the array structure and PV modules</td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">Annually</td>
+                    </tr>
+                    <tr>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">Check all cabling for mechanical damage</td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">Annually</td>
+                    </tr>
+                    <tr>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">Check output voltage and current of each string of the array and compare to the expected
+                            output
+                            under the existing conditions.
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">Annually</td>
+                    </tr>
+                    <tr>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">Check electrical wiring for loose connections</td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">Annually</td>
+                    </tr>
+                    <tr>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">Check the operation of the PV array DC isolator<br/>Note: System Shutdown procedure must be
+                            followed
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">Annually</td>
+                    </tr>
+                    <tr>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">Check overall wiring installation and integrity</td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">5 years</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p>NOTE: Based on several factors, it is possible that your system might need extra maintenance or repairs. Please contact Beyond Solar for more information.</p>
+        </div>
+        <div class="page" style="page-break-before:always;">
+            <h3>Solar Array Log Book</h3>
+            <p>The following logbook must be maintained for all maintenance procedures carried out on this system. Please print and maintain a hard copy of this logbook.</p>
+
+            <table style="width: 100%;" cellspacing="0" cellpadding="0">
+                <tbody style="text-align: center;">
+                    <tr>
+                        <td style="font-size: 12px; width: 7.8366%; text-align: center; border-bottom: 1px solid grey; border-top: 1px solid grey;">Date</td>
+                        <td style="font-size: 12px; width: 11.9205%; text-align: center; border-bottom: 1px solid grey; border-top: 1px solid grey;">Name</td>
+                        <td style="font-size: 12px; width: 6.6225%; text-align: center; border-bottom: 1px solid grey; border-top: 1px solid grey;">Cleaned Module</td>
+                        <td style="font-size: 12px; width: 7.2848%; text-align: center; border-bottom: 1px solid grey; border-top: 1px solid grey;">Array Structure OK</td>
+                        <td style="font-size: 12px; width: 9.2715%; text-align: center; border-bottom: 1px solid grey; border-top: 1px solid grey;">Array Cabling Mechanical
+                        </td>
+                        <td style="font-size: 12px; width: 8.1678%; text-align: center; border-bottom: 1px solid grey; border-top: 1px solid grey;">Array Cabling Electrical
+                        </td>
+                        <td style="font-size: 12px; width: 7.5055%; text-align: center; border-bottom: 1px solid grey; border-top: 1px solid grey;">Output Voltage</td>
+                        <td style="font-size: 12px; width: 6.4018%; text-align: center; border-bottom: 1px solid grey; border-top: 1px solid grey;">Output Current</td>
+                        <td style="font-size: 12px; width: 6.9536%; text-align: center; border-bottom: 1px solid grey; border-top: 1px solid grey;">PV Array DC Isolator</td>
+                        <td style="font-size: 12px; width: 28.3665%; text-align: center; border-bottom: 1px solid grey; border-top: 1px solid grey;">Comments/ Action Taken</td>
+                    </tr>
+                    <tr style="height: 40px;">
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">V</td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">A</td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                    </tr>
+                    <tr style="height: 40px;">
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">V</td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">A</td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                    </tr>
+                    <tr style="height: 40px;">
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">V</td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">A</td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                    </tr>
+                    <tr style="height: 40px;">
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">V</td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">A</td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                    </tr>
+                    <tr style="height: 40px;">
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">V</td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">A</td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                    </tr>
+                    <tr style="height: 40px;">
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">V</td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">A</td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                    </tr>
+                    <tr style="height: 40px;">
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">V</td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">A</td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                    </tr>
+                    <tr style="height: 40px;">
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">V</td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">A</td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                    </tr>
+                    <tr style="height: 40px;">
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">V</td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">A</td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                    </tr>
+                    <tr style="height: 40px;">
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">V</td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">A</td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                    </tr>
+                    <tr style="height: 40px;">
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">V</td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">A</td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                    </tr>
+                    <tr style="height: 40px;">
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">V</td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">A</td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                    </tr>
+                    <tr style="height: 40px;">
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">V</td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">A</td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                    </tr>
+                    <tr style="height: 40px;">
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">V</td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">A</td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                    </tr>
+                    <tr style="height: 40px;">
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">V</td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">A</td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                    </tr>
+                    <tr style="height: 40px;">
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">V</td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">A</td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                    </tr>
+                    <tr style="height: 40px;">
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">V</td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">A</td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                    </tr>
+                    <tr style="height: 40px;">
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">V</td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;">A</td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="page" style="page-break-before:always;">
+            <h3>Inverter Log Book</h3>
+            <table style="width: 100%;" cellspacing="0" cellpadding="0">
+                <tbody style="text-align: center;">
+                    <tr>
+                        <td style="font-size: 12px; width: 10%; text-align: center; border-bottom: 1px solid grey; border-top: 1px solid grey;">Date</td>
+                        <td style="font-size: 12px; width: 10%; text-align: center; border-bottom: 1px solid grey; border-top: 1px solid grey;">Name</td>
+                        <td style="font-size: 12px; text-align: center; border-bottom: 1px solid grey; border-top: 1px solid grey;">Cleaned Inverter</td>
+                        <td style="font-size: 12px; text-align: center; border-bottom: 1px solid grey; border-top: 1px solid grey;">No Insects</td>
+                        <td style="font-size: 12px; text-align: center; border-bottom: 1px solid grey; border-top: 1px solid grey;">Cable Connection OK</td>
+                        <td style="font-size: 12px; text-align: center; border-bottom: 1px solid grey; border-top: 1px solid grey;">Inverter Operating Correctly</td>
+                        <td style="font-size: 12px; width: 36%; text-align: center; border-bottom: 1px solid grey; border-top: 1px solid grey;">Comments</td>
+                    </tr>
+                    <tr style="height: 35px;">
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;"/>
+                    </tr>
+                    <tr style="height: 35px;">
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;"/>
+                    </tr>
+                    <tr style="height: 35px;">
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;"/>
+                    </tr>
+                    <tr style="height: 35px;">
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;"/>
+                    </tr>
+                    <tr style="height: 35px;">
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;"/>
+                    </tr>
+                    <tr style="height: 35px;">
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;"/>
+                    </tr>
+                    <tr style="height: 35px;">
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;"/>
+                    </tr>
+                    <tr style="height: 35px;">
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;"/>
+                    </tr>
+                    <tr style="height: 35px;">
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;"/>
+                    </tr>
+                    <tr style="height: 35px;">
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;"/>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>BOS Log Book</h3>
+            <table style="width: 100%;" cellspacing="0" cellpadding="0">
+                <tbody style="text-align: center;">
+                    <tr>
+                        <td style="font-size: 12px; width: 10%; text-align: center; border-bottom: 1px solid grey; border-top: 1px solid grey;">Date</td>
+                        <td style="font-size: 12px; width: 10%; text-align: center; border-bottom: 1px solid grey; border-top: 1px solid grey;">Name</td>
+                        <td style="font-size: 12px; text-align: center; border-bottom: 1px solid grey; border-top: 1px solid grey;">Cable Connection OK</td>
+                        <td style="font-size: 12px; text-align: center; border-bottom: 1px solid grey; border-top: 1px solid grey;">All Switches and CBs Operating</td>
+                        <td style="font-size: 12px; text-align: center; border-bottom: 1px solid grey; border-top: 1px solid grey;">Meter Operating Correctly</td>
+                        <td style="font-size: 12px; width: 36%; text-align: center; border-bottom: 1px solid grey; border-top: 1px solid grey;">Comments</td>
+                    </tr>
+                    <tr style="height: 35px;">
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;"/>
+                    </tr>
+                    <tr style="height: 35px;">
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;"/>
+                    </tr>
+                    <tr style="height: 35px;">
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;"/>
+                    </tr>
+                    <tr style="height: 35px;">
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;"/>
+                    </tr>
+                    <tr style="height: 35px;">
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;"/>
+                    </tr>
+                    <tr style="height: 35px;">
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;"/>
+                    </tr>
+                    <tr style="height: 35px;">
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;"/>
+                    </tr>
+                    <tr style="height: 35px;">
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;"/>
+                    </tr>
+                    <tr style="height: 35px;">
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;"/>
+                    </tr>
+                    <tr style="height: 35px;">
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;"/>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd;">
+                            <input id="checkbox" type="checkbox" value="on"/>
+                        </td>
+                        <td style="border-bottom: 1px solid #ddd; font-size: 12px;"/>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="page" style="page-break-before:always;">
+            <h1>Mounting System Installation Details</h1>
+            <p>Max distance between your brackets/rail feet has been reviewed to meet relevant regulations.</p>
+
+            <div style="text-align: center;">
+                <img class="fr-fic fr-dii" style="max-width: 500px;" src="https://www.beyondsolar.com.au/wp-content/uploads/2020/08/Wind-ratings-map-2.png"/>
+            </div>
+        </div>
+    </template>
+
+    <template id="report_welcome_pack">
+        <t t-call="web.html_container">
+            <t t-set="data_report_margin_top" t-value="12"/>
+            <t t-set="data_report_header_spacing" t-value="9"/>
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="reports_beyond_solar.report_welcome_pack_document" t-lang="doc.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+
+    <report id="action_report_welcome_pack" string="Welcome Pack" model="sale.order" report_type="qweb-pdf"
+            file="reports_beyond_solar.report_welcome_pack" name="reports_beyond_solar.report_welcome_pack"/>
+</odoo>

@@ -10,10 +10,12 @@
     'depends': [
         'account',
         'sale',
+        'project_beyond_solar',
     ],
     'data': [
         'reports/account_move.xml',
         'reports/shared.xml',
+        'reports/welcome_pack.xml',
     ],
     'installable': True,
     'application': False,
