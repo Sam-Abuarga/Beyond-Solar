@@ -1,41 +1,55 @@
 <odoo>
     <template id="report_welcome_pack_document">
+        <t t-call="web.basic_layout">
         <div class="page">
-            <h2 style="text-align: center; margin-top: 64px;">
-                <strong>Solar PV System</strong>
-            </h2>
-            <p style="text-align: center;">Welcome Pack</p>
-            <p>
-                <img style="display: block; margin-left: auto; margin-right: auto;" src="https://www.beyondsolar.com.au/wp-content/uploads/2018/05/logo.png"/>
-            </p>
-            <div id="id1_1">
-                <p class="p2 ft2" style="text-align: center;">Addressed to:
-                    <br/>
-                    <strong>
-                        <span t-esc="doc.partner_id.name"/>
-                    </strong>
-                    <t t-if="doc.partner_id.street">
-                        <br/>
-                        <span t-esc="doc.partner_id.street"/>
-                    </t>
-                    <t t-if="doc.partner_id.street2">
-                        <br/>
-                        <span t-esc="doc.partner_id.street2"/>
-                    </t>
-                    <t t-if="doc.partner_id.city or doc.partner_id.state_id or doc.partner_id.zip">
-                        <br/>
-                        <span t-esc="doc.partner_id.city"/>
-                        <span t-esc="doc.partner_id.state_id.code"/>
-                        <span t-esc="doc.partner_id.zip"/>
-                    </t>
-                    <t t-if="doc.partner_id.country_id">
-                        <br/>
-                        <span t-esc="doc.partner_id.country_id.name"/>
-                    </t>
-                </p>
-                <p class="p3 ft2" style="text-align: center; margin-top: 32px;">Beyond Solar</p>
-                <p class="p4 ft2" style="text-align: center;">2/79 Williamson Rd, Ingleburn NSW 2565</p>
-                <p class="p5 ft2" style="text-align: center;">1300237684</p>
+            <div style="margin-top: 350px; text-align: center; width: 100%;">
+                <div style="margin: auto;">
+                    <h2 class="text-center" style="margin-top: 64px;">
+                        <strong>Solar PV System</strong>
+                    </h2>
+                    <p class="text-center">Welcome Pack</p>
+                </div>
+            </div>
+            <div style="margin-top: 350px; text-align: center; width: 100%;">
+                <div style="margin: auto;">
+                    <p>
+                        <img style="display: block; margin-left: auto; margin-right: auto;" src="https://www.beyondsolar.com.au/wp-content/uploads/2018/05/logo.png"/>
+                    </p>
+                    <div>
+                        <p style="text-align: center;">Addressed to:
+                            <br/>
+                            <strong>
+                                <span t-esc="doc.partner_id.name"/>
+                            </strong>
+                            <t t-if="doc.partner_id.street">
+                                <br/>
+                                <span t-esc="doc.partner_id.street"/>
+                            </t>
+                            <t t-if="doc.partner_id.street2">
+                                <br/>
+                                <span t-esc="doc.partner_id.street2"/>
+                            </t>
+                            <t t-if="doc.partner_id.city or doc.partner_id.state_id or doc.partner_id.zip">
+                                <br/>
+                                <span t-esc="doc.partner_id.city"/>
+                                <span t-esc="doc.partner_id.state_id.code"/>
+                                <span t-esc="doc.partner_id.zip"/>
+                            </t>
+                            <t t-if="doc.partner_id.country_id">
+                                <br/>
+                                <span t-esc="doc.partner_id.country_id.name"/>
+                            </t>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 350px; text-align: center; width: 100%;">
+                <div style="margin: auto;">
+                    <p class="p3 ft2" style="text-align: center; margin-top: 32px;">Beyond Solar</p>
+                    <p class="p4 ft2" style="text-align: center;">2/79 Williamson Rd, Ingleburn NSW 2565</p>
+                    <p class="p5 ft2" style="text-align: center;">1300237684</p>
+                </div>
             </div>
         </div>
         <div class="page" style="page-break-before:always;">
@@ -45,7 +59,7 @@
         </div>
         <div class="page" style="page-break-before:always;">
             <h1>Table of Contents</h1>
-            <ol>
+            <ol style="padding-left: 16px;">
                 <li>Table of Content</li>
                 <li>Contact Information</li>
                 <li>Important Safety Information</li>
@@ -106,18 +120,29 @@
             </p>
         </div>
         <div class="page" style="page-break-before:always;">
-            <h1>List of Equipment Supplied &amp;Warranties</h1>
+            <h1>List of Equipment Supplied &amp; Warranties</h1>
+            <table class="table table-bordered table-sm">
+                <tr>
+                    <th>Description</th>
+                    <th>Qty</th>
+                </tr>
             <t t-foreach="doc.order_line" t-as="line">
                 <tr t-if="line.product_id.is_equipment()">
-                    <strong t-esc="line.product_id.name"/>
-                    <t t-set="serials" t-value="line.get_serials()"/>
-                    <t t-if="serials"><br/>Serial(s):
-                        <span t-esc="serials"/>
-                        <br/>
-                        <br/>
-                    </t>
+                    <td>
+                        <strong t-esc="line.product_id.name"/><br/>
+                        <div t-field="line.product_id.description_sale"/>
+                        <t t-set="serials" t-value="line.get_serials()"/>
+                        <t t-if="serials">
+                            <br/>
+                            <strong>Serial(s):</strong> <span t-esc="serials"/>
+                        </t>
+                    </td>
+                    <td>
+                        <span t-esc="'{:g}'.format(line.product_uom_qty)"/>
+                    </td>
                 </tr>
             </t>
+            </table>
         </div>
         <div class="page" style="page-break-before:always;">
             <h1>Your PV System</h1>
@@ -125,7 +150,7 @@
                 <br/>
                 <br/>In a grid connected system without battery storage, the PV system works in 4 broad steps.
             </p>
-            <ol>
+            <ol style="padding-left: 16px;">
                 <li>The sun radiations falling on the PV modules generate DC electricity.</li>
                 <li>A DC to AC solar inverter converts the energy generated by the modules into AC, typically 230V at 50Hz which is suitable for the household appliances.
 
@@ -155,7 +180,7 @@
                 northwards for locations in southern hemisphere). There are several different mounting structures out of which rooftop systems are the most common. They can be
                 broadly divided into three types:
             </p>
-            <ol>
+            <ol style="padding-left: 16px;">
                 <li>Sloped Roof Mounting System: These systems require some type of penetration or anchoring into the roof. This could be attaching to rafters or directly to
                     the
                     decking.
@@ -235,7 +260,7 @@
                             <p>
                                 <strong>SHUTDOWN PROCEDURE</strong>
                             </p>
-                            <ol>
+                            <ol style="padding-left: 16px;">
                                 <li>Turn off the "Solar Supply Main Switch" located on the switchboard.</li>
                                 <li>Turn off the "DC PV Array Isolator" located next to the inverter.</li>
                             </ol>
@@ -256,7 +281,7 @@
                 ground (earth).
             </p>
             <p>Respond immediately to the alarm with the following actions.</p>
-            <ol>
+            <ol style="padding-left: 16px;">
                 <li>Follow the shutdown procedure given above.</li>
                 <li>Do not touch the panels or other conductive parts (such as metal, cables, etc.) of the system to avoid shocks caused by leakage currents.
 
@@ -1211,6 +1236,7 @@
                 <img class="fr-fic fr-dii" style="max-width: 500px;" src="https://www.beyondsolar.com.au/wp-content/uploads/2020/08/Wind-ratings-map-2.png"/>
             </div>
         </div>
+        </t>
     </template>
 
     <template id="report_welcome_pack">
@@ -1225,4 +1251,15 @@
 
     <report id="action_report_welcome_pack" string="Welcome Pack" model="sale.order" report_type="qweb-pdf"
             file="reports_beyond_solar.report_welcome_pack" name="reports_beyond_solar.report_welcome_pack"/>
+
+    <template id="report_welcome_pack_heading">
+        <t t-call="web.html_container">
+            <t t-set="data_report_margin_top" t-value="12"/>
+            <t t-set="data_report_header_spacing" t-value="9"/>
+            <h1 t-esc="title"/>
+        </t>
+    </template>
+
+    <report id="action_report_welcome_pack_heading" string="Heading" model="ir.actions.server" report_type="qweb-pdf"
+            file="reports_beyond_solar.report_welcome_pack_heading" name="reports_beyond_solar.report_welcome_pack_heading"/>
 </odoo>
