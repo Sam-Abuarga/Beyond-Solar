@@ -238,7 +238,6 @@ class Task(CustomerPortal):
             'date_worksheet_handover': datetime.now(),
             'date_worksheet_finish': datetime.now(),
             'install_status': 'done',
-            'user_id': task.project_id.user_id.id
         })
 
         return request.redirect(f'/my/task/{id}#worksheets?t={int(time.time())}')
