@@ -40,10 +40,9 @@ class ProjectTask(models.Model):
 
         writer = PdfFileWriter()
         for stream in streams:
-            reader = PdfFileReader(stream)
+            reader = PdfFileReader(stream, strict=False)
             writer.appendPagesFromReader(reader)
         result_stream = io.BytesIO()
-        streams.append(result_stream)
         writer.write(result_stream)
 
         data = result_stream.getvalue()
