@@ -9,5 +9,5 @@ class IrHttp(models.AbstractModel):
 
     @classmethod
     def _dispatch(cls):
-        url = request.httprequest.base_url
+        url = request.httprequest.url
         return werkzeug.utils.redirect(url.replace('https://beyondsolar.odoo.com', 'https://odoo.beyondsolar.com.au'), code=302, Response=None)
