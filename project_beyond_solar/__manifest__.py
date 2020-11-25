@@ -21,6 +21,8 @@
     'data': [
         'assets.xml',
 
+        'security/res_groups.xml',
+
         'reports/project_task.xml',
         'reports/project_task_swms.xml',
 

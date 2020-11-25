@@ -1,0 +1,6 @@
+<odoo>
+    <record model="res.groups" id="group_project_portal">
+        <field name="name">Online Portal</field>
+        <field name="category_id" ref="base.module_category_operations_project"/>
+    </record>
+</odoo>
