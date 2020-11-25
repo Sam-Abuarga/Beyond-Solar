@@ -170,7 +170,7 @@
                             <span t-field="task.install_status" class=" badge badge-pill badge-info" title="Current status of this task"/>
                         </div>
                     </div>
-                    <div class="row no-gutters mt16">
+                    <div class="row no-gutters mt16" groups="project_beyond_solar.group_project_portal">
                         <div class="col-md">
                             <form t-attf-action="/my/task/{{task.id}}/start" t-if="task.install_status == 'pending' or (task.install_status == 'rescheduled' and not task.date_worksheet_start)">
                                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
