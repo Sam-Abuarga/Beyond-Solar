@@ -268,6 +268,9 @@ class ProjectTask(models.Model):
 
     @api.returns('mail.message', lambda value: value.id)
     def message_post(self, **kwargs):
-        if request and request.httprequest and 'mail/chatter_post' in request.httprequest.base_url:
-            kwargs['subtype'] = 'mail.mt_note'
+        try:
+            if request and request.httprequest and 'mail/chatter_post' in request.httprequest.base_url:
+                kwargs['subtype'] = 'mail.mt_note'
+        except:
+            pass
         return super(ProjectTask, self.with_context(mail_post_autofollow=True)).message_post(**kwargs)
