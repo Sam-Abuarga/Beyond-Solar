@@ -185,7 +185,7 @@
                 </t>
 
                 <t t-set="card_body">
-                    <div class="row" groups="product_beyond_solar.group_project_portal">
+                    <div class="row" groups="project_beyond_solar.group_project_portal">
                         <div class="col-12 col-md-7 mb-1">
                             <table class="mb16">
                                 <tr>
@@ -245,7 +245,7 @@
                         </div>
                     </div>
 
-                    <div class="row" groups="product_beyond_solar.group_project_portal">
+                    <div class="row" groups="project_beyond_solar.group_project_portal">
                         <div class="col-12 col-md-6 mb16">
                             <h4>Premises Details</h4>
                             <table>
@@ -465,7 +465,7 @@
                         </div>
                     </div>
 
-                    <div class="row" groups="product_beyond_solar.group_project_portal">
+                    <div class="row" groups="project_beyond_solar.group_project_portal">
                         <ul class="nav nav-tabs" style="width: 100%;">
                             <li class="nav-item">
                                 <a t-attf-class="nav-link {{'active' if not task.date_worksheet_check else ''}}" data-toggle="tab" href="#tab-check">In House Check</a>
@@ -1404,7 +1404,7 @@
         </xpath>
 
         <xpath expr="//t[@t-call='portal.message_thread']/parent::div" position="attributes">
-            <attribute name="groups">product_beyond_solar.group_project_portal</attribute>
+            <attribute name="groups">project_beyond_solar.group_project_portal</attribute>
         </xpath>
     </template>
 </odoo>
