@@ -1,4 +1,15 @@
 from odoo import api, fields, models
+from odoo.addons.sale_management.models.sale_order import SaleOrder as SaleOrderEmail
+
+
+def action_confirm(self):
+    res = super(SaleOrderEmail, self).action_confirm()
+    for order in self:
+        if order.sale_order_template_id and order.sale_order_template_id.mail_template_id:
+            self.sale_order_template_id.mail_template_id.send_mail(order.id, email_values={'subtype_id': 1})
+    return res
+
+SaleOrderEmail.action_confirm = action_confirm
 
 
 class SaleOrder(models.Model):
