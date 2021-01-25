@@ -22,12 +22,14 @@
         'assets.xml',
 
         'security/res_groups.xml',
+        'security/ir.model.access.csv',
 
         'reports/project_task.xml',
         'reports/project_task_swms.xml',
 
         'templates/project_task.xml',
 
+        'views/connection_diagram.xml',
         'views/project_project.xml',
         'views/project_task.xml',
 

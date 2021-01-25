@@ -95,6 +95,64 @@ class ProjectTask(models.Model):
     show_submit_install = fields.Boolean(string="Show Installation Submit", compute='_compute_show_submit_install')
     show_all_install = fields.Boolean(string="Show All Installation Fields", compute='_compute_show_all_install')
 
+    connection_diagram_id = fields.Many2one(comodel_name='connection.diagram', string="Connection Diagram", compute='_compute_connection_diagram')
+
+    def _compute_connection_diagram(self):
+        inverter_cat = self.env['product.category'].search([('name', '=', "Inverters")], limit=1)
+        battery_cat = self.env['product.category'].search([('name', '=', "Storage")], limit=1)
+        meter_cat = self.env['product.category'].search([('name', '=', "Storage")], limit=1)
+        isolator_cat = self.env['product.category'].search([('name', '=', "Isolators")], limit=1)
+
+        inverter_cat_ids = self.env['product.category'].search([('id', 'child_of', inverter_cat.id)])
+        battery_cat_ids = self.env['product.category'].search([('id', 'child_of', battery_cat.id)])
+        meter_cat_ids = self.env['product.category'].search([('id', 'child_of', meter_cat.id)])
+        isolator_cat_ids = self.env['product.category'].search([('id', 'child_of', isolator_cat.id)])
+
+        for rec in self:
+            sale = rec.sale_order_id
+
+            site_phase = rec.x_studio_7_meter_box_phase
+            if site_phase == "Single Phase":
+                site_phase = "single"
+            elif site_phase == "Three Phase":
+                site_phase = "three"
+            else:
+                rec.connection_diagram_id = False
+                continue
+
+            inverter_count = sum(sale.order_line.filtered(lambda l: l.product_id.categ_id in inverter_cat_ids).mapped('product_uom_qty'))
+            if inverter_count > 1 or (rec.x_studio_has_existing_system_installed == 'Yes' and not rec.x_studio_existing_system_to_be_removed):
+                inverter_count = 'multiple'
+            else:
+                inverter_count = 'single'
+
+            battery_count = sum(sale.order_line.filtered(lambda l: l.product_id.categ_id in battery_cat_ids).mapped('product_uom_qty'))
+            if battery_count > 0:
+                battery = 'battery'
+            else:
+                meter_count = sum(sale.order_line.filtered(lambda l: l.product_id.categ_id in meter_cat_ids).mapped('product_uom_qty'))
+                if meter_count > 0:
+                    battery = 'meter'
+                else:
+                    battery = 'none'
+
+            connection = rec.x_studio_switch_board_used
+            if connection == 'Main Switch Board':
+                connection = 'main'
+            else:
+                connection = 'distribution'
+
+            isolator_count = sum(sale.order_line.filtered(lambda l: l.product_id.categ_id in isolator_cat_ids).mapped('product_uom_qty'))
+            isolator = isolator_count > 0
+
+            rec.connection_diagram_id = self.env['connection.diagram.criteria'].search([
+                ('site_phase', '=', site_phase),
+                ('inverter_count', '=', inverter_count),
+                ('battery', '=', battery),
+                ('connection', '=', connection),
+                ('isolator', '=', isolator),
+            ], limit=1).diagram_id
+
     def _compute_show_all_install(self):
         for rec in self:
             if "Replacement" in rec.project_id.name and not rec.has_battery and not rec.has_panel:
