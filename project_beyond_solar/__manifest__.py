@@ -14,7 +14,6 @@
         'project_enterprise',
         'sale',
         'sale_timesheet',
-        'web_studio',
 
         'sale_beyond_solar',
     ],

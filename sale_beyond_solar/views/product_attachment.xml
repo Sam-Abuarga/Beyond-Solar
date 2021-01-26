@@ -1,0 +1,16 @@
+<odoo>
+    <record id="product_attachment_form_view" model="ir.ui.view">
+        <field name="name">product.attachment.form.view</field>
+        <field name="model">product.attachment</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="name"/>
+                    <field name="filename" invisible="1"/>
+                    <field name="file" filename="filename"/>
+                    <field name="type" invisible="1"/>
+                </group>
+            </form>
+        </field>
+    </record>
+</odoo>

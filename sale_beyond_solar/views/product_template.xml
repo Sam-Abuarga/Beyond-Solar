@@ -9,6 +9,13 @@
                     <field name="description_sale_html" nolabel="1" placeholder="This field is show on line quotes."/>
                 </group>
             </xpath>
+
+            <xpath expr="//group[@name='sale']" position="inside">
+                <group name="sale_attachments" string="Attachments">
+                    <field name="warranty_attachment_id" context="{'default_type': 'warranty'}"/>
+                    <field name="datasheet_attachment_id" context="{'default_type': 'datasheet'}"/>
+                </group>
+            </xpath>
         </field>
     </record>
 </odoo>

@@ -15,11 +15,14 @@
         'sale_timesheet',
     ],
     'data': [
+        'security/ir.model.access.csv',
+
         'templates/sale_order_portal.xml',
 
+        'views/product_attachment.xml',
         'views/product_template.xml',
-        'views/project_task.xml',
-        'views/sale_order.xml',
+        # 'views/project_task.xml',
+        # 'views/sale_order.xml',
     ],
     'installable': True,
     'application': False,

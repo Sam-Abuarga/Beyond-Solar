@@ -24,41 +24,41 @@
         </field>
     </record>
     
-    <record id="project_task_form_view" model="ir.ui.view">
-        <field name="name">project.task.form.view</field>
-        <field name="model">project.task</field>
-        <field name="inherit_id" ref="studio_customization.odoo_studio_project__5119c225-c8ce-4217-a856-b219c5cb07ee"/>
-        <field name="arch" type="xml">
-            <xpath expr="//page[@name='studio_page_r1eXn']" position="after">
-                <page string="Installation" name="installation">
-                    <group>
-                        <group string="Job Status">
-                            <field name="install_status"/>
-                            <field name="date_worksheet_start"/>
-                            <field name="date_worksheet_check"/>
-                            <field name="date_worksheet_swms"/>
-                            <field name="date_worksheet_site"/>
-                            <field name="date_worksheet_client_signature"/>
-                            <field name="date_worksheet_install"/>
-                            <field name="date_worksheet_handover"/>
-                            <field name="date_worksheet_finish"/>
-                        </group>
-                        <group string="SWMS">
-                            <field name="additional_swms" attrs="{'invisible': ['|', ('additional_swms', '=', ''), ('additional_swms', '=', False)]}"/>
-                            <field name="recommended_swms" attrs="{'invisible': ['|', ('recommended_swms', '=', ''), ('recommended_swms', '=', False)]}"/>
-                            <field name="swms_signature_names" string="SWMS Signatures"/>
-                            <button type="action" name="%(project_beyond_solar.action_report_project_task_swms)d" string="Download SWMS" class="btn btn-primary" colspan="2" attrs="{'invisible': [('date_worksheet_swms', '=', False)]}"/>
-                        </group>
-                        <group string="Installation">
-                            <field name="variation_description" attrs="{'invisible': ['|', ('variation_description', '=', ''), ('variation_description', '=', False)]}"/>
-                            <field name="install_notes"/>
-                            <button type="object" name="action_email_installation" string="Email Installation" class="btn btn-primary" colspan="2" attrs="{'invisible': [('date_worksheet_install', '=', False)]}"/>
-                        </group>
-                    </group>
-                </page>
-            </xpath>
-        </field>
-    </record>
+<!--    <record id="project_task_form_view" model="ir.ui.view">-->
+<!--        <field name="name">project.task.form.view</field>-->
+<!--        <field name="model">project.task</field>-->
+<!--        <field name="inherit_id" ref="studio_customization.odoo_studio_project__5119c225-c8ce-4217-a856-b219c5cb07ee"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <xpath expr="//page[@name='studio_page_r1eXn']" position="after">-->
+<!--                <page string="Installation" name="installation">-->
+<!--                    <group>-->
+<!--                        <group string="Job Status">-->
+<!--                            <field name="install_status"/>-->
+<!--                            <field name="date_worksheet_start"/>-->
+<!--                            <field name="date_worksheet_check"/>-->
+<!--                            <field name="date_worksheet_swms"/>-->
+<!--                            <field name="date_worksheet_site"/>-->
+<!--                            <field name="date_worksheet_client_signature"/>-->
+<!--                            <field name="date_worksheet_install"/>-->
+<!--                            <field name="date_worksheet_handover"/>-->
+<!--                            <field name="date_worksheet_finish"/>-->
+<!--                        </group>-->
+<!--                        <group string="SWMS">-->
+<!--                            <field name="additional_swms" attrs="{'invisible': ['|', ('additional_swms', '=', ''), ('additional_swms', '=', False)]}"/>-->
+<!--                            <field name="recommended_swms" attrs="{'invisible': ['|', ('recommended_swms', '=', ''), ('recommended_swms', '=', False)]}"/>-->
+<!--                            <field name="swms_signature_names" string="SWMS Signatures"/>-->
+<!--                            <button type="action" name="%(project_beyond_solar.action_report_project_task_swms)d" string="Download SWMS" class="btn btn-primary" colspan="2" attrs="{'invisible': [('date_worksheet_swms', '=', False)]}"/>-->
+<!--                        </group>-->
+<!--                        <group string="Installation">-->
+<!--                            <field name="variation_description" attrs="{'invisible': ['|', ('variation_description', '=', ''), ('variation_description', '=', False)]}"/>-->
+<!--                            <field name="install_notes"/>-->
+<!--                            <button type="object" name="action_email_installation" string="Email Installation" class="btn btn-primary" colspan="2" attrs="{'invisible': [('date_worksheet_install', '=', False)]}"/>-->
+<!--                        </group>-->
+<!--                    </group>-->
+<!--                </page>-->
+<!--            </xpath>-->
+<!--        </field>-->
+<!--    </record>-->
 
     <record id="project_task_simplified_form_view" model="ir.ui.view">
         <field name="name">project.task.simplified.form.view</field>
