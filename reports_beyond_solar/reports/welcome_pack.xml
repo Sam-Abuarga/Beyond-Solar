@@ -1,7 +1,7 @@
 <odoo>
     <template id="report_welcome_pack_document">
         <t t-call="web.basic_layout">
-        <div class="page">
+        <div name="Titla Page" t-if="doc_part == 1" class="page">
             <div style="margin-top: 350px; text-align: center; width: 100%;">
                 <div style="margin: auto;">
                     <h2 class="text-center" style="margin-top: 64px;">
@@ -52,12 +52,12 @@
                 </div>
             </div>
         </div>
-        <div class="page" style="page-break-before:always;">
+        <div name="Thank You" t-if="doc_part == 1" class="page" style="page-break-before:always;">
             <p>Thank you for choosing Beyond Solar for designing and installing rooftop solar PV system at your building.</p>
             <p>This Owner's Manual is compiled under the guidelines mentioned in the Solar PV Retailer Code of Conduct put together by the Clean Energy Council.</p>
             <p>The Clean Energy Council (CEC) is the peak body representing Australia's renewable energy and energy efficiency industry.</p>
         </div>
-        <div class="page" style="page-break-before:always;">
+        <div name="Table of Contents" t-if="doc_part == 1" class="page" style="page-break-before:always;">
             <h1>Table of Contents</h1>
             <ol style="padding-left: 16px;">
                 <li>Table of Content</li>
@@ -81,7 +81,7 @@
                 <li>Annexures</li>
             </ol>
         </div>
-        <div class="page" style="page-break-before:always;">
+        <div name="Contact Information" t-if="doc_part == 1" class="page" style="page-break-before:always;">
             <h1>Contact Information</h1>
             <div style="padding: 5px 20px; background-color: #efefef;">
                 <h2>Installation Company</h2>
@@ -94,7 +94,7 @@
             </div>
 
         </div>
-        <div class="page" style="page-break-before:always;">
+        <div name="Important Safety Information" t-if="doc_part == 1" class="page" style="page-break-before:always;">
             <h1>Important Safety Information</h1>
             <p>A rooftop PV system can produce hundreds or thousands of watts of power at any given time, that can be extremely dangerous and even fatal. There are several
                 important precautions that must be followed by the Owners of the PV system for their own safety.
@@ -113,13 +113,13 @@
                 storage.
             </p>
         </div>
-        <div class="page" style="page-break-before:always;">
+        <div name="Important Signs" t-if="doc_part == 1" class="page" style="page-break-before:always;">
             <h1>Important Signs</h1>
             <p>
                 <img class="fr-fic fr-dib" style="width: 700px;" src="https://www.beyondsolar.com.au/wp-content/uploads/2020/08/PV-Labels-transparent.png"/>
             </p>
         </div>
-        <div class="page" style="page-break-before:always;">
+        <div name="List of Equipment Supplied &amp; Warranties" t-if="doc_part == 1" class="page" style="page-break-before:always;">
             <h1>List of Equipment Supplied &amp; Warranties</h1>
             <table class="table table-bordered table-sm">
                 <tr>
@@ -144,7 +144,7 @@
             </t>
             </table>
         </div>
-        <div class="page" style="page-break-before:always;">
+        <div name="Your PV System" t-if="doc_part == 1" class="page" style="page-break-before:always;">
             <h1>Your PV System</h1>
             <p>How Solar PV System Works:
                 <br/>
@@ -220,7 +220,7 @@
                 blocks stored current from leaking back into the PV panels during times of no generation.
             </p>
         </div>
-        <div class="page" style="page-break-before:always;">
+        <div name="System Performance Estimate" t-if="doc_part == 1" class="page" style="page-break-before:always;">
             <h1>System Performance Estimate</h1>
             <strong>System Size:</strong>
             <span t-esc="doc.x_studio_peak_dc_power_kw"/>
@@ -241,12 +241,9 @@
                  alt="Performance Chart"/>
         </div>
 
-        <div class="page" style="page-break-before:always;">
-            <h1>Connection Diagram</h1>
-            <p>{{embed_images_for_connection_diagram_SLD BASED ON AN IF STATEMENT }}</p><!-- TODO: Implement -->
-        </div>
+        <div name="Connection Diagram" t-if="doc_part == 0"/>
 
-        <div class="page" style="page-break-before:always;">
+        <div name="Shutdown Procedure" t-if="doc_part == 2" class="page" style="page-break-before:always;">
             <h1>Shutdown Procedure</h1>
             <p>PV panels can produce electrical current even when the system is not operating and therefore it must always be treated as live. As a result, even when a system
                 has
@@ -291,7 +288,7 @@
                 </li>
             </ol>
         </div>
-        <div class="page" style="page-break-before:always;">
+        <div name="Maintenance" t-if="doc_part == 2" class="page" style="page-break-before:always;">
             <h1>Maintenance</h1>
             <p>A properly designed and installed PV system can have fault free operation for several years. Like any other hardware, performing normal upkeep and inspection of
                 PV
@@ -409,7 +406,7 @@
             </ul>
             <p>Any maintenance conducted and discrepancy must be noted in the logbook provided.</p>
         </div>
-        <div class="page" style="page-break-before:always;">
+        <div name="Maintenance Schedule" t-if="doc_part == 2" class="page" style="page-break-before:always;">
             <h2>Maintenance Schedule</h2>
             <p>The table below shows the maintenance frequency based on activity.</p>
 
@@ -469,7 +466,7 @@
 
             <p>NOTE: Based on several factors, it is possible that your system might need extra maintenance or repairs. Please contact Beyond Solar for more information.</p>
         </div>
-        <div class="page" style="page-break-before:always;">
+        <div name="Solar Array Log Book" t-if="doc_part == 2" class="page" style="page-break-before:always;">
             <h3>Solar Array Log Book</h3>
             <p>The following logbook must be maintained for all maintenance procedures carried out on this system. Please print and maintain a hard copy of this logbook.</p>
 
@@ -888,7 +885,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="page" style="page-break-before:always;">
+        <div name="Inverter Log Book" t-if="doc_part == 2" class="page" style="page-break-before:always;">
             <h3>Inverter Log Book</h3>
             <table style="width: 100%;" cellspacing="0" cellpadding="0">
                 <tbody style="text-align: center;">
@@ -1228,7 +1225,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="page" style="page-break-before:always;">
+        <div name="Mounting System Installation Details" t-if="doc_part == 2" class="page" style="page-break-before:always;">
             <h1>Mounting System Installation Details</h1>
             <p>Max distance between your brackets/rail feet has been reviewed to meet relevant regulations.</p>
 
@@ -1249,7 +1246,7 @@
         </t>
     </template>
 
-    <report id="action_report_welcome_pack" string="Welcome Pack" model="sale.order" report_type="qweb-pdf"
+    <report id="action_report_welcome_pack" string="Welcome Pack Part 1" model="sale.order" report_type="qweb-pdf"
             file="reports_beyond_solar.report_welcome_pack" name="reports_beyond_solar.report_welcome_pack"/>
 
     <template id="report_welcome_pack_heading">
