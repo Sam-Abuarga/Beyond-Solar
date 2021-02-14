@@ -1,2 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_product_attachment_public,product_attachment_public,model_product_attachment,,1,1,1,1
+access_product_mppt_public,product_mppt_public,model_product_mppt,,1,1,1,1
+access_sale_mppt_public,sale_mppt_public,model_sale_mppt,,1,1,1,1

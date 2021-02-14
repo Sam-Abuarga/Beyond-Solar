@@ -90,41 +90,37 @@
                 </div> <br />
                 <div class="row">
                     <div class="col-12">
+                        <t t-set="inverters" t-value="sale_order.get_customer_mppts()"/>
                         <h4>Panel Orientation and Tilt</h4>
                         <table class="table">
                             <thead>
                                 <tr>
+                                    <th t-if="len(inverters) &gt; 1">Inverter</th>
+                                    <th>Tilt</th>
                                     <th>No of Panels</th>
                                     <th>Tilt</th>
                                     <th>Orientation (Relative to North)</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td><span t-field="sale_order.x_studio_array_one_no_of_panels_1"/></td>
-                                    <td><span t-field="sale_order.x_studio_tilt_angle"/><sup> o</sup></td>
-                                    <td><span t-field="sale_order.x_studio_array_one"/><sup> o</sup></td>
-                                </tr>
-                                <tr t-if="sale_order.x_studio_array_directions in ['2', '3', '4']">
-                                    <td><span t-field="sale_order.x_studio_array_two_no_of_panels_1"/></td>
-                                    <td><span t-field="sale_order.x_studio_array_two_tilt_angle"/><sup> o</sup></td>
-                                    <td><span t-field="sale_order.x_studio_array_two"/><sup> o</sup></td>
-                                </tr>
-                                <tr t-if="sale_order.x_studio_array_directions in ['3', '4']">
-                                    <td><span t-field="sale_order.x_studio_array_three_no_of_panels"/></td>
-                                    <td><span t-field="sale_order.x_studio_array_three_tilt_angle"/><sup> o</sup></td>
-                                    <td><span t-field="sale_order.x_studio_array_three"/><sup> o</sup></td>
-                                </tr>
-                                <tr t-if="sale_order.x_studio_array_directions in ['4']">
-                                    <td><span t-field="sale_order.x_studio_array_four_no_of_panels"/></td>
-                                    <td><span t-field="sale_order.x_studio_array_four_tilt_angle"/><sup> o</sup></td>
-                                    <td><span t-field="sale_order.x_studio_array_four"/><sup> o</sup></td>
-                                </tr>
+                                <t t-foreach="inverters" t-as="inverter">
+                                    <tr t-if="len(inverters) &gt; 1">
+                                        <th colspan="5"><span t-esc="inverter['name']"/></th>
+                                    </tr>
+
+                                    <tr t-foreach="inverter['lines']" t-as="mppt">
+                                        <td t-if="len(inverters) &gt; 1"> </td>
+                                        <td><span t-esc="mppt[0]"/></td>
+                                        <td><span t-esc="mppt[1]"/></td>
+                                        <td><span t-esc="mppt[2]"/><sup> o</sup></td>
+                                        <td><span t-esc="mppt[3]"/><sup> o</sup></td>
+                                    </tr>
+                                </t>
                             </tbody>
                         </table>
-                            <p><small><sup>1</sup>Energy Output is calculated based on historical solar irradiance and temperature data at this location, factoring in panel tilt, orientation, and all of the System Parameters including System Efficiency.</small></p>
-                            <p><small><sup>2</sup>Emission reduction assumes full output usage and 0.87 kg CO2 / kWh based on New South Wales average (National Greenhouse and Energy Reporting (Measurement) Determination 2008).</small></p>
-                            <p><small><sup>3</sup>Assumes full year-round utilisation of generated electricity, and will change based on usage and feed-in tariffs.</small></p>
+                        <p><small><sup>1</sup>Energy Output is calculated based on historical solar irradiance and temperature data at this location, factoring in panel tilt, orientation, and all of the System Parameters including System Efficiency.</small></p>
+                        <p><small><sup>2</sup>Emission reduction assumes full output usage and 0.87 kg CO2 / kWh based on New South Wales average (National Greenhouse and Energy Reporting (Measurement) Determination 2008).</small></p>
+                        <p><small><sup>3</sup>Assumes full year-round utilisation of generated electricity, and will change based on usage and feed-in tariffs.</small></p>
                     </div>
                 </div>
             </section><br />

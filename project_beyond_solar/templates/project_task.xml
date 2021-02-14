@@ -190,49 +190,35 @@
                             <table class="mb16">
                                 <tr>
                                     <th style="padding-right: 15px;">Customer</th>
-                                    <td>
-                                        <span t-field="task.partner_id.name"/>
-                                    </td>
+                                    <td><span t-field="task.partner_id.name"/></td>
                                 </tr>
                                 <tr t-if="task.partner_id.email">
                                     <th style="padding-right: 15px;">Email</th>
-                                    <td>
-                                        <span t-field="task.partner_id.email"/>
-                                    </td>
+                                    <td><span t-field="task.partner_id.email"/></td>
                                 </tr>
                                 <tr t-if="task.partner_id.phone">
                                     <th style="padding-right: 15px;">Phone</th>
-                                    <td>
-                                        <span t-field="task.partner_id.phone"/>
-                                    </td>
+                                    <td><span t-field="task.partner_id.phone"/></td>
                                 </tr>
                                 <tr t-if="task.partner_id.mobile">
                                     <th style="padding-right: 15px;">Mobile</th>
-                                    <td>
-                                        <span t-field="task.partner_id.mobile"/>
-                                    </td>
+                                    <td><span t-field="task.partner_id.mobile"/></td>
                                 </tr>
                                 <tr>
                                     <th style="padding-right: 15px;">Address</th>
-                                    <td>
-                                        <address t-field="task.partner_id" t-options='{"widget": "contact", "fields": ["address"], "no_marker": True}' style="margin-bottom: 0"/>
-                                    </td>
+                                    <td><address t-field="task.partner_id" t-options='{"widget": "contact", "fields": ["address"], "no_marker": True}' style="margin-bottom: 0"/></td>
                                 </tr>
                             </table>
 
                             <h4>Products</h4>
-                            <table class="table">
+                            <table class="table table-sm">
                                 <tr>
                                     <th>Description</th>
                                     <th>Qty</th>
                                 </tr>
                                 <tr t-foreach="task.x_studio_product_list.filtered(lambda l: not l.display_type)" t-as="line">
-                                    <td>
-                                        <span t-field="line.product_id.name"/>
-                                    </td>
-                                    <td>
-                                        <span t-field="line.product_uom_qty"/>
-                                    </td>
+                                    <td><span t-field="line.product_id.name"/></td>
+                                    <td><span t-field="line.product_uom_qty"/></td>
                                 </tr>
                             </table>
                         </div>
@@ -336,60 +322,25 @@
 
                         <div class="col-12 col-md-6 mb16" t-if="task.sale_order_id.has_panel">
                             <h4>Array</h4>
-                            <table class="table">
-                                <tr>
-                                    <th/>
-                                    <th style="padding-left: 10px;">No. of Panels</th>
-                                    <th style="padding-left: 10px;">Azimuth (Degrees)</th>
-                                    <th style="padding-left: 10px;">Tilt Angle</th>
+                            <table class="table table-sm">
+                                <tr style="background-color: #DDDDDD">
+                                    <th>Inverter</th>
+                                    <th style="padding-left: 10px;" class="text-right">No. of Panels</th>
+                                    <th style="padding-left: 10px;" class="text-right">Azimuth (Degrees)</th>
+                                    <th style="padding-left: 10px;" class="text-right">Tilt Angle</th>
+                                    <th style="padding-left: 10px;">Notes</th>
                                 </tr>
-                                <tr>
-                                    <td>Array 1</td>
-                                    <td class="text-right">
-                                        <span t-field="task.x_studio_array_1_number_of_panels"/>
-                                    </td>
-                                    <td class="text-right">
-                                        <span t-field="task.x_studio_array_1_azimuth"/>
-                                    </td>
-                                    <td class="text-right">
-                                        <span t-field="task.x_studio_array_1_tilt_angle"/>
-                                    </td>
-                                </tr>
-                                <tr t-if="task.x_studio_number_of_arrays in ['2', '3', '4']">
-                                    <td>Array 2</td>
-                                    <td class="text-right">
-                                        <span t-field="task.x_studio_array_2_number_of_panels"/>
-                                    </td>
-                                    <td class="text-right">
-                                        <span t-field="task.x_studio_array_2_azimuth"/>
-                                    </td>
-                                    <td class="text-right">
-                                        <span t-field="task.x_studio_array_2_tilt_angle"/>
-                                    </td>
-                                </tr>
-                                <tr t-if="task.x_studio_number_of_arrays in ['3', '4']">
-                                    <td>Array 3</td>
-                                    <td class="text-right">
-                                        <span t-field="task.x_studio_array_3_number_of_panels"/>
-                                    </td>
-                                    <td class="text-right">
-                                        <span t-field="task.x_studio_array_3_azimuth"/>
-                                    </td>
-                                    <td class="text-right">
-                                        <span t-field="task.x_studio_array_3_tilt_angle"/>
-                                    </td>
-                                </tr>
-                                <tr t-if="task.x_studio_number_of_arrays in ['4']">
-                                    <td>Array 4</td>
-                                    <td class="text-right">
-                                        <span t-field="task.x_studio_array_4_number_of_panels"/>
-                                    </td>
-                                    <td class="text-right">
-                                        <span t-field="task.x_studio_array_4_azimuth"/>
-                                    </td>
-                                    <td class="text-right">
-                                        <span t-field="task.x_studio_array_4_tilt_angle"/>
-                                    </td>
+                                <tr t-foreach="task.mppt_ids" t-as="mppt">
+                                    <t t-if="not mppt.mppt_id">
+                                        <th colspan="5"><span t-esc="mppt.name"/></th>
+                                    </t>
+                                    <t t-else="">
+                                        <td><span t-esc="mppt.name"/></td>
+                                        <td class="text-right"><span t-esc="mppt.panel_count_valid"/></td>
+                                        <td class="text-right"><span t-esc="'{:g}'.format(mppt.azimuth_angle_valid)"/></td>
+                                        <td class="text-right"><span t-esc="'{:g}'.format(mppt.tilt_angle_valid)"/></td>
+                                        <td><span t-esc="mppt.notes_valid"/></td>
+                                    </t>
                                 </tr>
                             </table>
                             <table t-if="task.x_studio_array_compatibility_notes">
@@ -943,22 +894,6 @@
                                             <th style="padding-right: 10px;">PV module manufacturer and model number:</th>
                                             <td><span t-field="task.pv_details"/></td>
                                         </tr>
-                                        <tr t-if="task.show_all_install">
-                                            <th>Number of modules in series in a string:</th>
-                                            <td>
-                                                <input type="number" name="modules_in_string" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                                <input type="number" name="modules_in_string" t-att-value="task.modules_in_string" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                                <input type="number" name="modules_in_string" disabled="disabled" t-att-value="task.modules_in_string" t-else=""/><br/>
-                                            </td>
-                                        </tr>
-                                        <tr t-if="task.show_all_install">
-                                            <th>Number of strings in parallel in PV array:</th>
-                                            <td>
-                                                <input type="number" name="strings_in_parallel" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                                <input type="number" name="strings_in_parallel" t-att-value="task.strings_in_parallel" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                                <input type="number" name="strings_in_parallel" disabled="disabled" t-att-value="task.strings_in_parallel" t-else=""/><br/>
-                                            </td>
-                                        </tr>
                                         <tr t-if="task.sale_order_id.has_inverter">
                                             <th>Inverter manufacturer and model number:</th>
                                             <td><span t-field="task.inv_details"/></td>
@@ -981,71 +916,6 @@
                                     <br/>
                                     <h4 t-if="task.show_all_install">PV Array</h4>
                                     <ul t-if="task.show_all_install">
-                                        <li>
-                                            PV array 1 tilt<sup>o</sup>
-                                            <input type="number" step="any" name="array_1_tilt" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                            <input type="number" step="any" name="array_1_tilt" t-att-value="task.x_studio_array_1_tilt_angle" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                            <input type="number" step="any" name="array_1_tilt" disabled="disabled" t-att-value="task.x_studio_array_1_tilt_angle" t-else=""/>
-
-                                            Azimuth
-                                            <input type="number" name="array_1_azimuth" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                            <input type="number" name="array_1_azimuth" t-att-value="task.x_studio_array_1_azimuth" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                            <input type="number" name="array_1_azimuth" disabled="disabled" t-att-value="task.x_studio_array_1_azimuth" t-else=""/>
-
-                                            # of Panels
-                                            <input type="number" name="array_1_count" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                            <input type="number" name="array_1_count" t-att-value="task.x_studio_array_1_number_of_panels" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                            <input type="number" name="array_1_count" disabled="disabled" t-att-value="task.x_studio_array_1_number_of_panels" t-else=""/>
-                                        </li>
-                                        <li t-if="task.x_studio_number_of_arrays in ['2', '3', '4']">
-                                            PV array 2 tilt<sup>o</sup>
-                                            <input type="number" step="any" name="array_2_tilt" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                            <input type="number" step="any" name="array_2_tilt" t-att-value="task.x_studio_array_2_tilt_angle" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                            <input type="number" step="any" name="array_2_tilt" disabled="disabled" t-att-value="task.x_studio_array_2_tilt_angle" t-else=""/>
-
-                                            Azimuth
-                                            <input type="number" name="array_2_azimuth" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                            <input type="number" name="array_2_azimuth" t-att-value="task.x_studio_array_2_azimuth" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                            <input type="number" name="array_2_azimuth" disabled="disabled" t-att-value="task.x_studio_array_2_azimuth" t-else=""/>
-
-                                            # of Panels
-                                            <input type="number" name="array_2_count" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                            <input type="number" name="array_2_count" t-att-value="task.x_studio_array_2_number_of_panels" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                            <input type="number" name="array_2_count" disabled="disabled" t-att-value="task.x_studio_array_2_number_of_panels" t-else=""/>
-                                        </li>
-                                        <li t-if="task.x_studio_number_of_arrays in ['3', '4']">
-                                            PV array 3 tilt<sup>o</sup>
-                                            <input type="number" step="any" name="array_3_tilt" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                            <input type="number" step="any" name="array_3_tilt" t-att-value="task.x_studio_array_3_tilt_angle" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                            <input type="number" step="any" name="array_3_tilt" disabled="disabled" t-att-value="task.x_studio_array_3_tilt_angle" t-else=""/>
-
-                                            Azimuth
-                                            <input type="number" name="array_3_azimuth" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                            <input type="number" name="array_3_azimuth" t-att-value="task.x_studio_array_3_azimuth" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                            <input type="number" name="array_3_azimuth" disabled="disabled" t-att-value="task.x_studio_array_3_azimuth" t-else=""/>
-
-                                            # of Panels
-                                            <input type="number" name="array_3_count" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                            <input type="number" name="array_3_count" t-att-value="task.x_studio_array_3_number_of_panels" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                            <input type="number" name="array_3_count" disabled="disabled" t-att-value="task.x_studio_array_3_number_of_panels" t-else=""/>
-                                        </li>
-                                        <li t-if="task.x_studio_number_of_arrays in ['4']">
-                                            PV array 4 tilt<sup>o</sup>
-                                            <input type="number" step="any" name="array_4_tilt" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                            <input type="number" step="any" name="array_4_tilt" t-att-value="task.x_studio_array_4_tilt_angle" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                            <input type="number" step="any" name="array_4_tilt" disabled="disabled" t-att-value="task.x_studio_array_4_tilt_angle" t-else=""/>
-
-                                            Azimuth
-                                            <input type="number" name="array_4_azimuth" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                            <input type="number" name="array_4_azimuth" t-att-value="task.x_studio_array_4_azimuth" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                            <input type="number" name="array_4_azimuth" disabled="disabled" t-att-value="task.x_studio_array_4_azimuth" t-else=""/>
-
-                                            # of Panels
-                                            <input type="number" name="array_4_count" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                            <input type="number" name="array_4_count" t-att-value="task.x_studio_array_4_number_of_panels" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                            <input type="number" name="array_4_count" disabled="disabled" t-att-value="task.x_studio_array_4_number_of_panels" t-else=""/>
-                                        </li>
-
                                         <li>
                                             <input type="checkbox" name="certified" disabled="disabled" t-if="not task.date_worksheet_site"/>
                                             <input type="checkbox" name="certified" checked="checked" t-elif="task.date_worksheet_site and task.install_array_frame and not task.date_worksheet_install"/>

@@ -92,6 +92,8 @@ class ProjectTask(models.Model):
     positive_resistance = fields.Float(string="Array Positive to Earth", copy=False)
     negative_resistance = fields.Float(string="Array Negative to Earth", copy=False)
 
+    mppt_ids = fields.Many2many(comodel_name='sale.mppt', compute='_compute_mppts', readonly=False)
+
     show_submit_install = fields.Boolean(string="Show Installation Submit", compute='_compute_show_submit_install')
     show_all_install = fields.Boolean(string="Show All Installation Fields", compute='_compute_show_all_install')
 
@@ -225,22 +227,22 @@ class ProjectTask(models.Model):
         panel_cat_ids = self.env['product.category'].search([('id', 'child_of', panel_cat.id)]).ids
 
         for rec in self:
-            inverter = False
-            panel = False
+            inverter = self.env['product.product']
+            panel = self.env['product.product']
 
-            for line in rec.x_studio_product_list.filtered(lambda l: not l.display_type):
+            for line in rec.sale_order_id.order_line.filtered(lambda l: not l.display_type):
                 id = line.product_id.categ_id.id
                 if id in inverter_cat_ids:
-                    inverter = line.product_id
+                    inverter |= line.product_id
                 if id in panel_cat_ids:
-                    panel = line.product_id
+                    panel |= line.product_id
 
             if panel:
-                rec.pv_details = panel.name
+                rec.pv_details = ', '.join(p.name for p in panel)
             else:
                 rec.pv_details = ''
             if inverter:
-                rec.inv_details = inverter.name
+                rec.inv_details = ', '.join(i.name for i in inverter)
             else:
                 rec.inv_details = ''
 
@@ -261,6 +263,10 @@ class ProjectTask(models.Model):
 
         for rec in self:
             rec.inverter_count = len(rec.sale_order_id.order_line.filtered(lambda l: l.product_id.categ_id.id in inverter_cat_ids))
+
+    def _compute_mppts(self):
+        for rec in self:
+            rec.mppt_ids = rec.sale_order_id.mppt_ids
 
     def get_status(self):
         self.ensure_one()
