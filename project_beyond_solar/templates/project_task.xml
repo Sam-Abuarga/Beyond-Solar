@@ -1059,20 +1059,32 @@
                                         <h4>Inverter</h4>
                                         <ul>
                                             <li>
+                                                <span t-if="not task.date_worksheet_site">-</span>
+                                                <select name="battery_connection" t-elif="task.date_worksheet_site and not task.date_worksheet_install">
+                                                    <option value="">Select</option>
+                                                    <option value="db" selected="selected" t-if="task.install_battery_connection == 'db'">DB</option>
+                                                    <option value="db" t-else="">DB</option>
+                                                    <option value="msb" selected="selected" t-if="task.install_battery_connection == 'msb'">MSB</option>
+                                                    <option value="msb" t-else="">MSB</option>
+                                                </select>
+                                                <span t-field="task.install_battery_connection" t-else=""/>
+                                                <b style="color: red;" t-if="task.install_saved and not task.date_worksheet_install and not task.install_battery_connection">* </b>
+                                                Inverter connection point.
+                                            </li>
+                                            <li>
+                                                <input type="checkbox" name="battery_isolator" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                                <input type="checkbox" name="battery_isolator" checked="checked" t-elif="task.date_worksheet_site and task.install_battery_ac_isolator and not task.date_worksheet_install"/>
+                                                <input type="checkbox" name="battery_isolator" t-elif="task.date_worksheet_site and not task.install_battery_ac_isolator"/>
+                                                <input type="checkbox" name="battery_isolator" disabled="disabled" checked="checked" t-else=""/>
+                                                Is AC isolator used.
+                                            </li>
+                                            <li>
                                                 <input type="checkbox" name="isolator" disabled="disabled" t-if="not task.date_worksheet_site"/>
                                                 <input type="checkbox" name="isolator" checked="checked" t-elif="task.date_worksheet_site and task.install_inverter_pv_isolator and not task.date_worksheet_install"/>
                                                 <input type="checkbox" name="isolator" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
                                                 <input type="checkbox" name="isolator" disabled="disabled" checked="checked" t-else=""/>
                                                 <b style="color: red;" t-if="task.install_saved and not task.date_worksheet_install and not task.install_inverter_pv_isolator">* </b>
                                                 PV array isolator mounted adjacent to the inverter.
-                                            </li>
-                                            <li>
-                                                <input type="checkbox" name="isolator_output" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                                <input type="checkbox" name="isolator_output" checked="checked" t-elif="task.date_worksheet_site and task.install_inverter_ac_isolator and not task.date_worksheet_install"/>
-                                                <input type="checkbox" name="isolator_output" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                                <input type="checkbox" name="isolator" disabled="disabled" checked="checked" t-elif="task.install_inverter_pv_isolator"/>
-                                                <input type="checkbox" name="isolator" disabled="disabled" t-else=""/>
-                                                AC isolator mounted adjacent to each group of micro inverters.
                                             </li>
                                             <li>
                                                 <input type="checkbox" name="breaker" disabled="disabled" t-if="not task.date_worksheet_site"/>
@@ -1119,124 +1131,49 @@
                                     <table class="table table-sm" t-if="task.show_all_install">
                                         <tr>
                                             <th/>
-                                            <th>Polarity (+/-)</th>
                                             <th>Operating Voltage</th>
                                             <th>Short Circuit</th>
                                             <th>Operating Current</th>
+                                            <th>Array positive to earth</th>
+                                            <th>Array negative to earth</th>
+                                        </tr>
+                                        <tr t-foreach="task.mppt_ids" t-as="mppt">
+                                            <t t-if="not mppt.mppt_id">
+                                                <th colspan="6"><span t-esc="mppt.name"/></th>
+                                            </t>
+                                            <t t-elif="not task.date_worksheet_site">
+                                                <td><span t-esc="mppt.name"/></td>
+                                                <td><input type="number" step="any" disabled="disabled"/></td>
+                                                <td><input type="number" step="any" disabled="disabled"/></td>
+                                                <td><input type="number" step="any" disabled="disabled"/></td>
+                                                <td t-if="task.show_all_install"><input type="number" step="any" disabled="disabled"/></td>
+                                                <td t-if="task.show_all_install"><input type="number" step="any" disabled="disabled"/></td>
+                                            </t>
+                                            <t t-elif="task.date_worksheet_site and not task.date_worksheet_install">
+                                                <td><span t-esc="mppt.name"/></td>
+                                                <td><input type="number" step="any" t-att-name="'mppt_var_{}_voltage'.format(mppt.id)" t-att-value="mppt.voltage"/></td>
+                                                <td><input type="number" step="any" t-att-name="'mppt_var_{}_short'.format(mppt.id)" t-att-value="mppt.short_circuit"/></td>
+                                                <td><input type="number" step="any" t-att-name="'mppt_var_{}_current'.format(mppt.id)" t-att-value="mppt.operating_current"/></td>
+                                                <td t-if="task.show_all_install"><input type="number" step="any" t-att-name="'mppt_var_{}_ins_positive'.format(mppt.id)" t-att-value="mppt.insulation_positive" style="max-width: 85%;"/> MΩ</td>
+                                                <td t-if="task.show_all_install"><input type="number" step="any" t-att-name="'mppt_var_{}_ins_negative'.format(mppt.id)" t-att-value="mppt.insulation_negative" style="max-width: 85%;"/> MΩ</td>
+                                            </t>
+                                            <t t-elif="task.date_worksheet_install">
+                                                <td><span t-esc="mppt.name"/></td>
+                                                <td><input type="number" step="any" t-att-value="mppt.voltage" disabled="disabled"/></td>
+                                                <td><input type="number" step="any" t-att-value="mppt.short_circuit" disabled="disabled"/></td>
+                                                <td><input type="number" step="any" t-att-value="mppt.operating_current" disabled="disabled"/></td>
+                                                <td t-if="task.show_all_install"><input type="number" step="any" t-att-value="mppt.insulation_positive" disabled="disabled" style="max-width: 85%;"/> MΩ</td>
+                                                <td t-if="task.show_all_install"><input type="number" step="any" t-att-value="mppt.insulation_negative" disabled="disabled" style="max-width: 85%;"/> MΩ</td>
+                                            </t>
                                         </tr>
                                         <tr>
-                                            <th>String 1</th>
-                                            <td>
-                                                <input type="text" name="s1_polarity" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                                <input type="text" name="s1_polarity" t-att-value="task.s1_polarity" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                                <input type="text" name="s1_polarity" t-att-value="task.s1_polarity" disabled="disabled" t-else=""/>
-                                            </td>
-                                            <td>
-                                                <input type="number" step="any" name="s1_voltage" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                                <input type="number" step="any" name="s1_voltage" t-att-value="task.s1_voltage" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                                <input type="number" step="any" name="s1_voltage" t-att-value="task.s1_voltage" disabled="disabled" t-else=""/> V
-                                            </td>
-                                            <td>
-                                                <input type="number" step="any" name="s1_short_circuit" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                                <input type="number" step="any" name="s1_short_circuit" t-att-value="task.s1_short_circuit" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                                <input type="number" step="any" name="s1_short_circuit" t-att-value="task.s1_short_circuit" disabled="disabled" t-else=""/> A
-                                            </td>
-                                            <td>
-                                                <input type="number" step="any" name="s1_operating_current" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                                <input type="number" step="any" name="s1_operating_current" t-att-value="task.s1_operating_current" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                                <input type="number" step="any" name="s1_operating_current" t-att-value="task.s1_operating_current" disabled="disabled" t-else=""/> A
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th>String 2</th>
-                                            <td>
-                                                <input type="text" name="s2_polarity" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                                <input type="text" name="s2_polarity" t-att-value="task.s2_polarity" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                                <input type="text" name="s2_polarity" t-att-value="task.s2_polarity" disabled="disabled" t-else=""/>
-                                            </td>
-                                            <td>
-                                                <input type="number" step="any" name="s2_voltage" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                                <input type="number" step="any" name="s2_voltage" t-att-value="task.s2_voltage" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                                <input type="number" step="any" name="s2_voltage" t-att-value="task.s2_voltage" disabled="disabled" t-else=""/> V
-                                            </td>
-                                            <td>
-                                                <input type="number" step="any" name="s2_short_circuit" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                                <input type="number" step="any" name="s2_short_circuit" t-att-value="task.s2_short_circuit" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                                <input type="number" step="any" name="s2_short_circuit" t-att-value="task.s2_short_circuit" disabled="disabled" t-else=""/> A
-                                            </td>
-                                            <td>
-                                                <input type="number" step="any" name="s2_operating_current" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                                <input type="number" step="any" name="s2_operating_current" t-att-value="task.s2_operating_current" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                                <input type="number" step="any" name="s2_operating_current" t-att-value="task.s2_operating_current" disabled="disabled" t-else=""/> A
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th>String 3</th>
-                                            <td>
-                                                <input type="text" name="s3_polarity" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                                <input type="text" name="s3_polarity" t-att-value="task.s3_polarity" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                                <input type="text" name="s3_polarity" t-att-value="task.s3_polarity" disabled="disabled" t-else=""/>
-                                            </td>
-                                            <td>
-                                                <input type="number" step="any" name="s3_voltage" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                                <input type="number" step="any" name="s3_voltage" t-att-value="task.s3_voltage" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                                <input type="number" step="any" name="s3_voltage" t-att-value="task.s3_voltage" disabled="disabled" t-else=""/> V
-                                            </td>
-                                            <td>
-                                                <input type="number" step="any" name="s3_short_circuit" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                                <input type="number" step="any" name="s3_short_circuit" t-att-value="task.s3_short_circuit" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                                <input type="number" step="any" name="s3_short_circuit" t-att-value="task.s3_short_circuit" disabled="disabled" t-else=""/> A
-                                            </td>
-                                            <td>
-                                                <input type="number" step="any" name="s3_operating_current" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                                <input type="number" step="any" name="s3_operating_current" t-att-value="task.s3_operating_current" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                                <input type="number" step="any" name="s3_operating_current" t-att-value="task.s3_operating_current" disabled="disabled" t-else=""/> A
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th>String 4</th>
-                                            <td>
-                                                <input type="text" name="s4_polarity" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                                <input type="text" name="s4_polarity" t-att-value="task.s4_polarity" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                                <input type="text" name="s4_polarity" t-att-value="task.s4_polarity" disabled="disabled" t-else=""/>
-                                            </td>
-                                            <td>
-                                                <input type="number" step="any" name="s4_voltage" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                                <input type="number" step="any" name="s4_voltage" t-att-value="task.s4_voltage" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                                <input type="number" step="any" name="s4_voltage" t-att-value="task.s4_voltage" disabled="disabled" t-else=""/> V
-                                            </td>
-                                            <td>
-                                                <input type="number" step="any" name="s4_short_circuit" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                                <input type="number" step="any" name="s4_short_circuit" t-att-value="task.s4_short_circuit" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                                <input type="number" step="any" name="s4_short_circuit" t-att-value="task.s4_short_circuit" disabled="disabled" t-else=""/> A
-                                            </td>
-                                            <td>
-                                                <input type="number" step="any" name="s4_operating_current" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                                <input type="number" step="any" name="s4_operating_current" t-att-value="task.s4_operating_current" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                                <input type="number" step="any" name="s4_operating_current" t-att-value="task.s4_operating_current" disabled="disabled" t-else=""/> A
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th>Calculated<br/>Max Voltage</th><td/>
+                                            <th>Max Voltage</th><td/>
                                             <td>
                                                 <input type="number" step="any" name="tot_voltage" t-att-value="task.tot_voltage"/> V
                                             </td>
-                                            <td/><td/>
+                                            <td colspan="3"></td>
                                         </tr>
                                     </table>
-                                    <h4 t-if="task.show_all_install">Insulation Resistance Measurements</h4>
-                                    <p t-if="task.show_all_install">
-                                        Array positive to earth
-                                        <input type="number" step="any" name="positive_resistance" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                        <input type="number" step="any" name="positive_resistance" t-att-value="task.positive_resistance" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                        <input type="number" step="any" name="positive_resistance" t-att-value="task.positive_resistance" disabled="disabled" t-else=""/>
-                                        MΩ<br/><br/>
-                                        Array negative to earth
-                                        <input type="number" step="any" name="negative_resistance" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                        <input type="number" step="any" name="negative_resistance" t-att-value="task.negative_resistance" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                        <input type="number" step="any" name="negative_resistance" t-att-value="task.negative_resistance" disabled="disabled" t-else=""/>
-                                        MΩ<br/><br/>
-                                    </p>
                                     Notes:<br/>
                                     <textarea name="install_notes" disabled="disabled" t-if="not task.date_worksheet_site" style="width: 100%"/>
                                     <textarea name="install_notes" t-esc="task.install_notes or ''" t-elif="task.date_worksheet_site and not task.date_worksheet_install" style="width: 100%"/>

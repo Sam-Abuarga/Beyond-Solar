@@ -138,23 +138,12 @@ class Task(CustomerPortal):
             return http.request.not_found()
 
         fields = {
-            'array_1_azimuth': 'x_studio_array_1_azimuth',
-            'array_2_azimuth': 'x_studio_array_2_azimuth',
-            'array_3_azimuth': 'x_studio_array_3_azimuth',
-            'array_4_azimuth': 'x_studio_array_4_azimuth',
-            'array_1_count': 'x_studio_array_1_number_of_panels',
-            'array_2_count': 'x_studio_array_2_number_of_panels',
-            'array_3_count': 'x_studio_array_3_number_of_panels',
-            'array_4_count': 'x_studio_array_4_number_of_panels',
-            's1_polarity': 's1_polarity',
-            's2_polarity': 's2_polarity',
-            's3_polarity': 's3_polarity',
-            's4_polarity': 's4_polarity',
             'modules_in_string': 'modules_in_string',
             'strings_in_parallel': 'strings_in_parallel',
             'inverter_count': 'inverter_count',
             'mppt_count': 'mppt_count',
-            'install_notes': 'install_notes'
+            'install_notes': 'install_notes',
+            'battery_connection': 'install_battery_connection',
         }
 
         boolean_fields = {
@@ -174,29 +163,23 @@ class Task(CustomerPortal):
             'inverter_manufacturer': 'install_inverter_install',
             'inverter_loss': 'install_inverter_power',
             'inverter_delay': 'install_inverter_resume',
+            'battery_isolator': 'install_battery_ac_isolator',
         }
 
         float_fields = {
-            's1_voltage': 's1_voltage',
-            's1_short_circuit': 's1_short_circuit',
-            's1_operating_current': 's1_operating_current',
-            's2_voltage': 's2_voltage',
-            's2_short_circuit': 's2_short_circuit',
-            's2_operating_current': 's2_operating_current',
-            's3_voltage': 's3_voltage',
-            's3_short_circuit': 's3_short_circuit',
-            's3_operating_current': 's3_operating_current',
-            's4_voltage': 's4_voltage',
-            's4_short_circuit': 's4_short_circuit',
-            's4_operating_current': 's4_operating_current',
             'tot_voltage': 'tot_voltage',
             'positive_resistance': 'positive_resistance',
             'negative_resistance': 'negative_resistance',
-            'array_1_tilt': 'x_studio_array_1_tilt_angle',
-            'array_2_tilt': 'x_studio_array_2_tilt_angle',
-            'array_3_tilt': 'x_studio_array_3_tilt_angle',
-            'array_4_tilt': 'x_studio_array_4_tilt_angle',
         }
+
+        mppt_fields = {
+            'voltage': 'voltage',
+            'short': 'short_circuit',
+            'current': 'operating_current',
+            'ins_positive': 'insulation_positive',
+            'ins_negative': 'insulation_negative',
+        }
+
         for field in fields:
             if field in kwargs:
                 task[fields[field]] = kwargs[field]
@@ -207,6 +190,11 @@ class Task(CustomerPortal):
         for field in float_fields:
             if field in kwargs:
                 task[float_fields[field]] = float(kwargs[field] or 0)
+
+        for field in kwargs:
+            if field.startswith('mppt_var_'):
+                id, field_name = field.replace('mppt_var_', '').split('_', 1)
+                request.env['sale.mppt'].browse(int(id)).write({mppt_fields[field_name]: float(kwargs[field] or 0)})
 
         task.install_saved = True
 

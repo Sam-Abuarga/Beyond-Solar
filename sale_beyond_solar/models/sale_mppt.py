@@ -24,6 +24,12 @@ class SaleMppt(models.Model):
     tilt_angle_valid = fields.Float(string="Tile Angle")
     notes_valid = fields.Text(string="Notes")
 
+    voltage = fields.Float(string="Operating Voltage")
+    short_circuit = fields.Float(string="Short Circuit")
+    operating_current = fields.Float(string="Operating Current")
+    insulation_positive = fields.Float(string="Array Positive to Earth")
+    insulation_negative = fields.Float(string="Array Negative to Earth")
+
     @api.depends('mppt_id')
     def _compute_header(self):
         for rec in self:
