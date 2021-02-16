@@ -55,16 +55,22 @@
 
                             </group>
                         </group>
-                        <group name="validation_switchboard_left">
+                        <group string="Switch Board Profile" name="validation_switchboard_left" atts="{'invisible': ['&amp;', ('has_battery', '=', False), '|', ('has_panel', '=', False), ('has_inverter', '=', False)]}">
 
                         </group>
-                        <group name="validation_switchboard_right">
+                        <group string="Switch Board" name="validation_switchboard_right" atts="{'invisible': ['&amp;', ('has_battery', '=', False), '|', ('has_panel', '=', False), ('has_inverter', '=', False)]}">
 
                         </group>
-                        <group name="validation_inverter_left">
+                        <group string="Inverter Profile" name="validation_inverter_left" atts="{'invisible': [('has_inverter', '=', False)]}">
 
                         </group>
-                        <group name="validation_inverter_right">
+                        <group string="Inverter Location" name="validation_inverter_right" atts="{'invisible': [('has_inverter', '=', False)]}">
+
+                        </group>
+                        <group string="Battery Profile" name="validation_battery_left" atts="{'invisible': [('has_battery', '=', False)]}">
+
+                        </group>
+                        <group string="Battery Location" name="validation_battery_right" atts="{'invisible': [('has_battery', '=', False)]}">
 
                         </group>
                     </group>
