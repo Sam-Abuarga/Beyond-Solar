@@ -38,39 +38,40 @@
                             <field name="has_inverter" invisible="1"/>
                             <field name="has_panel" invisible="1"/>
                         </group>
-                        <group attrs="{'invisible': [('has_panel', '=', False)]}" name="validation_array" colspan="2" col="4">
-                            <group string="Array Profile" name="validation_array_left" colspan="3">
-                                <field name="mppt_ids" nolabel="1" colspan="2">
-                                    <tree editable="bottom" create="0" delete="0">
-                                        <field name="name"/>
-                                        <field name="mppt_id" invisible="1"/>
-                                        <field name="panel_count_valid" attrs="{'invisible': [('mppt_id', '=', False)]}"/>
-                                        <field name="azimuth_angle_valid" attrs="{'invisible': [('mppt_id', '=', False)]}"/>
-                                        <field name="tilt_angle_valid" attrs="{'invisible': [('mppt_id', '=', False)]}"/>
-                                        <field name="notes_valid" attrs="{'invisible': [('mppt_id', '=', False)]}"/>
-                                    </tree>
-                                </field>
-                            </group>
-                            <group string="Array Layout" name="validation_array_right" colspan="1">
-
-                            </group>
+                        <group colspan="2" attrs="{'invisible': [('has_panel', '=', False)]}">
+                            <field name="mppt_ids" nolabel="1" colspan="2">
+                                <tree editable="bottom" create="0" delete="0">
+                                    <field name="name"/>
+                                    <field name="mppt_id" invisible="1"/>
+                                    <field name="panel_count_valid" attrs="{'invisible': [('mppt_id', '=', False)]}"/>
+                                    <field name="azimuth_angle_valid" attrs="{'invisible': [('mppt_id', '=', False)]}"/>
+                                    <field name="tilt_angle_valid" attrs="{'invisible': [('mppt_id', '=', False)]}"/>
+                                    <field name="notes_valid" attrs="{'invisible': [('mppt_id', '=', False)]}"/>
+                                </tree>
+                            </field>
                         </group>
-                        <group string="Switch Board Profile" name="validation_switchboard_left" atts="{'invisible': ['&amp;', ('has_battery', '=', False), '|', ('has_panel', '=', False), ('has_inverter', '=', False)]}">
+                        <group string="Array Profile" name="validation_array_left" attrs="{'invisible': [('has_panel', '=', False)]}">
 
                         </group>
-                        <group string="Switch Board" name="validation_switchboard_right" atts="{'invisible': ['&amp;', ('has_battery', '=', False), '|', ('has_panel', '=', False), ('has_inverter', '=', False)]}">
+                        <group string="Array Layout" name="validation_array_right" attrs="{'invisible': [('has_panel', '=', False)]}">
 
                         </group>
-                        <group string="Inverter Profile" name="validation_inverter_left" atts="{'invisible': [('has_inverter', '=', False)]}">
+                        <group string="Switch Board Profile" name="validation_switchboard_left" attrs="{'invisible': ['&amp;', ('has_battery', '=', False), '|', ('has_panel', '=', False), ('has_inverter', '=', False)]}">
 
                         </group>
-                        <group string="Inverter Location" name="validation_inverter_right" atts="{'invisible': [('has_inverter', '=', False)]}">
+                        <group string="Switch Board Location" name="validation_switchboard_right" attrs="{'invisible': ['&amp;', ('has_battery', '=', False), '|', ('has_panel', '=', False), ('has_inverter', '=', False)]}">
 
                         </group>
-                        <group string="Battery Profile" name="validation_battery_left" atts="{'invisible': [('has_battery', '=', False)]}">
+                        <group string="Inverter Profile" name="validation_inverter_left" attrs="{'invisible': [('has_inverter', '=', False)]}">
 
                         </group>
-                        <group string="Battery Location" name="validation_battery_right" atts="{'invisible': [('has_battery', '=', False)]}">
+                        <group string="Inverter Location" name="validation_inverter_right" attrs="{'invisible': [('has_inverter', '=', False)]}">
+
+                        </group>
+                        <group string="Battery Profile" name="validation_battery_left" attrs="{'invisible': [('has_battery', '=', False)]}">
+
+                        </group>
+                        <group string="Battery Location" name="validation_battery_right" attrs="{'invisible': [('has_battery', '=', False)]}">
 
                         </group>
                     </group>
@@ -91,7 +92,7 @@
 
                         </group>
                         <group string="Authority Information" name="confirmed_booking">
-                            <field name="user_id"/>
+                            <xpath expr="//field[@name='user_id']" position="move"/>
                             <field name="planned_date_begin"/>
                             <field name="planned_date_end"/>
                         </group>
