@@ -29,17 +29,105 @@
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project.view_task_form2"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='sequence']" position="after">
-                <field name="mppt_ids">
-                    <tree editable="bottom" create="0" delete="0">
-                        <field name="name"/>
-                        <field name="mppt_id" invisible="1"/>
-                        <field name="panel_count_valid" attrs="{'invisible': [('mppt_id', '=', False)]}"/>
-                        <field name="azimuth_angle_valid" attrs="{'invisible': [('mppt_id', '=', False)]}"/>
-                        <field name="tilt_angle_valid" attrs="{'invisible': [('mppt_id', '=', False)]}"/>
-                        <field name="notes_valid" attrs="{'invisible': [('mppt_id', '=', False)]}"/>
-                    </tree>
-                </field>
+            <xpath expr="//notebook" position="inside">
+                <page string="Validation" name="validation">
+                    <group>
+                        <group colspan="2" name="validation_upper">
+                            <field name="has_battery" invisible="1"/>
+                            <field name="has_micro_inverter" invisible="1"/>
+                            <field name="has_inverter" invisible="1"/>
+                            <field name="has_panel" invisible="1"/>
+                        </group>
+                        <group attrs="{'invisible': [('has_panel', '=', False)]}" name="validation_array" colspan="2" col="4">
+                            <group string="Array Profile" name="validation_array_left" colspan="3">
+                                <field name="mppt_ids" nolabel="1" colspan="2">
+                                    <tree editable="bottom" create="0" delete="0">
+                                        <field name="name"/>
+                                        <field name="mppt_id" invisible="1"/>
+                                        <field name="panel_count_valid" attrs="{'invisible': [('mppt_id', '=', False)]}"/>
+                                        <field name="azimuth_angle_valid" attrs="{'invisible': [('mppt_id', '=', False)]}"/>
+                                        <field name="tilt_angle_valid" attrs="{'invisible': [('mppt_id', '=', False)]}"/>
+                                        <field name="notes_valid" attrs="{'invisible': [('mppt_id', '=', False)]}"/>
+                                    </tree>
+                                </field>
+                            </group>
+                            <group string="Array Layout" name="validation_array_right" colspan="1">
+
+                            </group>
+                        </group>
+                        <group name="validation_switchboard_left">
+
+                        </group>
+                        <group name="validation_switchboard_right">
+
+                        </group>
+                        <group name="validation_inverter_left">
+
+                        </group>
+                        <group name="validation_inverter_right">
+
+                        </group>
+                    </group>
+                </page>
+                <page string="Authority" name="authority">
+                    <group>
+                        <group string="Application Information" name="application_information">
+
+                        </group>
+                        <group string="Authority Information" name="authority_information">
+
+                        </group>
+                    </group>
+                </page>
+                <page string="Booking" name="booking">
+                    <group>
+                        <group string="Project Details" name="project_details">
+
+                        </group>
+                        <group string="Authority Information" name="confirmed_booking">
+                            <field name="user_id"/>
+                            <field name="planned_date_begin"/>
+                            <field name="planned_date_end"/>
+                        </group>
+                    </group>
+                </page>
+                <page string="Installation" name="installation">
+                    <group>
+                        <group string="Job Status" name="job_status">
+                            <field name="install_status"/>
+                            <field name="date_worksheet_start"/>
+                            <field name="date_worksheet_check"/>
+                            <field name="date_worksheet_swms"/>
+                            <field name="date_worksheet_site"/>
+                            <field name="date_worksheet_client_signature"/>
+                            <field name="date_worksheet_install"/>
+                            <field name="date_worksheet_handover"/>
+                            <field name="date_worksheet_finish"/>
+                        </group>
+                        <group string="SWMS" name="swms">
+                            <field name="swms_signature_names"/>
+                        </group>
+                        <group string="Installation" name="installation_inner">
+                            <field name="install_notes"/>
+                        </group>
+                    </group>
+                </page>
+                <page string="QA / QC" name="qa">
+                    <group>
+                        <group string="List of Tasks" name="task_list">
+
+                        </group>
+                        <group string="DER" name="qa_der">
+
+                        </group>
+                        <group string="CCEW" name="qa_ccew">
+
+                        </group>
+                        <group string="STC" name="qa_stc">
+
+                        </group>
+                    </group>
+                </page>
             </xpath>
         </field>
     </record>
