@@ -10,4 +10,10 @@
             <script type="text/javascript" src="/project_beyond_solar/static/src/js/map_renderer.js"></script>
         </xpath>
     </template>
+
+    <template id="assets_frontend" name="Beyond Solar Project Frontend Assets" inherit_id="web.assets_frontend">
+        <xpath expr="link[last()]" position="after">
+            <link rel="stylesheet" type="text/scss" href="/project_beyond_solar/static/src/scss/project.scss"/>
+        </xpath>
+    </template>
 </odoo>

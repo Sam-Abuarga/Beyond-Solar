@@ -443,7 +443,7 @@
                             </li>
                         </ul>
 
-                        <div class="tab-content mt16" id="worksheets" style="padding: 15px;">
+                        <div class="tab-content mt16" id="worksheets" style="padding: 15px; max-width: 100%;">
                             <div id="tab-check" t-attf-class="tab-pane fade {{'show active' if not task.date_worksheet_check else ''}}">
 
                                 <form t-attf-action="/my/task/{{task.id}}/worksheet/check">
@@ -1114,18 +1114,19 @@
                                             <li>IF POLARITY IS REVERSED AT THE INVERTER DAMAGE MAY OCCUR TO THE INVERTER.</li>
                                         </ul>
                                     </div>
-                                    <table class="table table-sm" t-if="task.show_all_install">
+                                    <table class="table table-sm table-sm-inputs" t-if="task.show_all_install">
                                         <tr>
                                             <th/>
-                                            <th>Operating Voltage</th>
-                                            <th>Short Circuit</th>
-                                            <th>Operating Current</th>
-                                            <th>Array positive to earth</th>
-                                            <th>Array negative to earth</th>
+                                            <th width="12%" style="max-width: 100px;">Operating<br/>Voltage (V)</th>
+                                            <th width="12%" style="max-width: 100px;">Short<br/>Circuit (A)</th>
+                                            <th width="12%" style="max-width: 100px;">Operating<br/>Current (A)</th>
+                                            <th width="12%" style="max-width: 100px;" t-if="task.show_all_install">Array positive<br/>to earth (MΩ)</th>
+                                            <th width="12%" t-if="task.show_all_install">Array negative<br/>to earth (MΩ)</th>
+                                            <th>Notes</th>
                                         </tr>
                                         <tr t-foreach="task.mppt_ids" t-as="mppt">
                                             <t t-if="not mppt.mppt_id">
-                                                <th colspan="6"><span t-esc="mppt.name"/></th>
+                                                <th colspan="7"><span t-esc="mppt.name"/></th>
                                             </t>
                                             <t t-elif="not task.date_worksheet_site">
                                                 <td><span t-esc="mppt.name"/></td>
@@ -1134,30 +1135,33 @@
                                                 <td><input type="number" step="any" disabled="disabled"/></td>
                                                 <td t-if="task.show_all_install"><input type="number" step="any" disabled="disabled"/></td>
                                                 <td t-if="task.show_all_install"><input type="number" step="any" disabled="disabled"/></td>
+                                                <td><span t-field="mppt.notes_valid"/></td>
                                             </t>
                                             <t t-elif="task.date_worksheet_site and not task.date_worksheet_install">
                                                 <td><span t-esc="mppt.name"/></td>
                                                 <td><input type="number" step="any" t-att-name="'mppt_var_{}_voltage'.format(mppt.id)" t-att-value="mppt.voltage"/></td>
                                                 <td><input type="number" step="any" t-att-name="'mppt_var_{}_short'.format(mppt.id)" t-att-value="mppt.short_circuit"/></td>
                                                 <td><input type="number" step="any" t-att-name="'mppt_var_{}_current'.format(mppt.id)" t-att-value="mppt.operating_current"/></td>
-                                                <td t-if="task.show_all_install"><input type="number" step="any" t-att-name="'mppt_var_{}_ins_positive'.format(mppt.id)" t-att-value="mppt.insulation_positive" style="max-width: 85%;"/> MΩ</td>
-                                                <td t-if="task.show_all_install"><input type="number" step="any" t-att-name="'mppt_var_{}_ins_negative'.format(mppt.id)" t-att-value="mppt.insulation_negative" style="max-width: 85%;"/> MΩ</td>
+                                                <td t-if="task.show_all_install"><input type="number" step="any" t-att-name="'mppt_var_{}_ins_positive'.format(mppt.id)" t-att-value="mppt.insulation_positive"/></td>
+                                                <td t-if="task.show_all_install"><input type="number" step="any" t-att-name="'mppt_var_{}_ins_negative'.format(mppt.id)" t-att-value="mppt.insulation_negative"/></td>
+                                                <td><textarea t-att-name="'mppt_var_{}_notes_valid'.format(mppt.id)" t-esc="mppt.notes_valid or ''"/></td>
                                             </t>
                                             <t t-elif="task.date_worksheet_install">
                                                 <td><span t-esc="mppt.name"/></td>
                                                 <td><input type="number" step="any" t-att-value="mppt.voltage" disabled="disabled"/></td>
                                                 <td><input type="number" step="any" t-att-value="mppt.short_circuit" disabled="disabled"/></td>
                                                 <td><input type="number" step="any" t-att-value="mppt.operating_current" disabled="disabled"/></td>
-                                                <td t-if="task.show_all_install"><input type="number" step="any" t-att-value="mppt.insulation_positive" disabled="disabled" style="max-width: 85%;"/> MΩ</td>
-                                                <td t-if="task.show_all_install"><input type="number" step="any" t-att-value="mppt.insulation_negative" disabled="disabled" style="max-width: 85%;"/> MΩ</td>
+                                                <td t-if="task.show_all_install"><input type="number" step="any" t-att-value="mppt.insulation_positive" disabled="disabled"/></td>
+                                                <td t-if="task.show_all_install"><input type="number" step="any" t-att-value="mppt.insulation_negative" disabled="disabled"/></td>
+                                                <td><span t-field="mppt.notes_valid"/></td>
                                             </t>
                                         </tr>
                                         <tr>
-                                            <th>Max Voltage</th><td/>
+                                            <th colspan="2">Calculated Max Voltage</th>
                                             <td>
-                                                <input type="number" step="any" name="tot_voltage" t-att-value="task.tot_voltage"/> V
+                                                <input type="number" step="any" name="tot_voltage" t-att-value="task.tot_voltage"/>
                                             </td>
-                                            <td colspan="3"></td>
+                                            <td colspan="5"></td>
                                         </tr>
                                     </table>
                                     Notes:<br/>
