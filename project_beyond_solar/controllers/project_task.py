@@ -178,6 +178,7 @@ class Task(CustomerPortal):
             'current': 'operating_current',
             'ins_positive': 'insulation_positive',
             'ins_negative': 'insulation_negative',
+            'notes_valid': 'notes_valid',
         }
 
         for field in fields:
