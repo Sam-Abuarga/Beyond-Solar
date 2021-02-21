@@ -898,20 +898,6 @@
                                             <th>Inverter manufacturer and model number:</th>
                                             <td><span t-field="task.inv_details"/></td>
                                         </tr>
-                                        <tr t-if="task.sale_order_id.has_inverter">
-                                            <th>Number of inverters:</th>
-                                            <td>
-                                                <span t-field="task.inverter_count"/><br/>
-                                            </td>
-                                        </tr>
-                                        <tr t-if="task.sale_order_id.has_inverter">
-                                            <th>Number of MPPTs:</th>
-                                            <td>
-                                                <input type="number" name="mppt_count" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                                <input type="number" name="mppt_count" t-att-value="task.mppt_count" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                                <input type="number" name="mppt_count" disabled="disabled" t-att-value="task.mppt_count" t-else=""/><br/>
-                                            </td>
-                                        </tr>
                                     </table>
                                     <br/>
                                     <h4 t-if="task.show_all_install">PV Array</h4>
