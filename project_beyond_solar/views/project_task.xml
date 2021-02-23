@@ -120,17 +120,17 @@
                         <group string="Installation" name="installation_inner">
                             <field name="variation_description" attrs="{'invisible': ['|', ('variation_description', '=', ''), ('variation_description', '=', False)]}"/>
                             <field name="install_notes"/>
+                            <field name="customer_signature" widget="image" readonly="1" nolabel="1" colspan="2"/>
+                            <field name="customer_name" readonly="1" string="Signature Name"/>
+                            <button type="object" name="action_email_installation" string="Email Installation" class="btn btn-primary" colspan="2" attrs="{'invisible': [('date_worksheet_install', '=', False)]}"/>
+                        </group>
+                        <group string="Single Line Diagram" name="installation_sld">
                             <field name="install_inverter_connection"/>
                             <field name="install_inverter_ac_isolator"/>
                             <field name="install_battery_connection" attrs="{'invisible': [('has_battery', '=', False)]}"/>
                             <field name="install_battery_ac_isolator" attrs="{'invisible': [('has_battery', '=', False)]}"/>
-                            <button type="object" name="action_email_installation" string="Email Installation" class="btn btn-primary" colspan="2" attrs="{'invisible': [('date_worksheet_install', '=', False)]}"/>
                         </group>
-                        <group string="Customer Signature" name="installation_signature">
-                            <field name="customer_signature" widget="image" readonly="1" nolabel="1" colspan="2"/>
-                            <field name="customer_name" readonly="1" string="Signature Name"/>
-                        </group>
-                        <group string="Inverters" name="installation_inverter" colspan="2">
+                        <group name="installation_inverter" colspan="2">
                             <field name="mppt_inv_ids" nolabel="1" colspan="2">
                                 <tree editable="bottom" create="0" delete="0">
                                     <field name="name"/>
