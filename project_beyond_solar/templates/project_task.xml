@@ -895,8 +895,8 @@
                                             <td><span t-field="task.pv_details"/></td>
                                         </tr>
                                         <tr t-if="task.sale_order_id.has_inverter">
-                                            <th>Inverter manufacturer and model number:</th>
-                                            <td><span t-field="task.inv_details"/></td>
+                                            <th style="vertical-align: top;">Inverter manufacturer and model number:</th>
+                                            <td><span t-raw="task.inv_details.replace(', ', '&lt;br/&gt;')"/></td>
                                         </tr>
                                     </table>
                                     <br/>
@@ -986,6 +986,26 @@
                                             <b style="color: red;" t-if="task.install_saved and not task.date_worksheet_install and not task.install_acdc_tested">* </b>
                                             All wiring has been tested and approved by qualified electrical tradesperson.
                                         </li>
+                                        <li t-if="task.sale_order_id.has_battery">
+                                            <span t-if="not task.date_worksheet_site">-</span>
+                                            <select name="battery_connection" t-elif="task.date_worksheet_site and not task.date_worksheet_install">
+                                                <option value="">Select</option>
+                                                <option value="db" selected="selected" t-if="task.install_battery_connection == 'db'">DB</option>
+                                                <option value="db" t-else="">DB</option>
+                                                <option value="msb" selected="selected" t-if="task.install_battery_connection == 'msb'">MSB</option>
+                                                <option value="msb" t-else="">MSB</option>
+                                            </select>
+                                            <span t-field="task.install_battery_connection" t-else=""/>
+                                            <b style="color: red;" t-if="task.install_saved and not task.date_worksheet_install and not task.install_battery_connection">* </b>
+                                            Battery connection point.
+                                        </li>
+                                        <li t-if="task.sale_order_id.has_battery">
+                                            <input type="checkbox" name="battery_isolator" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                            <input type="checkbox" name="battery_isolator" checked="checked" t-elif="task.date_worksheet_site and task.install_battery_ac_isolator and not task.date_worksheet_install"/>
+                                            <input type="checkbox" name="battery_isolator" t-elif="task.date_worksheet_site and not task.install_battery_ac_isolator"/>
+                                            <input type="checkbox" name="battery_isolator" disabled="disabled" checked="checked" t-else=""/>
+                                            Is AC isolator used.
+                                        </li>
                                     </ul>
 
                                     <t t-if="task.sale_order_id.has_micro_inverter">
@@ -1046,22 +1066,22 @@
                                         <ul>
                                             <li>
                                                 <span t-if="not task.date_worksheet_site">-</span>
-                                                <select name="battery_connection" t-elif="task.date_worksheet_site and not task.date_worksheet_install">
+                                                <select name="inverter_connection" t-elif="task.date_worksheet_site and not task.date_worksheet_install">
                                                     <option value="">Select</option>
-                                                    <option value="db" selected="selected" t-if="task.install_battery_connection == 'db'">DB</option>
+                                                    <option value="db" selected="selected" t-if="task.install_inverter_connection == 'db'">DB</option>
                                                     <option value="db" t-else="">DB</option>
-                                                    <option value="msb" selected="selected" t-if="task.install_battery_connection == 'msb'">MSB</option>
+                                                    <option value="msb" selected="selected" t-if="task.install_inverter_connection == 'msb'">MSB</option>
                                                     <option value="msb" t-else="">MSB</option>
                                                 </select>
-                                                <span t-field="task.install_battery_connection" t-else=""/>
-                                                <b style="color: red;" t-if="task.install_saved and not task.date_worksheet_install and not task.install_battery_connection">* </b>
+                                                <span t-field="task.install_inverter_connection" t-else=""/>
+                                                <b style="color: red;" t-if="task.install_saved and not task.date_worksheet_install and not task.install_inverter_connection">* </b>
                                                 Inverter connection point.
                                             </li>
                                             <li>
-                                                <input type="checkbox" name="battery_isolator" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                                <input type="checkbox" name="battery_isolator" checked="checked" t-elif="task.date_worksheet_site and task.install_battery_ac_isolator and not task.date_worksheet_install"/>
-                                                <input type="checkbox" name="battery_isolator" t-elif="task.date_worksheet_site and not task.install_battery_ac_isolator"/>
-                                                <input type="checkbox" name="battery_isolator" disabled="disabled" checked="checked" t-else=""/>
+                                                <input type="checkbox" name="inverter_isolator" disabled="disabled" t-if="not task.date_worksheet_site"/>
+                                                <input type="checkbox" name="inverter_isolator" checked="checked" t-elif="task.date_worksheet_site and task.install_inverter_ac_isolator and not task.date_worksheet_install"/>
+                                                <input type="checkbox" name="inverter_isolator" t-elif="task.date_worksheet_site and not task.install_inverter_ac_isolator"/>
+                                                <input type="checkbox" name="inverter_isolator" disabled="disabled" checked="checked" t-else=""/>
                                                 Is AC isolator used.
                                             </li>
                                             <li>

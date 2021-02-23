@@ -71,8 +71,11 @@ class ProjectTask(models.Model):
     install_inverter_install = fields.Boolean(string="Installation Inverter Installed")
     install_inverter_power = fields.Boolean(string="Installation Inverter Mains Loss")
     install_inverter_resume = fields.Boolean(string="Installation Inverter Resume")
-    install_battery_connection = fields.Selection(string="Installation Inverter Connection Point", selection=[('msb', "MSB"), ('db', "DB")])
-    install_battery_ac_isolator = fields.Boolean(string="Installation Inverter AC Isolator Used")
+    install_inverter_connection = fields.Selection(string="Installation Inverter Connection Point", selection=[('msb', "MSB"), ('db', "DB")])
+    install_inverter_ac_isolator = fields.Boolean(string="Installation Inverter AC Isolator Used")
+
+    install_battery_connection = fields.Selection(string="Installation Battery Connection Point", selection=[('msb', "MSB"), ('db', "DB")])
+    install_battery_ac_isolator = fields.Boolean(string="Installation Battery AC Isolator Used")
 
     s1_polarity = fields.Char(string="String 1 Polarity", copy=False)
     s1_voltage = fields.Float(string="String 1 Voltage", copy=False)
@@ -95,6 +98,7 @@ class ProjectTask(models.Model):
     negative_resistance = fields.Float(string="Array Negative to Earth", copy=False)
 
     mppt_ids = fields.Many2many(comodel_name='sale.mppt', compute='_compute_mppts', readonly=False)
+    mppt_inv_ids = fields.Many2many(comodel_name='sale.mppt', compute='_compute_mppts', readonly=False)
 
     show_submit_install = fields.Boolean(string="Show Installation Submit", compute='_compute_show_submit_install')
     show_all_install = fields.Boolean(string="Show All Installation Fields", compute='_compute_show_all_install')
@@ -269,6 +273,7 @@ class ProjectTask(models.Model):
     def _compute_mppts(self):
         for rec in self:
             rec.mppt_ids = rec.sale_order_id.mppt_ids
+            rec.mppt_inv_ids = rec.sale_order_id.mppt_ids
 
     def get_status(self):
         self.ensure_one()
