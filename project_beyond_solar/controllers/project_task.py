@@ -194,11 +194,11 @@ class Task(CustomerPortal):
 
         for field in kwargs:
             if field.startswith('mppt_var_'):
-                id, field_name = field.replace('mppt_var_', '').split('_', 1)
+                m_id, field_name = field.replace('mppt_var_', '').split('_', 1)
                 if field_name in ['notes_valid']:
-                    request.env['sale.mppt'].browse(int(id)).write({mppt_fields[field_name]: kwargs[field] or ''})
+                    request.env['sale.mppt'].browse(int(m_id)).write({mppt_fields[field_name]: kwargs[field] or ''})
                 else:
-                    request.env['sale.mppt'].browse(int(id)).write({mppt_fields[field_name]: float(kwargs[field] or 0)})
+                    request.env['sale.mppt'].browse(int(m_id)).write({mppt_fields[field_name]: float(kwargs[field] or 0)})
 
         task.install_saved = True
 
