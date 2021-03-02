@@ -143,6 +143,7 @@ class Task(CustomerPortal):
             'inverter_count': 'inverter_count',
             'mppt_count': 'mppt_count',
             'install_notes': 'install_notes',
+            'inverter_connection': 'install_inverter_connection',
             'battery_connection': 'install_battery_connection',
         }
 
@@ -163,6 +164,7 @@ class Task(CustomerPortal):
             'inverter_manufacturer': 'install_inverter_install',
             'inverter_loss': 'install_inverter_power',
             'inverter_delay': 'install_inverter_resume',
+            'inverter_isolator': 'install_inverter_ac_isolator',
             'battery_isolator': 'install_battery_ac_isolator',
         }
 

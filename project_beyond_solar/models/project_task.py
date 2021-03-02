@@ -172,8 +172,6 @@ class ProjectTask(models.Model):
         for rec in self:
             if rec.show_all_install:
                 rec.show_submit_install = rec.install_saved and not rec.date_worksheet_install and all([
-                    rec.positive_resistance,
-                    rec.negative_resistance,
                     rec.install_array_frame,
                     rec.install_array_install,
                     rec.install_array_dissimilar,
@@ -188,7 +186,9 @@ class ProjectTask(models.Model):
                     rec.install_inverter_breaker,
                     rec.install_inverter_install,
                     rec.install_inverter_power,
-                    rec.install_inverter_resume
+                    rec.install_inverter_resume,
+                    rec.install_inverter_ac_isolator,
+                    rec.install_inverter_connection
                 ])
             else:
                 rec.show_submit_install = rec.install_saved and not rec.date_worksheet_install and all([
