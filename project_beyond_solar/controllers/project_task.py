@@ -145,6 +145,7 @@ class Task(CustomerPortal):
             'install_notes': 'install_notes',
             'inverter_connection': 'install_inverter_connection',
             'battery_connection': 'install_battery_connection',
+            'array_earthing': 'install_array_earthing',
         }
 
         boolean_fields = {

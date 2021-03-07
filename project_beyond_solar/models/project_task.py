@@ -63,6 +63,10 @@ class ProjectTask(models.Model):
     install_array_protection = fields.Boolean(string="Installation Array String Protection")
     install_array_mechanical = fields.Boolean(string="Installation Array Mechanical Damage")
     install_array_weatherproof = fields.Boolean(string="Installation Array Weatherproof Isolator")
+    install_array_earthing = fields.Selection(string="PV Array Earthing Connection Location At", defautl='msb', selection=[
+        ('msb', "MSB"),
+        ('roof', "Roof"),
+    ])
     install_acdc_install = fields.Boolean(string="Installation LV DC & AC Installed")
     install_acdc_tested = fields.Boolean(string="Installation LV DC & AC Tested")
     install_inverter_pv_isolator = fields.Boolean(string="Installation Inverter PV Isolator")
@@ -180,6 +184,7 @@ class ProjectTask(models.Model):
                     rec.install_array_protection,
                     rec.install_array_mechanical,
                     rec.install_array_weatherproof,
+                    rec.install_array_earthing,
                     rec.install_acdc_install,
                     rec.install_acdc_tested,
                     rec.install_inverter_pv_isolator,

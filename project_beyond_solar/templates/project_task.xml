@@ -1,4 +1,35 @@
 <odoo>
+    <template id="project_portal_checkbox">
+        <li>
+            <input type="checkbox" t-att-name="field_name" checked="checked" t-if="field_enabled and field_checked"/>
+            <input type="checkbox" t-att-name="field_name" t-elif="field_enabled"/>
+            <input type="checkbox" t-att-name="field_name" disabled="disabled" checked="checked" t-elif="field_checked"/>
+            <input type="checkbox" t-att-name="field_name" disabled="disabled" t-else=""/>
+            <b style="color: red;" t-if="show_field_required and field_required and not field_checked">* </b>
+            <span t-esc="field_label"/>
+        </li>
+    </template>
+
+    <template id="project_portal_selection">
+        <li>
+            <select t-att-name="field_name" t-if="field_enabled">
+                <option value="">Select</option>
+                <t t-foreach="select_values" t-as="select_value">
+                    <option t-att-value="select_value[0]" selected="selected" t-if="field_value == select_value[0]" t-esc="select_value[1]"/>
+                    <option t-att-value="select_value[0]" t-else="" t-esc="select_value[1]"/>
+                </t>
+            </select>
+            <span t-elif="field_value">
+                <t t-foreach="select_values" t-as="select_value">
+                    <span t-if="field_value == select_value[0]" t-esc="select_value[1]"/>
+                </t>
+            </span>
+            <span t-else=""/>
+            <b style="color: red;" t-if="show_field_required and field_required and not field_value">* </b>
+            <span t-esc="field_label"/>
+        </li>
+    </template>
+
     <template inherit_id="project.portal_my_tasks" id="portal_my_tasks">
         <!-- Remove Stage + Ref -->
         <xpath expr="//th[last()]" position="replace"/>
@@ -884,6 +915,9 @@
 
                             <div id="tab-install" t-attf-class="tab-pane fade {{'show active' if task.customer_signature and not task.date_worksheet_install else ''}}" t-if="task.customer_signature">
                                 <form t-attf-action="/my/task/{{task.id}}/worksheet/install">
+                                    <t t-set="show_field_required" t-value="task.install_saved and not task.date_worksheet_install"/>
+                                    <t t-set="field_enabled" t-value="task.date_worksheet_site and not task.date_worksheet_install"/>
+
                                     <h4>Installation Details</h4>
                                     <table>
                                         <tr>
@@ -900,231 +934,182 @@
                                         </tr>
                                     </table>
                                     <br/>
+
                                     <h4 t-if="task.show_all_install">PV Array</h4>
                                     <ul t-if="task.show_all_install">
-                                        <li>
-                                            <input type="checkbox" name="certified" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                            <input type="checkbox" name="certified" checked="checked" t-elif="task.date_worksheet_site and task.install_array_frame and not task.date_worksheet_install"/>
-                                            <input type="checkbox" name="certified" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                            <input type="checkbox" name="certified" disabled="disabled" checked="checked" t-else=""/>
-                                            <b style="color: red;" t-if="task.install_saved and not task.date_worksheet_install and not task.install_array_frame">* </b>
-                                            Array frame is certified to AS1170.2:2011 for installation location.
-                                        </li>
-                                        <li>
-                                            <input type="checkbox" name="manufacturer" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                            <input type="checkbox" name="manufacturer" checked="checked" t-elif="task.date_worksheet_site and task.install_array_install and not task.date_worksheet_install"/>
-                                            <input type="checkbox" name="manufacturer" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                            <input type="checkbox" name="manufacturer" disabled="disabled" checked="checked" t-else=""/>
-                                            <b style="color: red;" t-if="task.install_saved and not task.date_worksheet_install and not task.install_array_install">* </b>
-                                            Array frame is installed to manufacturer's instructions.
-                                        </li>
-                                        <li>
-                                            <input type="checkbox" name="metals" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                            <input type="checkbox" name="metals" checked="checked" t-elif="task.date_worksheet_site and task.install_array_dissimilar and not task.date_worksheet_install"/>
-                                            <input type="checkbox" name="metals" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                            <input type="checkbox" name="metals" disabled="disabled" checked="checked" t-else=""/>
-                                            <b style="color: red;" t-if="task.install_saved and not task.date_worksheet_install and not task.install_array_dissimilar">* </b>
-                                            No galvanically dissimilar metals are in contact with the array frames or supports.
-                                        </li>
-                                        <li>
-                                            <input type="checkbox" name="weatherproof" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                            <input type="checkbox" name="weatherproof" checked="checked" t-elif="task.date_worksheet_site and task.install_array_penetrations and not task.date_worksheet_install"/>
-                                            <input type="checkbox" name="weatherproof" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                            <input type="checkbox" name="weatherproof" disabled="disabled" checked="checked" t-else=""/>
-                                            <b style="color: red;" t-if="task.install_saved and not task.date_worksheet_install and not task.install_array_penetrations">* </b>
-                                            Roof penetrations are suitably sealed and weatherproofed.
-                                        </li>
-                                        <li>
-                                            <input type="checkbox" name="current" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                            <input type="checkbox" name="current" checked="checked" t-elif="task.date_worksheet_site and task.install_array_losses and not task.date_worksheet_install"/>
-                                            <input type="checkbox" name="current" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                            <input type="checkbox" name="current" disabled="disabled" checked="checked" t-else=""/>
-                                            <b style="color: red;" t-if="task.install_saved and not task.date_worksheet_install and not task.install_array_losses">* </b>
-                                            PV wiring losses are less than 3% at the maximum current output of the array.
-                                        </li>
-                                        <li>
-                                            <input type="checkbox" name="protection" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                            <input type="checkbox" name="protection" checked="checked" t-elif="task.date_worksheet_site and task.install_array_protection and not task.date_worksheet_install"/>
-                                            <input type="checkbox" name="protection" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                            <input type="checkbox" name="protection" disabled="disabled" checked="checked" t-else=""/>
-                                            <b style="color: red;" t-if="task.install_saved and not task.date_worksheet_install and not task.install_array_protection">* </b>
-                                            Where PV array comprises multiple strings- string protection has been provided if required.
-                                        </li>
-                                        <li>
-                                            <input type="checkbox" name="supported" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                            <input type="checkbox" name="supported" checked="checked" t-elif="task.date_worksheet_site and task.install_array_mechanical and not task.date_worksheet_install"/>
-                                            <input type="checkbox" name="supported" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                            <input type="checkbox" name="supported" disabled="disabled" checked="checked" t-else=""/>
-                                            <b style="color: red;" t-if="task.install_saved and not task.date_worksheet_install and not task.install_array_mechanical">* </b>
-                                            Wiring is protected from mechanical damage and is appropriately supported.
-                                        </li>
-                                        <li>
-                                            <input type="checkbox" name="mounted" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                            <input type="checkbox" name="mounted" checked="checked" t-elif="task.date_worksheet_site and task.install_array_weatherproof and not task.date_worksheet_install"/>
-                                            <input type="checkbox" name="mounted" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                            <input type="checkbox" name="mounted" disabled="disabled" checked="checked" t-else=""/>
-                                            <b style="color: red;" t-if="task.install_saved and not task.date_worksheet_install and not task.install_array_weatherproof">* </b>
-                                            Weatherproof PV array isolator mounted adjacent to the array.
-                                        </li>
+                                        <t t-call="project_beyond_solar.project_portal_checkbox">
+                                            <t t-set="field_name">certified</t>
+                                            <t t-set="field_label">Array frame is certified to AS1170.2:2011 for installation location.</t>
+                                            <t t-set="field_checked" t-value="task.install_array_frame"/>
+                                            <t t-set="field_required" t-value="True"/>
+                                        </t>
+                                        <t t-call="project_beyond_solar.project_portal_checkbox">
+                                            <t t-set="field_name">manufacturer</t>
+                                            <t t-set="field_label">Array frame is installed to manufacturer's instructions.</t>
+                                            <t t-set="field_checked" t-value="task.install_array_install"/>
+                                            <t t-set="field_required" t-value="True"/>
+                                        </t>
+                                        <t t-call="project_beyond_solar.project_portal_checkbox">
+                                            <t t-set="field_name">metals</t>
+                                            <t t-set="field_label">No galvanically dissimilar metals are in contact with the array frames or supports.</t>
+                                            <t t-set="field_checked" t-value="task.install_array_dissimilar"/>
+                                            <t t-set="field_required" t-value="True"/>
+                                        </t>
+                                        <t t-call="project_beyond_solar.project_portal_checkbox">
+                                            <t t-set="field_name">weatherproof</t>
+                                            <t t-set="field_label">Roof penetrations are suitably sealed and weatherproofed.</t>
+                                            <t t-set="field_checked" t-value="task.install_array_penetrations"/>
+                                            <t t-set="field_required" t-value="True"/>
+                                        </t>
+                                        <t t-call="project_beyond_solar.project_portal_checkbox">
+                                            <t t-set="field_name">current</t>
+                                            <t t-set="field_label">PV wiring losses are less than 3% at the maximum current output of the array.</t>
+                                            <t t-set="field_checked" t-value="task.install_array_losses"/>
+                                            <t t-set="field_required" t-value="True"/>
+                                        </t>
+                                        <t t-call="project_beyond_solar.project_portal_checkbox">
+                                            <t t-set="field_name">protection</t>
+                                            <t t-set="field_label">Where PV array comprises multiple strings- string protection has been provided if required.</t>
+                                            <t t-set="field_checked" t-value="task.install_array_protection"/>
+                                            <t t-set="field_required" t-value="True"/>
+                                        </t>
+                                        <t t-call="project_beyond_solar.project_portal_checkbox">
+                                            <t t-set="field_name">supported</t>
+                                            <t t-set="field_label">Wiring is protected from mechanical damage and is appropriately supported.</t>
+                                            <t t-set="field_checked" t-value="task.install_array_mechanical"/>
+                                            <t t-set="field_required" t-value="True"/>
+                                        </t>
+                                        <t t-call="project_beyond_solar.project_portal_checkbox">
+                                            <t t-set="field_name">mounted</t>
+                                            <t t-set="field_label">Weatherproof PV array isolator mounted adjacent to the array.</t>
+                                            <t t-set="field_checked" t-value="task.install_array_weatherproof"/>
+                                            <t t-set="field_required" t-value="True"/>
+                                        </t>
+                                        <t t-call="project_beyond_solar.project_portal_selection">
+                                            <t t-set="field_name">array_earthing</t>
+                                            <t t-set="field_label">PV Array Earthing Connection Location At.</t>
+                                            <t t-set="field_value" t-value="task.install_array_earthing"/>
+                                            <t t-set="select_values" t-value="[('msb', 'MSB'), ('roof', 'Roof')]"/>
+                                            <t t-set="field_required" t-value="True"/>
+                                        </t>
                                     </ul>
 
                                     <h4>LV DC and AC Installation</h4>
                                     <ul>
-                                        <li>
-                                            <input type="checkbox" name="installed_electrician" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                            <input type="checkbox" name="installed_electrician" checked="checked" t-elif="task.date_worksheet_site and task.install_acdc_install and not task.date_worksheet_install"/>
-                                            <input type="checkbox" name="installed_electrician" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                            <input type="checkbox" name="installed_electrician" disabled="disabled" checked="checked" t-else=""/>
-                                            <b style="color: red;" t-if="task.install_saved and not task.date_worksheet_install and not task.install_acdc_install">* </b>
-                                            All low voltage wiring has been installed by a licensed electrical tradesperson.
-                                        </li>
-                                        <li>
-                                            <input type="checkbox" name="tested_electrician" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                            <input type="checkbox" name="tested_electrician" checked="checked" t-elif="task.date_worksheet_site and task.install_acdc_tested and not task.date_worksheet_install"/>
-                                            <input type="checkbox" name="tested_electrician" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                            <input type="checkbox" name="tested_electrician" disabled="disabled" checked="checked" t-else=""/>
-                                            <b style="color: red;" t-if="task.install_saved and not task.date_worksheet_install and not task.install_acdc_tested">* </b>
-                                            All wiring has been tested and approved by qualified electrical tradesperson.
-                                        </li>
-                                        <li t-if="task.sale_order_id.has_battery">
-                                            <span t-if="not task.date_worksheet_site">-</span>
-                                            <select name="battery_connection" t-elif="task.date_worksheet_site and not task.date_worksheet_install">
-                                                <option value="">Select</option>
-                                                <option value="db" selected="selected" t-if="task.install_battery_connection == 'db'">DB</option>
-                                                <option value="db" t-else="">DB</option>
-                                                <option value="msb" selected="selected" t-if="task.install_battery_connection == 'msb'">MSB</option>
-                                                <option value="msb" t-else="">MSB</option>
-                                            </select>
-                                            <span t-field="task.install_battery_connection" t-else=""/>
-                                            <b style="color: red;" t-if="task.install_saved and not task.date_worksheet_install and not task.install_battery_connection">* </b>
-                                            Battery connection point.
-                                        </li>
-                                        <li t-if="task.sale_order_id.has_battery">
-                                            <input type="checkbox" name="battery_isolator" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                            <input type="checkbox" name="battery_isolator" checked="checked" t-elif="task.date_worksheet_site and task.install_battery_ac_isolator and not task.date_worksheet_install"/>
-                                            <input type="checkbox" name="battery_isolator" t-elif="task.date_worksheet_site and not task.install_battery_ac_isolator"/>
-                                            <input type="checkbox" name="battery_isolator" disabled="disabled" checked="checked" t-else=""/>
-                                            Is AC isolator used.
-                                        </li>
+                                        <t t-call="project_beyond_solar.project_portal_checkbox">
+                                            <t t-set="field_name">installed_electrician</t>
+                                            <t t-set="field_label">All low voltage wiring has been installed by a licensed electrical tradesperson.</t>
+                                            <t t-set="field_checked" t-value="task.install_acdc_install"/>
+                                            <t t-set="field_required" t-value="True"/>
+                                        </t>
+                                        <t t-call="project_beyond_solar.project_portal_checkbox">
+                                            <t t-set="field_name">tested_electrician</t>
+                                            <t t-set="field_label">All wiring has been tested and approved by qualified electrical tradesperson.</t>
+                                            <t t-set="field_checked" t-value="task.install_acdc_tested"/>
+                                            <t t-set="field_required" t-value="True"/>
+                                        </t>
+                                        <t t-call="project_beyond_solar.project_portal_selection" t-if="task.sale_order_id.has_battery">
+                                            <t t-set="field_name">battery_connection</t>
+                                            <t t-set="field_label">Battery connection point.</t>
+                                            <t t-set="field_value" t-value="task.install_battery_connection"/>
+                                            <t t-set="select_values" t-value="[('bd', 'DB'), ('msb', 'MSB')]"/>
+                                            <t t-set="field_required" t-value="True"/>
+                                        </t>
+                                        <t t-call="project_beyond_solar.project_portal_checkbox" t-if="task.sale_order_id.has_battery">
+                                            <t t-set="field_name">battery_isolator</t>
+                                            <t t-set="field_label">Is AC isolator used.</t>
+                                            <t t-set="field_checked" t-value="task.install_battery_ac_isolator"/>
+                                        </t>
                                     </ul>
 
                                     <t t-if="task.sale_order_id.has_micro_inverter">
                                         <h4>Micro-Inverter</h4>
                                         <ul>
-                                            <li>
-                                                <input type="checkbox" name="isolator" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                                <input type="checkbox" name="isolator" checked="checked" t-elif="task.date_worksheet_site and task.install_inverter_pv_isolator and not task.date_worksheet_install"/>
-                                                <input type="checkbox" name="isolator" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                                <input type="checkbox" name="isolator" disabled="disabled" checked="checked" t-elif="task.install_inverter_pv_isolator"/>
-                                                <input type="checkbox" name="isolator" disabled="disabled" t-else=""/>
-                                                AC isolator mounted adjacent to each group of micro inverters.
-                                            </li>
-                                            <li>
-                                                <input type="checkbox" name="isolator_output" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                                <input type="checkbox" name="isolator_output" checked="checked" t-elif="task.date_worksheet_site and task.install_inverter_ac_isolator and not task.date_worksheet_install"/>
-                                                <input type="checkbox" name="isolator_output" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                                <input type="checkbox" name="isolator_output" disabled="disabled" checked="checked" t-else=""/>
-                                                <b style="color: red;" t-if="task.install_saved and not task.date_worksheet_install and not task.install_inverter_ac_isolator">* </b>
-                                                Inverter communications device has been installed inverter (where required).
-                                            </li>
-                                            <li>
-                                                <input type="checkbox" name="breaker" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                                <input type="checkbox" name="breaker" checked="checked" t-elif="task.date_worksheet_site and task.install_inverter_breaker and not task.date_worksheet_install"/>
-                                                <input type="checkbox" name="breaker" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                                <b style="color: red;" t-if="task.install_saved and not task.date_worksheet_install and not task.install_inverter_breaker">* </b>
-                                                <input type="checkbox" name="breaker" disabled="disabled" checked="checked" t-else=""/>
-                                                Lockable AC circuit breaker mounted within the switchboard to act as the inverter main switch for the PV/inverter system .
-                                            </li>
-                                            <li>
-                                                <input type="checkbox" name="inverter_manufacturer" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                                <input type="checkbox" name="inverter_manufacturer" checked="checked" t-elif="task.date_worksheet_site and task.install_inverter_install and not task.date_worksheet_install"/>
-                                                <input type="checkbox" name="inverter_manufacturer" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                                <input type="checkbox" name="inverter_manufacturer" disabled="disabled" checked="checked" t-else=""/>
-                                                <b style="color: red;" t-if="task.install_saved and not task.date_worksheet_install and not task.install_inverter_install">* </b>
-                                                Inverter is installed as per manufacturer’s specification.
-                                            </li>
-                                            <li>
-                                                <input type="checkbox" name="inverter_loss" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                                <input type="checkbox" name="inverter_loss" checked="checked" t-elif="task.date_worksheet_site and task.install_inverter_power and not task.date_worksheet_install"/>
-                                                <input type="checkbox" name="inverter_loss" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                                <input type="checkbox" name="inverter_loss" disabled="disabled" checked="checked" t-else=""/>
-                                                <b style="color: red;" t-if="task.install_saved and not task.date_worksheet_install and not task.install_inverter_power">* </b>
-                                                Inverter ceases supplying power within two seconds of a loss of AC mains.
-                                            </li>
-                                            <li>
-                                                <input type="checkbox" name="inverter_delay" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                                <input type="checkbox" name="inverter_delay" checked="checked" t-elif="task.date_worksheet_site and task.install_inverter_resume and not task.date_worksheet_install"/>
-                                                <input type="checkbox" name="inverter_delay" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                                <input type="checkbox" name="inverter_delay" disabled="disabled" checked="checked" t-else=""/>
-                                                <b style="color: red;" t-if="task.install_saved and not task.date_worksheet_install and not task.install_inverter_resume">* </b>
-                                                Inverter does not resume supplying power until mains have been present for more than 60 seconds.
-                                            </li>
+                                            <t t-call="project_beyond_solar.project_portal_checkbox" t-if="task.sale_order_id.has_battery">
+                                                <t t-set="field_name">isolator</t>
+                                                <t t-set="field_label">AC isolator mounted adjacent to each group of micro inverters.</t>
+                                                <t t-set="field_checked" t-value="task.install_inverter_pv_isolator"/>
+                                            </t>
+                                            <t t-call="project_beyond_solar.project_portal_checkbox">
+                                                <t t-set="field_name">isolator_output</t>
+                                                <t t-set="field_label">Inverter communications device has been installed inverter (where required).</t>
+                                                <t t-set="field_checked" t-value="task.install_inverter_ac_isolator"/>
+                                                <t t-set="field_required" t-value="True"/>
+                                            </t>
+                                            <t t-call="project_beyond_solar.project_portal_checkbox">
+                                                <t t-set="field_name">breaker</t>
+                                                <t t-set="field_label">Lockable AC circuit breaker mounted within the switchboard to act as the inverter main switch for the PV/inverter system .</t>
+                                                <t t-set="field_checked" t-value="task.install_inverter_breaker"/>
+                                                <t t-set="field_required" t-value="True"/>
+                                            </t>
+                                            <t t-call="project_beyond_solar.project_portal_checkbox">
+                                                <t t-set="field_name">inverter_manufacturer</t>
+                                                <t t-set="field_label">Inverter is installed as per manufacturer’s specification.</t>
+                                                <t t-set="field_checked" t-value="task.install_inverter_install"/>
+                                                <t t-set="field_required" t-value="True"/>
+                                            </t>
+                                            <t t-call="project_beyond_solar.project_portal_checkbox">
+                                                <t t-set="field_name">inverter_loss</t>
+                                                <t t-set="field_label">Inverter ceases supplying power within two seconds of a loss of AC mains.</t>
+                                                <t t-set="field_checked" t-value="task.install_inverter_power"/>
+                                                <t t-set="field_required" t-value="True"/>
+                                            </t>
+                                            <t t-call="project_beyond_solar.project_portal_checkbox">
+                                                <t t-set="field_name">inverter_delay</t>
+                                                <t t-set="field_label">Inverter does not resume supplying power until mains have been present for more than 60 seconds.</t>
+                                                <t t-set="field_checked" t-value="task.install_inverter_resume"/>
+                                                <t t-set="field_required" t-value="True"/>
+                                            </t>
                                         </ul>
                                     </t>
                                     <t t-elif="task.sale_order_id.has_inverter">
                                         <h4>Inverter</h4>
                                         <ul>
-                                            <li>
-                                                <span t-if="not task.date_worksheet_site">-</span>
-                                                <select name="inverter_connection" t-elif="task.date_worksheet_site and not task.date_worksheet_install">
-                                                    <option value="">Select</option>
-                                                    <option value="db" selected="selected" t-if="task.install_inverter_connection == 'db'">DB</option>
-                                                    <option value="db" t-else="">DB</option>
-                                                    <option value="msb" selected="selected" t-if="task.install_inverter_connection == 'msb'">MSB</option>
-                                                    <option value="msb" t-else="">MSB</option>
-                                                </select>
-                                                <span t-field="task.install_inverter_connection" t-else=""/>
-                                                <b style="color: red;" t-if="task.install_saved and not task.date_worksheet_install and not task.install_inverter_connection">* </b>
-                                                Inverter connection point.
-                                            </li>
-                                            <li>
-                                                <input type="checkbox" name="inverter_isolator" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                                <input type="checkbox" name="inverter_isolator" checked="checked" t-elif="task.date_worksheet_site and task.install_inverter_ac_isolator and not task.date_worksheet_install"/>
-                                                <input type="checkbox" name="inverter_isolator" t-elif="task.date_worksheet_site and not task.install_inverter_ac_isolator"/>
-                                                <input type="checkbox" name="inverter_isolator" disabled="disabled" checked="checked" t-else=""/>
-                                                Is AC isolator used.
-                                            </li>
-                                            <li>
-                                                <input type="checkbox" name="isolator" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                                <input type="checkbox" name="isolator" checked="checked" t-elif="task.date_worksheet_site and task.install_inverter_pv_isolator and not task.date_worksheet_install"/>
-                                                <input type="checkbox" name="isolator" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                                <input type="checkbox" name="isolator" disabled="disabled" checked="checked" t-else=""/>
-                                                <b style="color: red;" t-if="task.install_saved and not task.date_worksheet_install and not task.install_inverter_pv_isolator">* </b>
-                                                PV array isolator mounted adjacent to the inverter.
-                                            </li>
-                                            <li>
-                                                <input type="checkbox" name="breaker" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                                <input type="checkbox" name="breaker" checked="checked" t-elif="task.date_worksheet_site and task.install_inverter_breaker and not task.date_worksheet_install"/>
-                                                <input type="checkbox" name="breaker" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                                <input type="checkbox" name="breaker" disabled="disabled" checked="checked" t-else=""/>
-                                                <b style="color: red;" t-if="task.install_saved and not task.date_worksheet_install and not task.install_inverter_breaker">* </b>
-                                                Lockable AC circuit breaker mounted within the switchboard to act as the inverter main switch for the PV/inverter system.
-                                            </li>
-                                            <li>
-                                                <input type="checkbox" name="inverter_manufacturer" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                                <input type="checkbox" name="inverter_manufacturer" checked="checked" t-elif="task.date_worksheet_site and task.install_inverter_install and not task.date_worksheet_install"/>
-                                                <input type="checkbox" name="inverter_manufacturer" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                                <input type="checkbox" name="inverter_manufacturer" disabled="disabled" checked="checked" t-else=""/>
-                                                <b style="color: red;" t-if="task.install_saved and not task.date_worksheet_install and not task.install_inverter_install">* </b>
-                                                Inverter is installed as per manufacturer’s specification.
-                                            </li>
-                                            <li>
-                                                <input type="checkbox" name="inverter_loss" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                                <input type="checkbox" name="inverter_loss" checked="checked" t-elif="task.date_worksheet_site and task.install_inverter_power and not task.date_worksheet_install"/>
-                                                <input type="checkbox" name="inverter_loss" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                                <input type="checkbox" name="inverter_loss" disabled="disabled" checked="checked" t-else=""/>
-                                                <b style="color: red;" t-if="task.install_saved and not task.date_worksheet_install and not task.install_inverter_power">* </b>
-                                                Inverter ceases supplying power within two seconds of a loss of AC mains.
-                                            </li>
-                                            <li>
-                                                <input type="checkbox" name="inverter_delay" disabled="disabled" t-if="not task.date_worksheet_site"/>
-                                                <input type="checkbox" name="inverter_delay" checked="checked" t-elif="task.date_worksheet_site and task.install_inverter_resume and not task.date_worksheet_install"/>
-                                                <input type="checkbox" name="inverter_delay" t-elif="task.date_worksheet_site and not task.date_worksheet_install"/>
-                                                <input type="checkbox" name="inverter_delay" disabled="disabled" checked="checked" t-else=""/>
-                                                <b style="color: red;" t-if="task.install_saved and not task.date_worksheet_install and not task.install_inverter_resume">* </b>
-                                                Inverter does not resume supplying power until mains have been present for more than 60 seconds.
-                                                The inverter shall not go straight to full power. It is required to ramp up from 0%-100% over a 6 minute period.
-                                            </li>
+                                            <t t-call="project_beyond_solar.project_portal_selection">
+                                                <t t-set="field_name">inverter_connection</t>
+                                                <t t-set="field_label">Inverter connection point.</t>
+                                                <t t-set="field_value" t-value="task.install_inverter_connection"/>
+                                                <t t-set="select_values" t-value="[('bd', 'DB'), ('msb', 'MSB')]"/>
+                                                <t t-set="field_required" t-value="True"/>
+                                            </t>
+                                            <t t-call="project_beyond_solar.project_portal_checkbox">
+                                                <t t-set="field_name">inverter_isolator</t>
+                                                <t t-set="field_label">Is AC isolator used.</t>
+                                                <t t-set="field_checked" t-value="task.install_inverter_ac_isolator"/>
+                                            </t>
+                                            <t t-call="project_beyond_solar.project_portal_checkbox">
+                                                <t t-set="field_name">isolator</t>
+                                                <t t-set="field_label">PV array isolator mounted adjacent to the inverter.</t>
+                                                <t t-set="field_checked" t-value="task.install_inverter_pv_isolator"/>
+                                                <t t-set="field_required" t-value="True"/>
+                                            </t>
+                                            <t t-call="project_beyond_solar.project_portal_checkbox">
+                                                <t t-set="field_name">breaker</t>
+                                                <t t-set="field_label">Lockable AC circuit breaker mounted within the switchboard to act as the inverter main switch for the PV/inverter system.</t>
+                                                <t t-set="field_checked" t-value="task.install_inverter_breaker"/>
+                                                <t t-set="field_required" t-value="True"/>
+                                            </t>
+                                            <t t-call="project_beyond_solar.project_portal_checkbox">
+                                                <t t-set="field_name">inverter_manufacturer</t>
+                                                <t t-set="field_label">Inverter is installed as per manufacturer’s specification.</t>
+                                                <t t-set="field_checked" t-value="task.install_inverter_install"/>
+                                                <t t-set="field_required" t-value="True"/>
+                                            </t>
+                                            <t t-call="project_beyond_solar.project_portal_checkbox">
+                                                <t t-set="field_name">inverter_loss</t>
+                                                <t t-set="field_label">Inverter ceases supplying power within two seconds of a loss of AC mains.</t>
+                                                <t t-set="field_checked" t-value="task.install_inverter_power"/>
+                                                <t t-set="field_required" t-value="True"/>
+                                            </t>
+                                            <t t-call="project_beyond_solar.project_portal_checkbox">
+                                                <t t-set="field_name">inverter_delay</t>
+                                                <t t-set="field_label">
+                                                    Inverter does not resume supplying power until mains have been present for more than 60 seconds.
+                                                    The inverter shall not go straight to full power. It is required to ramp up from 0%-100% over a 6 minute period.
+                                                </t>
+                                                <t t-set="field_checked" t-value="task.install_inverter_resume"/>
+                                                <t t-set="field_required" t-value="True"/>
+                                            </t>
                                         </ul>
                                     </t>
                                     <div class="alert alert-success" style="margin: auto;" t-if="task.show_all_install">
