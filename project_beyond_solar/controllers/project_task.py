@@ -146,6 +146,16 @@ class Task(CustomerPortal):
             'inverter_connection': 'install_inverter_connection',
             'battery_connection': 'install_battery_connection',
             'array_earthing': 'install_array_earthing',
+            'acdc_isolator': 'install_acdc_isolator',
+            'acdc_breaker': 'install_acdc_breaker',
+            'acdc_breaker_other': 'install_acdc_breaker_other',
+            'acdc_ac_size': 'install_acdc_ac_cable',
+            'acdc_dc_size': 'install_acdc_dc_cable',
+            'acdc_cable_type': 'install_acdc_cable_type',
+            'acdc_fusing_size': 'install_acdc_fusing_size',
+            'acdc_fusing_other': 'install_acdc_fusing_other',
+            'inverter_isolator_rating': 'install_inverter_isolator_rating',
+            'inverter_isolator_rating_other': 'install_inverter_isolator_rating_other',
         }
 
         boolean_fields = {
@@ -159,6 +169,7 @@ class Task(CustomerPortal):
             'mounted': 'install_array_weatherproof',
             'installed_electrician': 'install_acdc_install',
             'tested_electrician': 'install_acdc_tested',
+            'acdc_fusing': 'install_acdc_fusing',
             'isolator': 'install_inverter_pv_isolator',
             'isolator_output': 'install_inverter_ac_isolator',
             'breaker': 'install_inverter_breaker',
@@ -180,8 +191,9 @@ class Task(CustomerPortal):
             'short': 'short_circuit',
             'current': 'operating_current',
             'ins_positive': 'insulation_positive',
-            'ins_negative': 'insulation_negative',
-            'notes_valid': 'notes_valid',
+            'count': 'panel_count_valid',
+            'azimuth': 'azimuth_angle_valid',
+            'tilt': 'tilt_angle_valid',
         }
 
         for field in fields:

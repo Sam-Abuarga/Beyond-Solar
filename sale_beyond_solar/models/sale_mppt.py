@@ -6,7 +6,13 @@ class SaleMppt(models.Model):
     _description = "Sale MPPT"
     _order = 'sale_line_id,sale_line_index,header desc,mppt_id'
 
-    name = fields.Char(string="Name", required=True)
+    @api.constrains('panel_count')
+    def _check_panel_count(self):
+        for rec in self:
+            if rec.mppt_id:
+                rec.sale_id.mppt_ids.filtered(lambda mppt: mppt.sale_line_id == rec.sale_line_id and not mppt.mppt_id).write({'panel_count': sum(rec.sale_id.mppt_ids.filtered(lambda mppt: mppt.sale_line_id == rec.sale_line_id and mppt.mppt_id).mapped('panel_count'))})
+
+    name = fields.Char(string="Name", required=True, readonly=1)
 
     sale_id = fields.Many2one(comodel_name='sale.order', string="Sale", required=True, ondelete='cascade')
     sale_line_id = fields.Many2one(comodel_name='sale.order.line', string="Sale Line", required=True, ondelete='cascade')

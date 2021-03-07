@@ -69,14 +69,62 @@ class ProjectTask(models.Model):
     ])
     install_acdc_install = fields.Boolean(string="Installation LV DC & AC Installed")
     install_acdc_tested = fields.Boolean(string="Installation LV DC & AC Tested")
+    install_acdc_isolator = fields.Char(string="DC Isolator", default='ZJ Beny 1000V 32A')
+    install_acdc_breaker = fields.Selection(string="Circuit Breaker Size", default='25', selection=[
+        ('10', "10A"),
+        ('16', "16A"),
+        ('20', "20A"),
+        ('25', "25A"),
+        ('32', "32A"),
+        ('40', "40A"),
+        ('50', "50A"),
+        ('63', "63A"),
+        ('80', "80A"),
+        ('100', "100A"),
+        ('other', "Other"),
+    ])
+    install_acdc_breaker_other = fields.Char(string="Circuit Breaker Size (Other)")
+    install_acdc_ac_cable = fields.Selection(string="AC Cable Size", default='4', selection=[
+        ('2.5', "2.5mm"),
+        ('4', "4mm"),
+        ('6', "6mm"),
+        ('10', "10mm"),
+        ('16', "16mm"),
+        ('25', "25mm"),
+    ])
+    install_acdc_dc_cable = fields.Selection(string="DC Cable Size", default='4', selection=[
+        ('4', "4mm"),
+        ('6', "6mm"),
+        ('10', "10mm"),
+    ])
+    install_acdc_cable_type = fields.Selection(string="Cable Type", default='tps2c', selection=[
+        ('tps2c', "TPS2C + e"),
+        ('tps4c', "TPS4C + e"),
+        ('xlpe2', "XLPE2C + e"),
+        ('xlpe4', "XLPE4C + e"),
+    ])
+    install_acdc_fusing = fields.Boolean(string="String Fusing")
+    install_acdc_fusing_size = fields.Selection(string="String Fusing Size", default='20_1000', selection=[
+        ('15_1000', "15A 1000V"),
+        ('20_1000', "20A 1000V"),
+        ('25_1000', "25A 1000V"),
+        ('other', "Other"),
+    ])
+    install_acdc_fusing_other = fields.Char(string="String Fusing Other")
+    install_inverter_connection = fields.Selection(string="Installation Inverter Connection Point", selection=[('msb', "MSB"), ('db', "DB")])
+    install_inverter_ac_isolator = fields.Boolean(string="Installation Inverter AC Isolator Used")
+    install_inverter_isolator_rating = fields.Selection(string="AC Isolator Rating", default='35', selection=[
+        ('20', '20A'),
+        ('35', '35A'),
+        ('63', '63A'),
+        ('other', 'Other')
+    ])
+    install_inverter_isolator_rating_other = fields.Char(string="AC Isolator Rating (Other)")
     install_inverter_pv_isolator = fields.Boolean(string="Installation Inverter PV Isolator")
-    install_inverter_ac_isolator = fields.Boolean(string="Installation Inverter AC Isolator Mounted")
     install_inverter_breaker = fields.Boolean(string="Installation Inverter Circuit Breaker")
     install_inverter_install = fields.Boolean(string="Installation Inverter Installed")
     install_inverter_power = fields.Boolean(string="Installation Inverter Mains Loss")
     install_inverter_resume = fields.Boolean(string="Installation Inverter Resume")
-    install_inverter_connection = fields.Selection(string="Installation Inverter Connection Point", selection=[('msb', "MSB"), ('db', "DB")])
-    install_inverter_ac_isolator = fields.Boolean(string="Installation Inverter AC Isolator Used")
 
     install_battery_connection = fields.Selection(string="Installation Battery Connection Point", selection=[('msb', "MSB"), ('db', "DB")])
     install_battery_ac_isolator = fields.Boolean(string="Installation Battery AC Isolator Used")

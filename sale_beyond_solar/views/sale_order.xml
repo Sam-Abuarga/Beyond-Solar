@@ -13,10 +13,10 @@
                     <group>
                         <group string="Array Profile" name="design_array" colspan="2" attrs="{'invisible': [('has_panel', '=', False)]}">
                             <field name="mppt_ids" nolabel="1" colspan="2">
-                                <tree editable="bottom" create="0" delete="0">
+                                <tree editable="bottom" create="0" delete="0" decoration-bf="not mppt_id">
                                     <field name="name"/>
                                     <field name="mppt_id" invisible="1"/>
-                                    <field name="panel_count" attrs="{'invisible': [('mppt_id', '=', False)]}"/>
+                                    <field name="panel_count" attrs="{'readonly': [('mppt_id', '=', False)]}"/>
                                     <field name="azimuth_angle" attrs="{'invisible': [('mppt_id', '=', False)]}"/>
                                     <field name="tilt_angle" attrs="{'invisible': [('mppt_id', '=', False)]}"/>
                                     <field name="notes" attrs="{'invisible': [('mppt_id', '=', False)]}"/>
