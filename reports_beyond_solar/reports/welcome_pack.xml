@@ -1,7 +1,7 @@
 <odoo>
     <template id="report_welcome_pack_document">
         <t t-call="web.basic_layout">
-        <div name="Titla Page" t-if="doc_part == 1" class="page">
+        <div name="Title Page" t-if="doc_part == 1" class="page">
             <div style="margin-top: 350px; text-align: center; width: 100%;">
                 <div style="margin: auto;">
                     <h2 class="text-center" style="margin-top: 64px;">

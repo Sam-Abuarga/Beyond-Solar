@@ -43,6 +43,9 @@ class ProjectTask(models.Model):
             streams.append(io.BytesIO(self.env.ref('reports_beyond_solar.action_report_welcome_pack_heading').render_qweb_pdf(1, {'title': "DER Receipt"})[0]))
             streams.append(io.BytesIO(base64.b64decode(self.x_studio_der_receipt)))
 
+        if self.user_id.compliance_declaration_attachment:
+            streams.append(io.BytesIO(base64.b64decode(self.user_id.compliance_declaration_attachment)))
+
         annex_attachments = self.env['product.attachment']
         for line in self.sale_order_id.order_line:
             if line.product_id.datasheet_attachment_id:

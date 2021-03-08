@@ -16,6 +16,8 @@
         'reports/account_move.xml',
         'reports/shared.xml',
         'reports/welcome_pack.xml',
+
+        'views/res_users.xml',
     ],
     'installable': True,
     'application': False,
