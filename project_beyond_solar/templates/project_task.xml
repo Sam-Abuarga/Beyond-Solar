@@ -1199,60 +1199,64 @@
                                             <li>IF POLARITY IS REVERSED AT THE INVERTER DAMAGE MAY OCCUR TO THE INVERTER.</li>
                                         </ul>
                                     </div>
-                                    <table class="table table-sm table-sm-inputs" t-if="task.show_all_install">
-                                        <tr>
-                                            <th/>
-                                            <th width="12%" style="max-width: 100px;">Operating<br/>Voltage (V)</th>
-                                            <th width="12%" style="max-width: 100px;">Short<br/>Circuit (A)</th>
-                                            <th width="12%" style="max-width: 100px;">Operating<br/>Current (A)</th>
-                                            <th width="12%" style="max-width: 100px;" t-if="task.show_all_install">Insulation<br/>Resistance (MΩ)</th>
-                                            <th width="12%" style="max-width: 100px;" t-if="task.show_all_install"># of<br/>Panels</th>
-                                            <th width="12%" style="max-width: 100px;" t-if="task.show_all_install">Azimuth<br/>Angle</th>
-                                            <th width="12%" style="max-width: 100px;" t-if="task.show_all_install">Tilt<br/>Angle</th>
-                                        </tr>
-                                        <tr t-foreach="task.mppt_ids" t-as="mppt">
-                                            <t t-if="not mppt.mppt_id">
-                                                <th colspan="7"><span t-esc="mppt.name"/></th>
-                                            </t>
-                                            <t t-elif="not task.date_worksheet_site">
-                                                <td><span t-esc="mppt.name"/></td>
-                                                <td><input type="number" step="any" disabled="disabled"/></td>
-                                                <td><input type="number" step="any" disabled="disabled"/></td>
-                                                <td><input type="number" step="any" disabled="disabled"/></td>
-                                                <td t-if="task.show_all_install"><input type="number" step="any" disabled="disabled"/></td>
-                                                <td class="text-right"><span t-esc="mppt.panel_count_valid"/></td>
-                                                <td class="text-right"><span t-esc="'{:g}'.format(mppt.azimuth_angle_valid)"/></td>
-                                                <td class="text-right"><span t-esc="'{:g}'.format(mppt.tilt_angle_valid)"/></td>
-                                            </t>
-                                            <t t-elif="task.date_worksheet_site and not task.date_worksheet_install">
-                                                <td><span t-esc="mppt.name"/></td>
-                                                <td><input type="number" step="any" t-att-name="'mppt_var_{}_voltage'.format(mppt.id)" t-att-value="mppt.voltage"/></td>
-                                                <td><input type="number" step="any" t-att-name="'mppt_var_{}_short'.format(mppt.id)" t-att-value="mppt.short_circuit"/></td>
-                                                <td><input type="number" step="any" t-att-name="'mppt_var_{}_current'.format(mppt.id)" t-att-value="mppt.operating_current"/></td>
-                                                <td t-if="task.show_all_install"><input type="number" step="any" t-att-name="'mppt_var_{}_ins_positive'.format(mppt.id)" t-att-value="mppt.insulation_positive"/></td>
-                                                <td class="text-right"><input type="number" t-att-name="'mppt_var_{}_count'.format(mppt.id)" t-att-value="mppt.panel_count_valid"/></td>
-                                                <td class="text-right"><input type="number" step="any" t-att-name="'mppt_var_{}_azimuth'.format(mppt.id)" t-att-value="mppt.azimuth_angle_valid"/></td>
-                                                <td class="text-right"><input type="number" step="any" t-att-name="'mppt_var_{}_tilt'.format(mppt.id)" t-att-value="mppt.tilt_angle_valid"/></td>
-                                            </t>
-                                            <t t-elif="task.date_worksheet_install">
-                                                <td><span t-esc="mppt.name"/></td>
-                                                <td><input type="number" step="any" t-att-value="mppt.voltage" disabled="disabled"/></td>
-                                                <td><input type="number" step="any" t-att-value="mppt.short_circuit" disabled="disabled"/></td>
-                                                <td><input type="number" step="any" t-att-value="mppt.operating_current" disabled="disabled"/></td>
-                                                <td t-if="task.show_all_install"><input type="number" step="any" t-att-value="mppt.insulation_positive" disabled="disabled"/></td>
-                                                <td class="text-right"><input type="number" t-att-value="mppt.panel_count_valid" disabled="disabled"/></td>
-                                                <td class="text-right"><input type="number" step="any" t-att-value="mppt.azimuth_angle_valid" disabled="disabled"/></td>
-                                                <td class="text-right"><input type="number" step="any" t-att-value="mppt.tilt_angle_valid" disabled="disabled"/></td>
-                                            </t>
-                                        </tr>
-                                        <tr>
-                                            <th colspan="2">Calculated Max Voltage</th>
-                                            <td>
-                                                <input type="number" step="any" name="tot_voltage" t-att-value="task.tot_voltage"/>
-                                            </td>
-                                            <td colspan="6"></td>
-                                        </tr>
-                                    </table>
+                                    <div class="row" style="overflow-x: auto">
+                                        <div class="col-12">
+                                            <table class="table table-sm table-sm-inputs" t-if="task.show_all_install">
+                                                <tr>
+                                                    <th/>
+                                                    <th width="12%" style="max-width: 100px;">Operating<br/>Voltage (V)</th>
+                                                    <th width="12%" style="max-width: 100px;">Short<br/>Circuit (A)</th>
+                                                    <th width="12%" style="max-width: 100px;">Operating<br/>Current (A)</th>
+                                                    <th width="12%" style="max-width: 100px;" t-if="task.show_all_install">Insulation<br/>Resistance (MΩ)</th>
+                                                    <th width="12%" style="max-width: 100px;" t-if="task.show_all_install"># of<br/>Panels</th>
+                                                    <th width="12%" style="max-width: 100px;" t-if="task.show_all_install">Azimuth<br/>Angle</th>
+                                                    <th width="12%" style="max-width: 100px;" t-if="task.show_all_install">Tilt<br/>Angle</th>
+                                                </tr>
+                                                <tr t-foreach="task.mppt_ids" t-as="mppt">
+                                                    <t t-if="not mppt.mppt_id">
+                                                        <th colspan="7"><span t-esc="mppt.name"/></th>
+                                                    </t>
+                                                    <t t-elif="not task.date_worksheet_site">
+                                                        <td><span t-esc="mppt.name"/></td>
+                                                        <td><input type="number" step="any" disabled="disabled"/></td>
+                                                        <td><input type="number" step="any" disabled="disabled"/></td>
+                                                        <td><input type="number" step="any" disabled="disabled"/></td>
+                                                        <td t-if="task.show_all_install"><input type="number" step="any" disabled="disabled"/></td>
+                                                        <td class="text-right"><span t-esc="mppt.panel_count_valid"/></td>
+                                                        <td class="text-right"><span t-esc="'{:g}'.format(mppt.azimuth_angle_valid)"/></td>
+                                                        <td class="text-right"><span t-esc="'{:g}'.format(mppt.tilt_angle_valid)"/></td>
+                                                    </t>
+                                                    <t t-elif="task.date_worksheet_site and not task.date_worksheet_install">
+                                                        <td><span t-esc="mppt.name"/></td>
+                                                        <td><input type="number" step="any" t-att-name="'mppt_var_{}_voltage'.format(mppt.id)" t-att-value="mppt.voltage"/></td>
+                                                        <td><input type="number" step="any" t-att-name="'mppt_var_{}_short'.format(mppt.id)" t-att-value="mppt.short_circuit"/></td>
+                                                        <td><input type="number" step="any" t-att-name="'mppt_var_{}_current'.format(mppt.id)" t-att-value="mppt.operating_current"/></td>
+                                                        <td t-if="task.show_all_install"><input type="number" step="any" t-att-name="'mppt_var_{}_ins_positive'.format(mppt.id)" t-att-value="mppt.insulation_positive"/></td>
+                                                        <td class="text-right"><input type="number" t-att-name="'mppt_var_{}_count'.format(mppt.id)" t-att-value="mppt.panel_count_valid"/></td>
+                                                        <td class="text-right"><input type="number" step="any" t-att-name="'mppt_var_{}_azimuth'.format(mppt.id)" t-att-value="mppt.azimuth_angle_valid"/></td>
+                                                        <td class="text-right"><input type="number" step="any" t-att-name="'mppt_var_{}_tilt'.format(mppt.id)" t-att-value="mppt.tilt_angle_valid"/></td>
+                                                    </t>
+                                                    <t t-elif="task.date_worksheet_install">
+                                                        <td><span t-esc="mppt.name"/></td>
+                                                        <td><input type="number" step="any" t-att-value="mppt.voltage" disabled="disabled"/></td>
+                                                        <td><input type="number" step="any" t-att-value="mppt.short_circuit" disabled="disabled"/></td>
+                                                        <td><input type="number" step="any" t-att-value="mppt.operating_current" disabled="disabled"/></td>
+                                                        <td t-if="task.show_all_install"><input type="number" step="any" t-att-value="mppt.insulation_positive" disabled="disabled"/></td>
+                                                        <td class="text-right"><input type="number" t-att-value="mppt.panel_count_valid" disabled="disabled"/></td>
+                                                        <td class="text-right"><input type="number" step="any" t-att-value="mppt.azimuth_angle_valid" disabled="disabled"/></td>
+                                                        <td class="text-right"><input type="number" step="any" t-att-value="mppt.tilt_angle_valid" disabled="disabled"/></td>
+                                                    </t>
+                                                </tr>
+                                                <tr>
+                                                    <th colspan="2">Calculated Max Voltage</th>
+                                                    <td>
+                                                        <input type="number" step="any" name="tot_voltage" t-att-value="task.tot_voltage"/>
+                                                    </td>
+                                                    <td colspan="6"></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
                                     Notes:<br/>
                                     <textarea name="install_notes" disabled="disabled" t-if="not task.date_worksheet_site" style="width: 100%"/>
                                     <textarea name="install_notes" t-esc="task.install_notes or ''" t-elif="task.date_worksheet_site and not task.date_worksheet_install" style="width: 100%"/>
