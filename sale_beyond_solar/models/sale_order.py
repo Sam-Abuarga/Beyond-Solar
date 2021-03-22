@@ -145,5 +145,10 @@ class SaleOrder(models.Model):
                             f'{mppt.tilt_angle:g}',
                         ])
             result.append(inverter)
-        a = 1
         return result
+
+    def action_done(self):
+        return super(SaleOrder, self.sudo()).action_done()
+
+    def action_unlock(self):
+        return super(SaleOrder, self.sudo()).action_unlock()
