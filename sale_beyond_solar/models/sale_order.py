@@ -124,17 +124,32 @@ class SaleOrder(models.Model):
             }
 
             mppts = mppts.filtered(lambda m: m.mppt_id)
+
+            # If all mppts match, condense
+            if all([m.azimuth_angle == mppts[0].azimuth_angle and m.tilt_angle == mppts[0].tilt_angle for m in mppts]):
+                inverter['lines'].append([
+                    "A",
+                    sum([mppt.panel_count for mppt in mppts]),
+                    f'{mppts[0].azimuth_angle:g}',
+                    f'{mppts[0].tilt_angle:g}',
+                ])
+                result.append(inverter)
+                continue
+
+            # Check if any threads can be condensed
             inverters = sorted(set(mppts.mapped('mppt_id.mppt_number')))
             for i in inverters:
                 mppts_i = mppts.filtered(lambda m: m.mppt_id.mppt_number == i)
                 if not mppts_i:
                     continue
-                if all([m.azimuth_angle == mppts_i[0].azimuth_angle and m.tilt_angle == mppts_i[0].tilt_angle for m in mppts_i]):
+                azim = mppts_i[0].azimuth_angle
+                tilt = mppts_i[0].tilt_angle
+                if all([m.azimuth_angle == azim and m.tilt_angle == tilt for m in mppts_i]):
                     inverter['lines'].append([
                         f"{chr(i + 65)}",
                         sum([mppt.panel_count for mppt in mppts_i]),
-                        f'{mppts_i[0].azimuth_angle:g}',
-                        f'{mppts_i[0].tilt_angle:g}',
+                        f'{azim:g}',
+                        f'{tilt:g}',
                     ])
                 else:
                     for mppt in mppts_i.filtered(lambda m: m.panel_count):
