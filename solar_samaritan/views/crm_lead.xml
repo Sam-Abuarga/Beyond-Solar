@@ -5,7 +5,7 @@
         <field name="inherit_id" ref="crm.crm_lead_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='team_id']" position="after">
-                <field name="referral_partner_id" domain="[('customer_rank','&gt;', 0)]" attrs="{'readonly': [('referral_id', '!=', False)]}"/>
+                <field name="referral_partner_id" domain="[]" attrs="{'readonly': [('referral_id', '!=', False)]}"/>
                 <field name="referral_id" invisible="1"/>
             </xpath>
         </field>

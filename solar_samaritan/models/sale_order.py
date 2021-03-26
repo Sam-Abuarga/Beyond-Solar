@@ -13,7 +13,19 @@ class SaleOrder(models.Model):
             res.referral_id = res.opportunity_id.referral_id
         return res
 
-    def action_confirm(self):
+    def write(self, vals):
+        res = super(SaleOrder, self).write(vals)
+        if 'opportunity_id' in vals:
+            for rec in self.filtered(lambda l: l.state != 'cancel'):
+                if rec.opportunity_id.referral_id:
+                    rec.referral_id = rec.opportunity_id.referral_id
+                    if rec.referral_id.state == 'draft' and rec.state in ['sale', 'lock']:
+                        rec.referral_id.sudo().set_sale_created(rec)
+                else:
+                    rec.referral_id = False
+        return res
+
+    def _action_confirm(self):
         res = super(SaleOrder, self).action_confirm()
         for rec in self:
             if rec.referral_id:
