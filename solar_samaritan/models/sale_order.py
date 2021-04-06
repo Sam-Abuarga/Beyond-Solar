@@ -26,7 +26,7 @@ class SaleOrder(models.Model):
         return res
 
     def _action_confirm(self):
-        res = super(SaleOrder, self).action_confirm()
+        res = super(SaleOrder, self)._action_confirm()
         for rec in self:
             if rec.referral_id:
                 rec.referral_id.sudo().set_sale_created(rec)

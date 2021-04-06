@@ -92,9 +92,7 @@
 
                         </group>
                         <group string="Authority Information" name="confirmed_booking">
-                            <xpath expr="//field[@name='user_id']" position="move"/>
-                            <field name="planned_date_begin"/>
-                            <field name="planned_date_end"/>
+
                         </group>
                     </group>
                 </page>
@@ -162,6 +160,12 @@
                         </group>
                     </group>
                 </page>
+            </xpath>
+
+            <xpath expr="//group[@name='confirmed_booking']" position="inside">
+                <xpath expr="//field[@name='user_id']" position="move"/>
+                <xpath expr="//field[@name='planned_date_begin']" position="move"/>
+                <xpath expr="//field[@name='planned_date_end']" position="move"/>
             </xpath>
         </field>
     </record>
