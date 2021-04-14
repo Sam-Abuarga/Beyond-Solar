@@ -81,9 +81,8 @@ class ProjectTask(models.Model):
         ('63', "63A"),
         ('80', "80A"),
         ('100', "100A"),
-        ('other', "Other"),
+        ('160', "160A"),
     ])
-    install_acdc_breaker_other = fields.Char(string="Circuit Breaker Size (Other)")
     install_acdc_ac_cable = fields.Selection(string="AC Cable Size", default='4', selection=[
         ('2.5', "2.5mm"),
         ('4', "4mm"),
@@ -91,6 +90,10 @@ class ProjectTask(models.Model):
         ('10', "10mm"),
         ('16', "16mm"),
         ('25', "25mm"),
+        ('35', "35mm"),
+        ('50', "50mm"),
+        ('70', "70mm"),
+        ('95', "95mm"),
     ])
     install_acdc_dc_cable = fields.Selection(string="DC Cable Size", default='4', selection=[
         ('4', "4mm"),

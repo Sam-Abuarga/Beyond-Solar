@@ -148,7 +148,6 @@ class Task(CustomerPortal):
             'array_earthing': 'install_array_earthing',
             'acdc_isolator': 'install_acdc_isolator',
             'acdc_breaker': 'install_acdc_breaker',
-            'acdc_breaker_other': 'install_acdc_breaker_other',
             'acdc_ac_size': 'install_acdc_ac_cable',
             'acdc_dc_size': 'install_acdc_dc_cable',
             'acdc_cable_type': 'install_acdc_cable_type',

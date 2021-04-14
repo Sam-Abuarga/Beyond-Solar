@@ -22,10 +22,14 @@ class SaleOrder(models.Model):
     has_inverter = fields.Boolean(string="Has Inverter", compute='_compute_line_categories', store=True)
     has_panel = fields.Boolean(string="Has Panel", compute='_compute_line_categories', store=True)
 
+    panel_count = fields.Integer(string="Panel Count", compute='_compute_panel_count')
+
     filtered_sale_order_option_ids = fields.One2many(comodel_name='sale.order.option', inverse_name='order_id', domain=[('is_present', '=', True)],
                                                      string='Optional Products Lines', copy=True, readonly=False)
 
     mppt_ids = fields.One2many(comodel_name='sale.mppt', inverse_name='sale_id', string="MPPTs")
+    mppt_panel_count = fields.Integer(string="MPPT Panel Count", compute='_compute_panel_count')
+    panel_count_match = fields.Boolean(string="Panel Count Match", compute='_compute_panel_count')
 
     @api.model
     def create(self, vals):
@@ -71,6 +75,16 @@ class SaleOrder(models.Model):
             rec.has_micro_inverter = micro
             rec.has_inverter = inverter
             rec.has_panel = panel
+
+    @api.depends('order_line.product_id', 'order_line.product_uom_qty')
+    def _compute_panel_count(self):
+        panel_cat = self.env['product.category'].search([('name', '=', "Solar Panels")], limit=1)
+        panel_cat_ids = self.env['product.category'].search([('id', 'child_of', panel_cat.id)]).ids
+
+        for rec in self:
+            rec.panel_count = sum(rec.order_line.filtered(lambda l: l.product_id.categ_id.id in panel_cat_ids).mapped('product_uom_qty'))
+            rec.mppt_panel_count = sum(rec.mppt_ids.filtered(lambda mppt: mppt.mppt_id).mapped('panel_count'))
+            rec.panel_count_match = rec.panel_count == rec.mppt_panel_count
 
     def check_mppts(self):
         MPPT = self.env['sale.mppt']
