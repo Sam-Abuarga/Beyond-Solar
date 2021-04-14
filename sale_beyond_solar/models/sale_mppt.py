@@ -12,6 +12,12 @@ class SaleMppt(models.Model):
             if rec.mppt_id:
                 rec.sale_id.mppt_ids.filtered(lambda mppt: mppt.sale_line_id == rec.sale_line_id and not mppt.mppt_id).write({'panel_count': sum(rec.sale_id.mppt_ids.filtered(lambda mppt: mppt.sale_line_id == rec.sale_line_id and mppt.mppt_id).mapped('panel_count'))})
 
+    @api.constrains('panel_count_valid')
+    def _check_panel_count(self):
+        for rec in self:
+            if rec.mppt_id:
+                rec.sale_id.mppt_ids.filtered(lambda mppt: mppt.sale_line_id == rec.sale_line_id and not mppt.mppt_id).write({'panel_count_valid': sum(rec.sale_id.mppt_ids.filtered(lambda mppt: mppt.sale_line_id == rec.sale_line_id and mppt.mppt_id).mapped('panel_count_valid'))})
+
     name = fields.Char(string="Name", required=True, readonly=1)
 
     sale_id = fields.Many2one(comodel_name='sale.order', string="Sale", required=True, ondelete='cascade')
