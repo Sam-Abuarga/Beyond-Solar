@@ -243,7 +243,6 @@ class ProjectTask(models.Model):
                     rec.install_inverter_install,
                     rec.install_inverter_power,
                     rec.install_inverter_resume,
-                    rec.install_inverter_ac_isolator,
                     rec.install_inverter_connection
                 ])
             else:

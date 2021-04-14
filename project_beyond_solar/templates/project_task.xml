@@ -832,12 +832,12 @@
                                 <form t-attf-action="/my/task/{{task.id}}/worksheet/swms/save" class="mb16">
                                     Additional Site Specific Requirements:<br/>
                                     <textarea name="additional_swms" disabled="disabled" t-if="not task.date_worksheet_check" style="width: 100%"/>
-                                    <textarea name="additional_swms" t-esc="task.additional_swms or ''" t-elif="task.date_worksheet_check and not task.date_worksheet_finish" style="width: 100%"/>
+                                    <textarea name="additional_swms" t-esc="task.additional_swms or ''" t-elif="task.date_worksheet_check and not task.date_worksheet_swms" style="width: 100%"/>
                                     <textarea name="additional_swms" disabled="disabled" t-esc="task.additional_swms" t-else="" style="width: 100%"/>
                                     <br/>
                                     Recommendations for Improvements to this Document:<br/>
                                     <textarea name="recommended_swms" disabled="disabled" t-if="not task.date_worksheet_check" style="width: 100%"/>
-                                    <textarea name="recommended_swms" t-esc="task.recommended_swms or ''" t-elif="task.date_worksheet_check and not task.date_worksheet_finish" style="width: 100%"/>
+                                    <textarea name="recommended_swms" t-esc="task.recommended_swms or ''" t-elif="task.date_worksheet_check and not task.date_worksheet_swms" style="width: 100%"/>
                                     <textarea name="recommended_swms" disabled="disabled" t-esc="task.recommended_swms" t-else="" style="width: 100%"/>
                                     <button class="btn btn-primary " type="submit" t-if="task.date_worksheet_check and not task.date_worksheet_swms">Save Changes</button>
                                 </form>
@@ -857,8 +857,8 @@
                                         <li>
                                             <input type="checkbox" name="existing_issues" disabled="disabled" t-if="not task.date_worksheet_swms"/>
                                             <input type="checkbox" name="existing_issues" checked="check"
-                                                   t-elif="task.date_worksheet_swms and not task.date_worksheet_finish and task.has_preexisting_issues"/>
-                                            <input type="checkbox" name="existing_issues" t-elif="task.date_worksheet_swms and not task.date_worksheet_finish"/>
+                                                   t-elif="task.date_worksheet_swms and not task.date_worksheet_site and task.has_preexisting_issues"/>
+                                            <input type="checkbox" name="existing_issues" t-elif="task.date_worksheet_swms and not task.date_worksheet_site"/>
                                             <input type="checkbox" name="existing_issues" disabled="disabled" checked="checked" t-elif="task.has_preexisting_issues"/>
                                             <input type="checkbox" name="existing_issues" disabled="disabled" t-else=""/>
                                             Inspect roof structure for defects, deterioration,
@@ -870,33 +870,33 @@
                                                 <li>
                                                     <input type="checkbox" name="panel_layout" disabled="disabled" t-if="not task.date_worksheet_swms"/>
                                                     <input type="checkbox" name="panel_layout" required="required"
-                                                           t-elif="task.date_worksheet_swms and not task.date_worksheet_finish"/>
+                                                           t-elif="task.date_worksheet_swms and not task.date_worksheet_site"/>
                                                     <input type="checkbox" name="panel_layout" disabled="disabled" checked="checked" t-else=""/>
                                                     Panel Layout
                                                 </li>
                                                 <li>
                                                     <input type="checkbox" name="inverter_location" disabled="disabled" t-if="not task.date_worksheet_swms"/>
                                                     <input type="checkbox" name="inverter_location" required="required"
-                                                           t-elif="task.date_worksheet_swms and not task.date_worksheet_finish"/>
+                                                           t-elif="task.date_worksheet_swms and not task.date_worksheet_site"/>
                                                     <input type="checkbox" name="inverter_location" disabled="disabled" checked="checked" t-else=""/>
                                                     Inverter Location
                                                 </li>
                                                 <li>
                                                     <input type="checkbox" name="battery_location" disabled="disabled" t-if="not task.date_worksheet_swms"/>
                                                     <input type="checkbox" name="battery_location" required="required"
-                                                           t-elif="task.date_worksheet_swms and not task.date_worksheet_finish"/>
+                                                           t-elif="task.date_worksheet_swms and not task.date_worksheet_site"/>
                                                     <input type="checkbox" name="battery_location" disabled="disabled" checked="checked" t-else=""/>
                                                     Battery Location
                                                 </li>
                                                 <li>
                                                     <input type="checkbox" name="cable_run" disabled="disabled" t-if="not task.date_worksheet_swms"/>
-                                                    <input type="checkbox" name="cable_run" required="required" t-elif="task.date_worksheet_swms and not task.date_worksheet_finish"/>
+                                                    <input type="checkbox" name="cable_run" required="required" t-elif="task.date_worksheet_swms and not task.date_worksheet_site"/>
                                                     <input type="checkbox" name="cable_run" disabled="disabled" checked="checked" t-else=""/>
                                                     Cable Run Internal and External
                                                 </li>
                                                 <li>
                                                     <input type="checkbox" name="shading" disabled="disabled" t-if="not task.date_worksheet_swms"/>
-                                                    <input type="checkbox" name="shading" required="required" t-elif="task.date_worksheet_swms and not task.date_worksheet_finish"/>
+                                                    <input type="checkbox" name="shading" required="required" t-elif="task.date_worksheet_swms and not task.date_worksheet_site"/>
                                                     <input type="checkbox" name="shading" disabled="disabled" checked="checked" t-else=""/>
                                                     Shading Issues (If Necessary)
                                                 </li>
@@ -904,8 +904,8 @@
                                         </li>
                                         <li>
                                             <input type="checkbox" name="variations" disabled="disabled" t-if="not task.date_worksheet_swms"/>
-                                            <input type="checkbox" name="variations" t-elif="task.date_worksheet_swms and not task.date_worksheet_finish and task.has_variation" checked="checked"/>
-                                            <input type="checkbox" name="variations" t-elif="task.date_worksheet_swms and not task.date_worksheet_finish and not task.has_variation"/>
+                                            <input type="checkbox" name="variations" t-elif="task.date_worksheet_swms and not task.date_worksheet_site and task.has_variation" checked="checked"/>
+                                            <input type="checkbox" name="variations" t-elif="task.date_worksheet_swms and not task.date_worksheet_site and not task.has_variation"/>
                                             <input type="checkbox" name="variations" disabled="disabled" t-elif="task.has_variation" checked="checked"/>
                                             <input type="checkbox" name="variations" disabled="disabled" t-else=""/>
                                             Are there any variations to the Panel Layout?
@@ -913,7 +913,7 @@
                                             If so, please describe:
                                             <br/>
                                             <textarea name="variation_description" disabled="disabled" t-if="not task.date_worksheet_swms" style="width: 100%;"/>
-                                            <textarea name="variation_description" t-esc="task.variation_description or ''" t-elif="task.date_worksheet_swms and not task.date_worksheet_finish" style="width: 100%;"/>
+                                            <textarea name="variation_description" t-esc="task.variation_description or ''" t-elif="task.date_worksheet_swms and not task.date_worksheet_site" style="width: 100%;"/>
                                             <textarea name="variation_description" disabled="disabled" t-esc="task.variation_description" t-elif="task.variation_description" style="width: 100%;"/>
                                         </li>
                                     </ul>
