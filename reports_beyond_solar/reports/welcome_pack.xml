@@ -52,19 +52,23 @@
                 </div>
             </div>
         </div>
-        <div name="Thank You" t-if="doc_part == 1" class="page" style="page-break-before:always;">
-            <p>Thank you for choosing Beyond Solar for designing and installing rooftop solar PV system at your building.</p>
-            <p>This Owner's Manual is compiled under the guidelines mentioned in the Solar PV Retailer Code of Conduct put together by the Clean Energy Council.</p>
-            <p>The Clean Energy Council (CEC) is the peak body representing Australia's renewable energy and energy efficiency industry.</p>
+        <div name="Thank You" t-if="doc_part == 1" class="page" style="page-break-before:always; padding-top: 300px; font-size: 115%;">
+            <div style="width: 50%; margin: auto; border: 5px solid #4D8015; border-radius: 10px; padding: 50px;" class="text-center">
+                <p><span style="font-size: 200%;">Thank You</span><br/> for choosing Beyond Solar for designing and installing rooftop solar PV system at your building.</p>
+                <p>This Owner's Manual is compiled under the guidelines mentioned in the Solar PV Retailer Code of Conduct put together by the Clean Energy Council.</p>
+                <p>The Clean Energy Council (CEC) is the peak body representing Australia's renewable energy and energy efficiency industry.</p>
+            </div>
         </div>
         <div name="Table of Contents" t-if="doc_part == 1" class="page" style="page-break-before:always;">
-            <h1>Table of Contents</h1>
-            <ol style="padding-left: 16px;">
-                <li>Table of Content</li>
+            <div style="width: 100%; padding: 32px;" class="text-center">
+                <h1 style="color: #4D8015;">1. Table of Contents</h1>
+            </div>
+            <ol style="padding-left: 96px; font-size: 115%;">
+                <li>Table of Contents</li>
                 <li>Contact Information</li>
                 <li>Important Safety Information</li>
                 <li>Important Signs</li>
-                <li>List of Equipment Supplied</li>
+                <li>List of Equipment Supplied &amp; Warranties</li>
                 <li>Your PV System</li>
                 <li>System Performance Estimate</li>
                 <li>Connection Diagram</li>
@@ -75,27 +79,27 @@
                 <li>Mounting System Installation Details</li>
                 <li>Engineering Certificate for the PV Mounting Frame System</li>
                 <li>Testing and Commissioning</li>
-                <li>Certifcate of Electrical Safety / Certificate of Compliance</li>
+                <li>Certificate of Electrical Safety / Certificate of Compliance</li>
                 <li>Permission to Connect Letter</li>
-                <li>Small Technology Certifcate</li>
+                <li>Small Technology Certificate</li>
                 <li>Annexures</li>
             </ol>
         </div>
         <div name="Contact Information" t-if="doc_part == 1" class="page" style="page-break-before:always;">
-            <h1>Contact Information</h1>
+            <div style="width: 100%; padding: 32px;" class="text-center">
+                <h1 style="color: #4D8015;">2. Contact Information</h1>
+            </div>
             <div style="padding: 5px 20px; background-color: #efefef;">
                 <h2>Installation Company</h2>
-                <p>Beyond Solar
-                    <br/>
-                    <br/>Address: 2/79 Williamson Rd, Ingleburn NSW 2565
-                    <br/>
-                    <br/>Phone: 1300 237 684
-                </p>
+                <p>Beyond Solar</p>
+                <p>Address: 2/79 Williamson Rd, Ingleburn NSW 2565</p>
+                <p>Phone: 1300 237 684</p>
             </div>
-
         </div>
         <div name="Important Safety Information" t-if="doc_part == 1" class="page" style="page-break-before:always;">
-            <h1>Important Safety Information</h1>
+            <div style="width: 100%; padding: 32px;" class="text-center">
+                <h1 style="color: #4D8015;">3. Important Safety Information</h1>
+            </div>
             <p>A rooftop PV system can produce hundreds or thousands of watts of power at any given time, that can be extremely dangerous and even fatal. There are several
                 important precautions that must be followed by the Owners of the PV system for their own safety.
             </p>
@@ -114,13 +118,17 @@
             </p>
         </div>
         <div name="Important Signs" t-if="doc_part == 1" class="page" style="page-break-before:always;">
-            <h1>Important Signs</h1>
+            <div style="width: 100%; padding: 32px;" class="text-center">
+                <h1 style="color: #4D8015;">4. Important Signs</h1>
+            </div>
             <p>
                 <img class="fr-fic fr-dib" style="width: 700px;" src="https://www.beyondsolar.com.au/wp-content/uploads/2020/08/PV-Labels-transparent.png"/>
             </p>
         </div>
         <div name="List of Equipment Supplied &amp; Warranties" t-if="doc_part == 1" class="page" style="page-break-before:always;">
-            <h1>List of Equipment Supplied &amp; Warranties</h1>
+            <div style="width: 100%; padding: 32px;" class="text-center">
+                <h1 style="color: #4D8015;">5. List of Equipment Supplied &amp; Warranties</h1>
+            </div>
             <table class="table table-bordered table-sm">
                 <tr>
                     <th>Description</th>
@@ -145,7 +153,9 @@
             </table>
         </div>
         <div name="Your PV System" t-if="doc_part == 1" class="page" style="page-break-before:always;">
-            <h1>Your PV System</h1>
+            <div style="width: 100%; padding: 32px;" class="text-center">
+                <h1 style="color: #4D8015;">6. Your PV System</h1>
+            </div>
             <p>How Solar PV System Works:
                 <br/>
                 <br/>In a grid connected system without battery storage, the PV system works in 4 broad steps.
@@ -221,7 +231,9 @@
             </p>
         </div>
         <div name="System Performance Estimate" t-if="doc_part == 1" class="page" style="page-break-before:always;">
-            <h1>System Performance Estimate</h1>
+            <div style="width: 100%; padding: 32px;" class="text-center">
+                <h1 style="color: #4D8015;">7. System Performance Estimate</h1>
+            </div>
             <strong>System Size:</strong>
             <span t-esc="doc.x_studio_peak_dc_power_kw"/>
             kW
@@ -244,7 +256,9 @@
         <div name="Connection Diagram" t-if="doc_part == 0"/>
 
         <div name="Shutdown Procedure" t-if="doc_part == 2" class="page" style="page-break-before:always;">
-            <h1>Shutdown Procedure</h1>
+            <div style="width: 100%; padding: 32px;" class="text-center">
+                <h1 style="color: #4D8015;">9. Shutdown Procedure</h1>
+            </div>
             <p>PV panels can produce electrical current even when the system is not operating and therefore it must always be treated as live. As a result, even when a system
                 has
                 been shut down, parts of the system may be electrically live. Caution must be exercised while handling these systems.
@@ -269,10 +283,14 @@
                 </tbody>
             </table>
 
-            <h1>Startup Procedure</h1>
+            <div style="width: 100%; padding: 32px;" class="text-center">
+                <h1 style="color: #4D8015;">10. Startup Procedure</h1>
+            </div>
             <p>Start-up procedure is the reverse of shutdown procedure</p>
 
-            <h1>Actions During Earth Fault</h1>
+            <div style="width: 100%; padding: 32px;" class="text-center">
+                <h1 style="color: #4D8015;">11. Actions During Earth Fault</h1>
+            </div>
             <p>All PV systems with an array peak power of less than 240 kWp at STC are required to have an Earth Fault Alarm system in compliance with the Australian Standard
                 AS/NZS 5033. An earth fault alarm is a safety requirement that detects whenever there is a fault or short-circuit between the DC circuit(s) of a PV system and
                 ground (earth).
@@ -289,7 +307,9 @@
             </ol>
         </div>
         <div name="Maintenance" t-if="doc_part == 2" class="page" style="page-break-before:always;">
-            <h1>Maintenance</h1>
+            <div style="width: 100%; padding: 32px;" class="text-center">
+                <h1 style="color: #4D8015;">12. Maintenance</h1>
+            </div>
             <p>A properly designed and installed PV system can have fault free operation for several years. Like any other hardware, performing normal upkeep and inspection of
                 PV
                 system components will help guarantee its performance and reduce disruptions due to component failure. It is important to know that all kind of maintenance and
@@ -1226,12 +1246,22 @@
             </table>
         </div>
         <div name="Mounting System Installation Details" t-if="doc_part == 2" class="page" style="page-break-before:always;">
-            <h1>Mounting System Installation Details</h1>
+            <div style="width: 100%; padding: 32px;" class="text-center">
+                <h1 style="color: #4D8015;">13. Mounting System Installation Details</h1>
+            </div>
             <p>Max distance between your brackets/rail feet has been reviewed to meet relevant regulations.</p>
 
             <div style="text-align: center;">
                 <img class="fr-fic fr-dii" style="max-width: 500px;" src="https://www.beyondsolar.com.au/wp-content/uploads/2020/08/Wind-ratings-map-2.png"/>
             </div>
+        </div>
+        <div name="Testing and Commissioning" t-if="doc_part == 3" class="page" style="page-break-before:always;">
+            <div style="width: 100%; padding: 32px;" class="text-center">
+                <h1 style="color: #4D8015;">15. Testing and Commissioning</h1>
+            </div>
+            <t t-call="project_beyond_solar.report_project_task_installation_document_common">
+                <t t-set="doc" t-value="project_task"/>
+            </t>
         </div>
         </t>
     </template>
@@ -1253,7 +1283,10 @@
         <t t-call="web.html_container">
             <t t-set="data_report_margin_top" t-value="12"/>
             <t t-set="data_report_header_spacing" t-value="9"/>
-            <h1 t-esc="title"/>
+
+            <div style="width: 100%; padding: 32px; padding-top: 500px;" class="text-center">
+                <h1 style="color: #4D8015;" t-esc="title"/>
+            </div>
         </t>
     </template>
 
