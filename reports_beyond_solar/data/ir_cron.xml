@@ -1,0 +1,10 @@
+<odoo>
+    <record id="cron_welcome_pack" model="ir.cron">
+        <field name="name">Send Welcome Packs</field>
+        <field name="model_id" ref="project.model_project_task"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_send_welcome_packs()</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+    </record>
+</odoo>

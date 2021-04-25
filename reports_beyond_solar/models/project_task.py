@@ -9,7 +9,30 @@ from PyPDF2 import PdfFileReader, PdfFileWriter
 class ProjectTask(models.Model):
     _inherit = 'project.task'
 
-    welcome_pack = fields.Binary(string="Welcome Pack")
+    welcome_pack = fields.Binary(string="Welcome Pack", attachment=True)
+
+    def _cron_send_welcome_packs(self):
+        tasks = self.search([('x_studio_send_customer_documentation', '=', False), ('x_studio_stc', '!=', False), ('x_studio_der_receipt', '!=', False), ('x_studio_ccew', '!=', False)])
+        for task in tasks:
+            sale = task.sale_order_id
+            if sale.invoice_status != 'invoiced':
+                continue
+            if any([invoice.state == 'draft' and invoice.type == 'out_invoice' for invoice in sale.invoice_ids]):
+                continue
+            if any([invoice.amount_residual > 0 and invoice.type == 'out_invoice' for invoice in sale.invoice_ids]):
+                continue
+
+            task.x_studio_send_customer_documentation = True
+            task.action_create_welcome_pack()
+            attachment = self.env['ir.attachment'].search([('res_model', '=', 'project.task'), ('res_id', '=', task.id), ('res_field', '=', 'welcome_pack')], limit=1)
+            attachment.write({'name': 'Welcome Pack.pdf'})
+
+            mail_template = self.env['mail.template'].browse(48)  # Welcome Pack
+            email_values = {
+                'attachment_ids': attachment.ids
+            }
+            mail_template.send_mail(task.id, force_send=True, email_values=email_values)
+            self.env.cr.commit()
 
     def action_create_welcome_pack(self):
         streams = []

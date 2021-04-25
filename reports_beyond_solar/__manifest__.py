@@ -13,6 +13,8 @@
         'project_beyond_solar',
     ],
     'data': [
+        'data/ir_cron.xml',
+
         'reports/account_move.xml',
         'reports/shared.xml',
         'reports/welcome_pack.xml',
