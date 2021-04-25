@@ -1017,6 +1017,10 @@
                                             <t t-set="field_checked" t-value="task.install_acdc_tested"/>
                                             <t t-set="field_required" t-value="True"/>
                                         </t>
+                                    </ul>
+
+                                    <h4>DC</h4>
+                                    <ul>
                                         <t t-call="project_beyond_solar.project_portal_selection">
                                             <t t-set="field_name">acdc_dc_size</t>
                                             <t t-set="field_label">DC Cable Size</t>
@@ -1048,6 +1052,9 @@
                                             <t t-set="field_value" t-value="task.install_acdc_fusing_other"/>
                                             <t t-set="field_required" t-value="task.install_acdc_fusing_size == 'other'"/>
                                         </t>
+                                    </ul>
+                                    <h4>AC</h4>
+                                    <ul>
                                         <t t-call="project_beyond_solar.project_portal_selection">
                                             <t t-set="field_name">acdc_breaker</t>
                                             <t t-set="field_label">Circuit Breaker Size</t>
@@ -1069,6 +1076,9 @@
                                             <t t-set="select_values" t-value="[('tps2c', 'TPS2C + e'), ('tps4c', 'TPS4C + e'), ('xlpe2', 'XLPE2C + e'), ('xlpe4', 'XLPE4C + e')]"/>
                                             <t t-set="field_required" t-value="True"/>
                                         </t>
+                                    </ul>
+                                    <h4>Battery</h4>
+                                    <ul>
                                         <t t-call="project_beyond_solar.project_portal_selection" t-if="task.sale_order_id.has_battery">
                                             <t t-set="field_name">battery_connection</t>
                                             <t t-set="field_label">Battery connection point.</t>

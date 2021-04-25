@@ -116,7 +116,7 @@ class ProjectTask(models.Model):
     install_acdc_fusing_other = fields.Char(string="String Fusing Other")
     install_inverter_connection = fields.Selection(string="Installation Inverter Connection Point", selection=[('msb', "MSB"), ('db', "DB")])
     install_inverter_ac_isolator = fields.Boolean(string="Installation Inverter AC Isolator Used")
-    install_inverter_isolator_rating = fields.Selection(string="AC Isolator Rating", default='35', selection=[
+    install_inverter_isolator_rating = fields.Selection(string="AC Isolator Rating", default=False, selection=[
         ('20', '20A'),
         ('35', '35A'),
         ('63', '63A'),
