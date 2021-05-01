@@ -10,13 +10,15 @@ class SaleMppt(models.Model):
     def _check_panel_count(self):
         for rec in self:
             if rec.mppt_id:
-                rec.sale_id.mppt_ids.filtered(lambda mppt: mppt.sale_line_id == rec.sale_line_id and not mppt.mppt_id).write({'panel_count': sum(rec.sale_id.mppt_ids.filtered(lambda mppt: mppt.sale_line_id == rec.sale_line_id and mppt.mppt_id).mapped('panel_count'))})
+                matches = rec.sale_id.mppt_ids.filtered(lambda mppt: mppt.sale_line_id == rec.sale_line_id)
+                matches.filtered(lambda mppt: not mppt.mppt_id).write({'panel_count': sum(matches.filtered(lambda mppt: mppt.mppt_id).mapped('panel_count'))})
 
     @api.constrains('panel_count_valid')
-    def _check_panel_count(self):
+    def _check_panel_count_valid(self):
         for rec in self:
             if rec.mppt_id:
-                rec.sale_id.mppt_ids.filtered(lambda mppt: mppt.sale_line_id == rec.sale_line_id and not mppt.mppt_id).write({'panel_count_valid': sum(rec.sale_id.mppt_ids.filtered(lambda mppt: mppt.sale_line_id == rec.sale_line_id and mppt.mppt_id).mapped('panel_count_valid'))})
+                matches = rec.sale_id.mppt_ids.filtered(lambda mppt: mppt.sale_line_id == rec.sale_line_id)
+                matches.filtered(lambda mppt: not mppt.mppt_id).write({'panel_count_valid': sum(matches.filtered(lambda mppt: mppt.mppt_id).mapped('panel_count_valid'))})
 
     name = fields.Char(string="Name", required=True, readonly=1)
 

@@ -82,6 +82,7 @@
                 <li>Certificate of Electrical Safety / Certificate of Compliance</li>
                 <li>Permission to Connect Letter</li>
                 <li>Small Technology Certificate</li>
+                <li>DER Receipt</li>
                 <li>Annexures</li>
             </ol>
         </div>
@@ -249,8 +250,8 @@
                 the panel orientation and the location's irradiation.
             </p>
             <p class="p43 ft26" t-if="doc.x_studio_performance_chart">Table: Estimated daily kWh production of your system.</p>
-            <img t-if="doc.x_studio_performance_chart" style="max-width: 80%; margin-left: 10%;" t-attf-src="/web/image/sale.order/#{doc.id}/x_studio_performance_chart/"
-                 alt="Performance Chart"/>
+
+            <img t-if="doc.x_studio_performance_chart" style="max-width: 80%; margin-left: 10%;" t-attf-src="data:image/png;base64,{{doc.x_studio_performance_chart}}" alt="Performance Chart"/>
         </div>
 
         <div name="Connection Diagram" t-if="doc_part == 0"/>
@@ -259,9 +260,9 @@
             <div style="width: 100%; padding: 32px;" class="text-center">
                 <h1 style="color: #4D8015;">9. Shutdown Procedure</h1>
             </div>
-            <p>PV panels can produce electrical current even when the system is not operating and therefore it must always be treated as live. As a result, even when a system
-                has
-                been shut down, parts of the system may be electrically live. Caution must be exercised while handling these systems.
+            <p>
+                PV panels can produce electrical current even when the system is not operating and therefore it must always be treated as live. As a result, even when a system
+                has been shut down, parts of the system may be electrically live. Caution must be exercised while handling these systems.
             </p>
 
             <table style="width: 100%; border: 1px solid black;">
@@ -1276,7 +1277,7 @@
         </t>
     </template>
 
-    <report id="action_report_welcome_pack" string="Welcome Pack Part 1" model="sale.order" report_type="qweb-pdf"
+    <report id="action_report_welcome_pack" string="Welcome Pack" model="sale.order" report_type="qweb-pdf"
             file="reports_beyond_solar.report_welcome_pack" name="reports_beyond_solar.report_welcome_pack"/>
 
     <template id="report_welcome_pack_heading">

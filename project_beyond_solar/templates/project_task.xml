@@ -1034,23 +1034,12 @@
                                             <t t-set="field_value" t-value="task.install_acdc_isolator"/>
                                             <t t-set="field_required" t-value="True"/>
                                         </t>
-                                        <t t-call="project_beyond_solar.project_portal_checkbox">
-                                            <t t-set="field_name">acdc_fusing</t>
-                                            <t t-set="field_label">String Fusing</t>
-                                            <t t-set="field_checked" t-value="task.install_acdc_fusing"/>
-                                        </t>
                                         <t t-call="project_beyond_solar.project_portal_selection">
                                             <t t-set="field_name">acdc_fusing_size</t>
                                             <t t-set="field_label">String Fusing Size</t>
                                             <t t-set="field_value" t-value="task.install_acdc_fusing_size"/>
                                             <t t-set="select_values" t-value="[('15_1000', '15A 1000V'), ('20_1000', '20A 1000V'), ('25_1000', '25A 1000V'), ('other', 'Other')]"/>
                                             <t t-set="field_required" t-value="True"/>
-                                        </t>
-                                        <t t-call="project_beyond_solar.project_portal_char">
-                                            <t t-set="field_name">acdc_fusing_other</t>
-                                            <t t-set="field_label">String Fusing Size (Other)</t>
-                                            <t t-set="field_value" t-value="task.install_acdc_fusing_other"/>
-                                            <t t-set="field_required" t-value="task.install_acdc_fusing_size == 'other'"/>
                                         </t>
                                     </ul>
                                     <h4>AC</h4>
@@ -1102,12 +1091,6 @@
                                                 <t t-set="field_checked" t-value="task.install_inverter_pv_isolator"/>
                                             </t>
                                             <t t-call="project_beyond_solar.project_portal_checkbox">
-                                                <t t-set="field_name">isolator_output</t>
-                                                <t t-set="field_label">Inverter communications device has been installed inverter (where required).</t>
-                                                <t t-set="field_checked" t-value="task.install_inverter_ac_isolator"/>
-                                                <t t-set="field_required" t-value="True"/>
-                                            </t>
-                                            <t t-call="project_beyond_solar.project_portal_checkbox">
                                                 <t t-set="field_name">breaker</t>
                                                 <t t-set="field_label">Lockable AC circuit breaker mounted within the switchboard to act as the inverter main switch for the PV/inverter system .</t>
                                                 <t t-set="field_checked" t-value="task.install_inverter_breaker"/>
@@ -1143,23 +1126,12 @@
                                                 <t t-set="select_values" t-value="[('db', 'DB'), ('msb', 'MSB')]"/>
                                                 <t t-set="field_required" t-value="True"/>
                                             </t>
-                                            <t t-call="project_beyond_solar.project_portal_checkbox">
-                                                <t t-set="field_name">inverter_isolator</t>
-                                                <t t-set="field_label">Is AC isolator used.</t>
-                                                <t t-set="field_checked" t-value="task.install_inverter_ac_isolator"/>
-                                            </t>
                                             <t t-call="project_beyond_solar.project_portal_selection">
                                                 <t t-set="field_name">inverter_isolator_rating</t>
                                                 <t t-set="field_label">AC Isolator Rating.</t>
                                                 <t t-set="field_value" t-value="task.install_inverter_isolator_rating"/>
                                                 <t t-set="select_values" t-value="[('20', '20A'), ('35', '35A'), ('63', '63A'), ('other', 'Other')]"/>
-                                                <t t-set="field_required" t-value="task.install_inverter_ac_isolator"/>
-                                            </t>
-                                            <t t-call="project_beyond_solar.project_portal_char">
-                                                <t t-set="field_name">inverter_isolator_rating_other</t>
-                                                <t t-set="field_label">AC Isolator Rating (Other)</t>
-                                                <t t-set="field_value" t-value="task.install_inverter_isolator_rating_other"/>
-                                                <t t-set="field_required" t-value="task.install_inverter_isolator_rating == 'other'"/>
+                                                <t t-set="field_required" t-value="task.install_inverter_isolator_rating"/>
                                             </t>
                                             <t t-call="project_beyond_solar.project_portal_checkbox">
                                                 <t t-set="field_name">isolator</t>

@@ -152,9 +152,7 @@ class Task(CustomerPortal):
             'acdc_dc_size': 'install_acdc_dc_cable',
             'acdc_cable_type': 'install_acdc_cable_type',
             'acdc_fusing_size': 'install_acdc_fusing_size',
-            'acdc_fusing_other': 'install_acdc_fusing_other',
             'inverter_isolator_rating': 'install_inverter_isolator_rating',
-            'inverter_isolator_rating_other': 'install_inverter_isolator_rating_other',
         }
 
         boolean_fields = {
@@ -168,14 +166,11 @@ class Task(CustomerPortal):
             'mounted': 'install_array_weatherproof',
             'installed_electrician': 'install_acdc_install',
             'tested_electrician': 'install_acdc_tested',
-            'acdc_fusing': 'install_acdc_fusing',
             'isolator': 'install_inverter_pv_isolator',
-            'isolator_output': 'install_inverter_ac_isolator',
             'breaker': 'install_inverter_breaker',
             'inverter_manufacturer': 'install_inverter_install',
             'inverter_loss': 'install_inverter_power',
             'inverter_delay': 'install_inverter_resume',
-            'inverter_isolator': 'install_inverter_ac_isolator',
             'battery_isolator': 'install_battery_ac_isolator',
         }
 

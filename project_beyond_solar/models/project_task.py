@@ -106,14 +106,12 @@ class ProjectTask(models.Model):
         ('xlpe2', "XLPE2C + e"),
         ('xlpe4', "XLPE4C + e"),
     ])
-    install_acdc_fusing = fields.Boolean(string="String Fusing")
     install_acdc_fusing_size = fields.Selection(string="String Fusing Size", default='20_1000', selection=[
         ('15_1000', "15A 1000V"),
         ('20_1000', "20A 1000V"),
         ('25_1000', "25A 1000V"),
         ('other', "Other"),
     ])
-    install_acdc_fusing_other = fields.Char(string="String Fusing Other")
     install_inverter_connection = fields.Selection(string="Installation Inverter Connection Point", selection=[('msb', "MSB"), ('db', "DB")])
     install_inverter_ac_isolator = fields.Boolean(string="Installation Inverter AC Isolator Used")
     install_inverter_isolator_rating = fields.Selection(string="AC Isolator Rating", default=False, selection=[
@@ -122,7 +120,6 @@ class ProjectTask(models.Model):
         ('63', '63A'),
         ('other', 'Other')
     ])
-    install_inverter_isolator_rating_other = fields.Char(string="AC Isolator Rating (Other)")
     install_inverter_pv_isolator = fields.Boolean(string="Installation Inverter PV Isolator")
     install_inverter_breaker = fields.Boolean(string="Installation Inverter Circuit Breaker")
     install_inverter_install = fields.Boolean(string="Installation Inverter Installed")
