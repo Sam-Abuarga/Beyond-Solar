@@ -925,7 +925,7 @@
                             <div id="tab-install" t-attf-class="tab-pane fade {{'show active' if task.customer_signature and not task.date_worksheet_install else ''}}" t-if="task.customer_signature">
                                 <form t-attf-action="/my/task/{{task.id}}/worksheet/install">
                                     <t t-set="show_field_required" t-value="task.install_saved and not task.date_worksheet_install"/>
-                                    <t t-set="field_enabled" t-value="task.date_worksheet_site and not task.date_worksheet_finish"/>
+                                    <t t-set="field_enabled" t-value="task.date_worksheet_site and (not task.date_worksheet_finish or task.user_has_groups('base.group_system'))"/>
 
                                     <h4>Installation Details</h4>
                                     <table>
@@ -1238,7 +1238,7 @@
                                     <textarea name="install_notes" t-esc="task.install_notes or ''" t-elif="task.date_worksheet_site and not task.date_worksheet_finish" style="width: 100%"/>
                                     <textarea name="install_notes" disabled="disabled" t-esc="task.install_notes" t-else="" style="width: 100%"/>
                                     <br/>
-                                    <button class="btn btn-primary" type="submit" t-if="task.date_worksheet_site and not task.date_worksheet_finish">Save</button>
+                                    <button class="btn btn-primary" type="submit" t-if="task.date_worksheet_site and (not task.date_worksheet_finish or task.user_has_groups('base.group_system'))">Save</button>
                                 </form>
                                 <br/>
                                 <button class="btn btn-primary" data-toggle="modal" data-target="#installSignModal" t-if="task.show_submit_install">Sign &amp; Submit (Save First)</button>
