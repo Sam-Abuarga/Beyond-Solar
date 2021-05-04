@@ -37,7 +37,7 @@ class SaleReferral(models.Model):
     email = fields.Char(related='partner_id.email')
 
     # Related fields to show contact details
-    ref_partner_id = fields.Many2one(comodel_name='res.partner', compute='_compute_ref_partner')
+    ref_partner_id = fields.Many2one(comodel_name='res.partner', compute='_compute_ref_partner', compute_sudo=True)
     ref_street = fields.Char(related='partner_id.street')
     ref_street2 = fields.Char(related='partner_id.street2')
     ref_city = fields.Char(related='partner_id.city')
@@ -48,8 +48,8 @@ class SaleReferral(models.Model):
     ref_mobile = fields.Char(related='partner_id.mobile')
     ref_email = fields.Char(related='partner_id.email')
 
-    referral_ids = fields.Many2many(comodel_name='sale.referral', compute='_compute_referral_ids')
-    referral_chart = fields.Text(compute='_compute_referral_chart')
+    referral_ids = fields.Many2many(comodel_name='sale.referral', compute='_compute_referral_ids', compute_sudo=True)
+    referral_chart = fields.Text(compute='_compute_referral_chart', compute_sudo=True)
 
     def _expand_states(self, states, domain, order):
         return [key for key, val in type(self).state.selection]
