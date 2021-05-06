@@ -59,28 +59,28 @@ class ProjectTask(models.Model):
 
         streams.append(io.BytesIO(self.env.ref('reports_beyond_solar.action_report_welcome_pack').render_qweb_pdf(self.sale_line_id.order_id.id, {'doc_part': 3, 'project_task': self})[0]))
 
+        if self.x_studio_ccew:
+            streams.append(io.BytesIO(self.env.ref('reports_beyond_solar.action_report_welcome_pack_heading').render_qweb_pdf(1, {'title': "16. Certificate of Electrical Safety"})[0]))
+            streams.append(io.BytesIO(base64.b64decode(self.x_studio_ccew)))
 
-        if self.x_studio_ccew or self.user_id.compliance_declaration_attachment:
-            streams.append(io.BytesIO(self.env.ref('reports_beyond_solar.action_report_welcome_pack_heading').render_qweb_pdf(1, {'title': "16. Certificate of Electrical Safety / Certificate of Compliance"})[0]))
-            if self.x_studio_ccew:
-                streams.append(io.BytesIO(base64.b64decode(self.x_studio_ccew)))
-            if self.user_id.compliance_declaration_attachment:
-                streams.append(io.BytesIO(base64.b64decode(self.user_id.compliance_declaration_attachment)))
+        if self.user_id.compliance_declaration_attachment:
+            streams.append(io.BytesIO(self.env.ref('reports_beyond_solar.action_report_welcome_pack_heading').render_qweb_pdf(1, {'title': "17. Declaration of Compliance"})[0]))
+            streams.append(io.BytesIO(base64.b64decode(self.user_id.compliance_declaration_attachment)))
 
         if self.x_studio_permission_to_connect_ptc_letter:
-            streams.append(io.BytesIO(self.env.ref('reports_beyond_solar.action_report_welcome_pack_heading').render_qweb_pdf(1, {'title': "17. Permission to Connect"})[0]))
+            streams.append(io.BytesIO(self.env.ref('reports_beyond_solar.action_report_welcome_pack_heading').render_qweb_pdf(1, {'title': "18. Permission to Connect"})[0]))
             streams.append(io.BytesIO(base64.b64decode(self.x_studio_permission_to_connect_ptc_letter)))
 
         if self.x_studio_stc:
-            streams.append(io.BytesIO(self.env.ref('reports_beyond_solar.action_report_welcome_pack_heading').render_qweb_pdf(1, {'title': "18. Small Technology Certificate Form"})[0]))
+            streams.append(io.BytesIO(self.env.ref('reports_beyond_solar.action_report_welcome_pack_heading').render_qweb_pdf(1, {'title': "19. Small Technology Certificate Form"})[0]))
             streams.append(io.BytesIO(base64.b64decode(self.x_studio_stc)))
 
         if self.x_studio_der_receipt:
-            streams.append(io.BytesIO(self.env.ref('reports_beyond_solar.action_report_welcome_pack_heading').render_qweb_pdf(1, {'title': "19. DER Receipt"})[0]))
+            streams.append(io.BytesIO(self.env.ref('reports_beyond_solar.action_report_welcome_pack_heading').render_qweb_pdf(1, {'title': "20. DER Receipt"})[0]))
             streams.append(io.BytesIO(base64.b64decode(self.x_studio_der_receipt)))
 
         if annex_attachments:
-            streams.append(io.BytesIO(self.env.ref('reports_beyond_solar.action_report_welcome_pack_heading').render_qweb_pdf(1, {'title': "20. Annexures"})[0]))
+            streams.append(io.BytesIO(self.env.ref('reports_beyond_solar.action_report_welcome_pack_heading').render_qweb_pdf(1, {'title': "21. Annexures"})[0]))
 
         for att in annex_attachments:
             streams.append(io.BytesIO(base64.b64decode(att.file)))
