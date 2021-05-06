@@ -57,7 +57,7 @@ class ProjectTask(models.Model):
         with open(path, 'rb') as file:
             streams.append(io.BytesIO(file.read()))
 
-        streams.append(io.BytesIO(self.env.ref('reports_beyond_solar.action_report_welcome_pack').render_qweb_pdf(self.sale_line_id.order_id.id, {'doc_part': 3, 'project_task': self})[0]))
+        streams.append(io.BytesIO(self.env.ref('project_beyond_solar.action_report_project_task_installation').render_qweb_pdf(self.id, {'title_number': True})[0]))
 
         if self.x_studio_ccew:
             streams.append(io.BytesIO(self.env.ref('reports_beyond_solar.action_report_welcome_pack_heading').render_qweb_pdf(1, {'title': "16. Certificate of Electrical Safety"})[0]))

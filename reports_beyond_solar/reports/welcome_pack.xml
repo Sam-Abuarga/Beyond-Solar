@@ -1257,14 +1257,6 @@
                 <img class="fr-fic fr-dii" style="max-width: 500px;" src="https://www.beyondsolar.com.au/wp-content/uploads/2020/08/Wind-ratings-map-2.png"/>
             </div>
         </div>
-        <div name="Testing and Commissioning" t-if="doc_part == 3" class="page" style="page-break-before:always;">
-            <div style="width: 100%; padding: 32px;" class="text-center">
-                <h1 style="color: #4D8015;">15. Testing and Commissioning</h1>
-            </div>
-            <t t-call="project_beyond_solar.report_project_task_installation_document_common">
-                <t t-set="doc" t-value="project_task"/>
-            </t>
-        </div>
         </t>
     </template>
 
