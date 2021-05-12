@@ -100,7 +100,7 @@ class SaleOrder(models.Model):
                         # Header Lines
                         if matches:
                             to_delete -= matches.filtered(lambda m: not m.mppt_id)
-                            matches.write({'name': line.product_id.name + (f' ({i + 1})' if i > 0 else '')})
+                            matches.filtered(lambda l: not l.mppt_id).write({'name': line.product_id.name + (f' ({i + 1})' if i > 0 else '')})
                         else:
                             MPPT.create({
                                 'sale_line_id': line.id,
