@@ -22,6 +22,9 @@ class ProjectTask(models.Model):
             if any([invoice.amount_residual > 0 and invoice.type == 'out_invoice' for invoice in sale.invoice_ids]):
                 continue
 
+            if sale.picking_ids.filtered(lambda p: p.state not in ('done', 'cancel')):
+                continue
+
             task.x_studio_send_customer_documentation = True
             task.action_create_welcome_pack()
             attachment = self.env['ir.attachment'].search([('res_model', '=', 'project.task'), ('res_id', '=', task.id), ('res_field', '=', 'welcome_pack')], limit=1)
