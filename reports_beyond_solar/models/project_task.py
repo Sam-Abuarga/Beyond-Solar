@@ -3,6 +3,7 @@ from odoo.modules.module import get_module_resource
 
 import base64
 import io
+import pikepdf
 from PyPDF2 import PdfFileReader, PdfFileWriter
 
 
@@ -38,6 +39,16 @@ class ProjectTask(models.Model):
             self.env.cr.commit()
 
     def action_create_welcome_pack(self):
+        def clean_pdf(decoded_data):
+            in_stream = io.BytesIO(decoded_data)
+            out_stream = io.BytesIO()
+            pdf = pikepdf.Pdf.open(in_stream)
+            pdf.save(out_stream)
+            res = out_stream.getvalue()
+            in_stream.close()
+            out_stream.close()
+            return res
+
         streams = []
 
         annex_attachments = self.env['product.attachment']
@@ -64,7 +75,7 @@ class ProjectTask(models.Model):
 
         if self.x_studio_ccew:
             streams.append(io.BytesIO(self.env.ref('reports_beyond_solar.action_report_welcome_pack_heading').render_qweb_pdf(1, {'title': "16. Certificate of Electrical Safety"})[0]))
-            streams.append(io.BytesIO(base64.b64decode(self.x_studio_ccew)))
+            streams.append(io.BytesIO(clean_pdf(base64.b64decode(self.x_studio_ccew))))
 
         if self.user_id.compliance_declaration_attachment:
             streams.append(io.BytesIO(self.env.ref('reports_beyond_solar.action_report_welcome_pack_heading').render_qweb_pdf(1, {'title': "17. Declaration of Compliance"})[0]))
@@ -76,11 +87,11 @@ class ProjectTask(models.Model):
 
         if self.x_studio_stc:
             streams.append(io.BytesIO(self.env.ref('reports_beyond_solar.action_report_welcome_pack_heading').render_qweb_pdf(1, {'title': "19. Small Technology Certificate Form"})[0]))
-            streams.append(io.BytesIO(base64.b64decode(self.x_studio_stc)))
+            streams.append(io.BytesIO(clean_pdf(base64.b64decode(self.x_studio_stc))))
 
         if self.x_studio_der_receipt:
             streams.append(io.BytesIO(self.env.ref('reports_beyond_solar.action_report_welcome_pack_heading').render_qweb_pdf(1, {'title': "20. DER Receipt"})[0]))
-            streams.append(io.BytesIO(base64.b64decode(self.x_studio_der_receipt)))
+            streams.append(io.BytesIO(clean_pdf(base64.b64decode(self.x_studio_der_receipt))))
 
         if annex_attachments:
             streams.append(io.BytesIO(self.env.ref('reports_beyond_solar.action_report_welcome_pack_heading').render_qweb_pdf(1, {'title': "21. Annexures"})[0]))
