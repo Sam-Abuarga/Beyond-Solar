@@ -30,12 +30,12 @@ class SaleMppt(models.Model):
 
     panel_count = fields.Integer(string="# of Panels")
     azimuth_angle = fields.Float(string="Azimuth Angle")
-    tilt_angle = fields.Float(string="Tile Angle")
+    tilt_angle = fields.Float(string="Tilt Angle")
     notes = fields.Text(string="Notes")
 
     panel_count_valid = fields.Integer(string="# of Panels")
     azimuth_angle_valid = fields.Float(string="Azimuth Angle")
-    tilt_angle_valid = fields.Float(string="Tile Angle")
+    tilt_angle_valid = fields.Float(string="Tilt Angle")
     notes_valid = fields.Text(string="Notes")
 
     voltage = fields.Float(string="Operating Voltage")
