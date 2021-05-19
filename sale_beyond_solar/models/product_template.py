@@ -9,6 +9,7 @@ class ProductTemplate(models.Model):
     warranty_attachment_id = fields.Many2one(comodel_name='product.attachment', string="Warranty Attachment", domain=[('type', '=', 'warranty')])
     datasheet_attachment_id = fields.Many2one(comodel_name='product.attachment', string="Datasheet Attachment", domain=[('type', '=', 'datasheet')])
 
+    mppt_single = fields.Boolean(string="Condense Multiple Units")
     mppt_ids = fields.One2many(comodel_name='product.mppt', inverse_name='product_tmpl_id', string="MPPTs")
     mppt_count = fields.Integer(string="MPPT count")
     mppt_inputs = fields.Integer(string="Input per MPPT")

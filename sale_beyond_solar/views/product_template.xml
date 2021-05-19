@@ -20,6 +20,7 @@
             <xpath expr="//notebook" position="inside">
                 <page name="array_matching" string="Inverter Array Matching">
                     <group>
+                        <field name="mppt_single"/>
                         <field name="mppt_count"/>
                         <field name="mppt_inputs"/>
                         <field name="mppt_ids">

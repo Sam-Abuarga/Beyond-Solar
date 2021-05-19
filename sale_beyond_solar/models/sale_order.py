@@ -92,36 +92,35 @@ class SaleOrder(models.Model):
         for rec in self:
             to_delete = rec.mppt_ids
 
-            for line in rec.order_line:
-                if line.product_id.product_tmpl_id.mppt_ids:
-                    for i in range(int(line.product_uom_qty)):
-                        matches = rec.mppt_ids.filtered(lambda m: m.sale_line_id == line and m.sale_line_index == i)
+            for line in rec.order_line.filtered(lambda sol: sol.product_uom_qty > 0 and sol.product_id.product_tmpl_id.mppt_ids):
+                for i in range(1 if line.product_id.mppt_single else int(line.product_uom_qty)):
+                    matches = rec.mppt_ids.filtered(lambda m: m.sale_line_id == line and m.sale_line_index == i)
 
-                        # Header Lines
-                        if matches:
-                            to_delete -= matches.filtered(lambda m: not m.mppt_id)
-                            matches.filtered(lambda l: not l.mppt_id).write({'name': line.product_id.name + (f' ({i + 1})' if i > 0 else '')})
+                    # Header Lines
+                    if matches:
+                        to_delete -= matches.filtered(lambda m: not m.mppt_id)
+                        matches.filtered(lambda l: not l.mppt_id).write({'name': line.product_id.name + (f' ({i + 1})' if i > 0 else '')})
+                    else:
+                        MPPT.create({
+                            'sale_line_id': line.id,
+                            'sale_id': rec.id,
+                            'sale_line_index': i,
+                            'name': line.product_id.name + (f' ({i + 1})' if i > 0 else ''),
+                        })
+
+                    # Strings
+                    for mppt in line.product_id.product_tmpl_id.mppt_ids.filtered(lambda m: m.enabled):
+                        match = matches.filtered(lambda m: m.mppt_id == mppt)
+                        if match:
+                            to_delete -= match
                         else:
                             MPPT.create({
                                 'sale_line_id': line.id,
                                 'sale_id': rec.id,
                                 'sale_line_index': i,
-                                'name': line.product_id.name + (f' ({i + 1})' if i > 0 else ''),
+                                'name': mppt.name,
+                                'mppt_id': mppt.id
                             })
-
-                        # Strings
-                        for mppt in line.product_id.product_tmpl_id.mppt_ids.filtered(lambda m: m.enabled):
-                            match = matches.filtered(lambda m: m.mppt_id == mppt)
-                            if match:
-                                to_delete -= match
-                            else:
-                                MPPT.create({
-                                    'sale_line_id': line.id,
-                                    'sale_id': rec.id,
-                                    'sale_line_index': i,
-                                    'name': mppt.name,
-                                    'mppt_id': mppt.id
-                                })
 
             to_delete.unlink()
 
