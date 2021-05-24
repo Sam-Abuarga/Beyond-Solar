@@ -29,6 +29,10 @@
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project.view_task_form2"/>
         <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button type="object" string="Send CCEW" name="action_email_ccew"/>
+            </xpath>
+
             <xpath expr="//notebook" position="inside">
                 <page string="Validation" name="validation">
                     <group>
