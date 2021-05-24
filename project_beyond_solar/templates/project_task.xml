@@ -366,8 +366,8 @@
                                 <tr style="background-color: #DDDDDD">
                                     <th>Inverter</th>
                                     <th style="padding-left: 10px;" class="text-right">No. of Panels</th>
-                                    <th style="padding-left: 10px;" class="text-right">Azimuth (Degrees)</th>
                                     <th style="padding-left: 10px;" class="text-right">Tilt Angle</th>
+                                    <th style="padding-left: 10px;" class="text-right">Azimuth (Degrees)</th>
                                     <th style="padding-left: 10px;">Notes</th>
                                 </tr>
                                 <tr t-foreach="task.mppt_ids" t-as="mppt">
@@ -377,8 +377,8 @@
                                     <t t-else="">
                                         <td><span t-esc="mppt.name"/></td>
                                         <td class="text-right"><span t-esc="mppt.panel_count_valid"/></td>
-                                        <td class="text-right"><span t-esc="'{:g}'.format(mppt.azimuth_angle_valid)"/></td>
                                         <td class="text-right"><span t-esc="'{:g}'.format(mppt.tilt_angle_valid)"/></td>
+                                        <td class="text-right"><span t-esc="'{:g}'.format(mppt.azimuth_angle_valid)"/></td>
                                         <td><span t-esc="mppt.notes_valid"/></td>
                                     </t>
                                 </tr>
@@ -1185,8 +1185,8 @@
                                                     <th width="12%" style="max-width: 100px;">Operating<br/>Current (A)</th>
                                                     <th width="12%" style="max-width: 100px;" t-if="task.show_all_install">Insulation<br/>Resistance (MΩ)</th>
                                                     <th width="12%" style="max-width: 100px;" t-if="task.show_all_install"># of<br/>Panels</th>
-                                                    <th width="12%" style="max-width: 100px;" t-if="task.show_all_install">Azimuth<br/>Angle</th>
                                                     <th width="12%" style="max-width: 100px;" t-if="task.show_all_install">Tilt<br/>Angle</th>
+                                                    <th width="12%" style="max-width: 100px;" t-if="task.show_all_install">Azimuth<br/>Angle</th>
                                                 </tr>
                                                 <tr t-foreach="task.mppt_ids" t-as="mppt">
                                                     <t t-if="not mppt.mppt_id">
@@ -1199,8 +1199,8 @@
                                                         <td><input type="number" step="any" disabled="disabled"/></td>
                                                         <td t-if="task.show_all_install"><input type="number" step="any" disabled="disabled"/></td>
                                                         <td class="text-right"><span t-esc="mppt.panel_count_valid"/></td>
-                                                        <td class="text-right"><span t-esc="'{:g}'.format(mppt.azimuth_angle_valid)"/></td>
                                                         <td class="text-right"><span t-esc="'{:g}'.format(mppt.tilt_angle_valid)"/></td>
+                                                        <td class="text-right"><span t-esc="'{:g}'.format(mppt.azimuth_angle_valid)"/></td>
                                                     </t>
                                                     <t t-elif="task.date_worksheet_site and not task.date_worksheet_finish">
                                                         <td><span t-esc="mppt.name"/></td>
@@ -1209,8 +1209,8 @@
                                                         <td><input type="number" step="any" t-att-name="'mppt_var_{}_current'.format(mppt.id)" t-att-value="mppt.operating_current"/></td>
                                                         <td t-if="task.show_all_install"><input type="number" step="any" t-att-name="'mppt_var_{}_ins_positive'.format(mppt.id)" t-att-value="mppt.insulation_positive"/></td>
                                                         <td class="text-right"><input type="number" t-att-name="'mppt_var_{}_count'.format(mppt.id)" t-att-value="mppt.panel_count_valid"/></td>
-                                                        <td class="text-right"><input type="number" step="any" t-att-name="'mppt_var_{}_azimuth'.format(mppt.id)" t-att-value="mppt.azimuth_angle_valid"/></td>
                                                         <td class="text-right"><input type="number" step="any" t-att-name="'mppt_var_{}_tilt'.format(mppt.id)" t-att-value="mppt.tilt_angle_valid"/></td>
+                                                        <td class="text-right"><input type="number" step="any" t-att-name="'mppt_var_{}_azimuth'.format(mppt.id)" t-att-value="mppt.azimuth_angle_valid"/></td>
                                                     </t>
                                                     <t t-elif="task.date_worksheet_finish">
                                                         <td><span t-esc="mppt.name"/></td>
@@ -1219,8 +1219,8 @@
                                                         <td><input type="number" step="any" t-att-value="mppt.operating_current" disabled="disabled"/></td>
                                                         <td t-if="task.show_all_install"><input type="number" step="any" t-att-value="mppt.insulation_positive" disabled="disabled"/></td>
                                                         <td class="text-right"><input type="number" t-att-value="mppt.panel_count_valid" disabled="disabled"/></td>
-                                                        <td class="text-right"><input type="number" step="any" t-att-value="mppt.azimuth_angle_valid" disabled="disabled"/></td>
                                                         <td class="text-right"><input type="number" step="any" t-att-value="mppt.tilt_angle_valid" disabled="disabled"/></td>
+                                                        <td class="text-right"><input type="number" step="any" t-att-value="mppt.azimuth_angle_valid" disabled="disabled"/></td>
                                                     </t>
                                                 </tr>
                                                 <tr>

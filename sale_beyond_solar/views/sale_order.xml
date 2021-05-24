@@ -17,8 +17,8 @@
                                     <field name="name"/>
                                     <field name="mppt_id" invisible="1"/>
                                     <field name="panel_count" attrs="{'readonly': [('mppt_id', '=', False)]}"/>
-                                    <field name="azimuth_angle" attrs="{'invisible': [('mppt_id', '=', False)]}"/>
                                     <field name="tilt_angle" attrs="{'invisible': [('mppt_id', '=', False)]}"/>
+                                    <field name="azimuth_angle" attrs="{'invisible': [('mppt_id', '=', False)]}"/>
                                     <field name="notes" attrs="{'invisible': [('mppt_id', '=', False)]}"/>
                                 </tree>
                             </field>

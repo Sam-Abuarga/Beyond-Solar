@@ -44,8 +44,8 @@
                                     <field name="name"/>
                                     <field name="mppt_id" invisible="1"/>
                                     <field name="panel_count_valid" attrs="{'readonly': [('mppt_id', '=', False)]}"/>
-                                    <field name="azimuth_angle_valid" attrs="{'invisible': [('mppt_id', '=', False)]}"/>
                                     <field name="tilt_angle_valid" attrs="{'invisible': [('mppt_id', '=', False)]}"/>
+                                    <field name="azimuth_angle_valid" attrs="{'invisible': [('mppt_id', '=', False)]}"/>
                                     <field name="notes_valid" attrs="{'invisible': [('mppt_id', '=', False)]}"/>
                                 </tree>
                             </field>
