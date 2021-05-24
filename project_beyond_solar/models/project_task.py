@@ -418,6 +418,13 @@ class ProjectTask(models.Model):
         else:
             raise ValidationError("CCEW Not Attached")
 
+        if self.x_studio_distributor == "Endeavour Energy":
+            ctx['default_partner_ids'] = [3779, 3780]
+        elif self.x_studio_distributor == "AusGrid":
+            ctx['default_partner_ids'] = [3779, 3788]
+        else:
+            ctx['default_partner_ids'] = [3779]
+
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'mail.compose.message',
