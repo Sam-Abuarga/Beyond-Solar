@@ -98,8 +98,8 @@
                                     <th t-if="len(inverters) &gt; 1">Inverter</th>
                                     <th>String</th>
                                     <th>No of Panels</th>
-                                    <th>Tilt</th>
                                     <th>Orientation (Relative to North)</th>
+                                    <th>Tilt</th>
                                 </tr>
                             </thead>
                             <tbody>
