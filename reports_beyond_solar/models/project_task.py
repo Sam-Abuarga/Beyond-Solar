@@ -13,7 +13,7 @@ class ProjectTask(models.Model):
     welcome_pack = fields.Binary(string="Welcome Pack", attachment=True)
 
     def _cron_send_welcome_packs(self):
-        tasks = self.search([('x_studio_send_customer_documentation', '=', False), ('x_studio_stc', '!=', False), ('x_studio_der_receipt', '!=', False), ('x_studio_ccew', '!=', False)])
+        tasks = self.search([('x_studio_send_customer_documentation', '=', False), ('x_studio_stc', '!=', False), ('x_studio_ccew', '!=', False)])
         for task in tasks:
             sale = task.sale_order_id
             if sale.invoice_status != 'invoiced':
