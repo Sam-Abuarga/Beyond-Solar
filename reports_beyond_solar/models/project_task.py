@@ -36,6 +36,10 @@ class ProjectTask(models.Model):
                 'attachment_ids': attachment.ids
             }
             mail_template.send_mail(task.id, force_send=True, email_values=email_values)
+
+            if not task.x_studio_send_ccew:
+                task.action_email_ccew()
+
             self.env.cr.commit()
 
     def action_create_welcome_pack(self):
