@@ -400,12 +400,6 @@ class ProjectTask(models.Model):
         return super(ProjectTask, self.with_context(mail_post_autofollow=True)).message_post(**kwargs)
 
     def action_email_ccew(self):
-        ctx = dict(
-            default_use_template=True,
-            default_template_id=63,
-            default_composition_mode='comment',
-            mail_post_autofollow=False,
-        )
         if self.x_studio_ccew:
             attachment = self.env['ir.attachment'].create({
                 'name': self.x_studio_ccew_filename or 'CCEW.pdf',
@@ -414,22 +408,20 @@ class ProjectTask(models.Model):
                 'res_model': 'project.task',
                 'type': 'binary'
             })
-            ctx['default_attachment_ids'] = [(6, 0, attachment.ids)]
         else:
             raise ValidationError("CCEW Not Attached")
 
         if self.x_studio_distributor == "Endeavour Energy":
-            ctx['default_partner_ids'] = [3779, 3780]
+            recipients = [3779, 3780]
         elif self.x_studio_distributor == "AusGrid":
-            ctx['default_partner_ids'] = [3779, 3788]
+            recipients = [3779, 3788]
         else:
-            ctx['default_partner_ids'] = [3779]
+            recipients = [3779]
 
-        return {
-            'type': 'ir.actions.act_window',
-            'res_model': 'mail.compose.message',
-            'view_mode': 'form',
-            'view_type': 'form',
-            'target': 'new',
-            'context': ctx
-        }
+        self.env['mail.template'].browse(63).send_mail(self.id, True, True, {
+            'attachments': [(attachment.name, attachment.datas)],
+            'recipient_ids': recipients
+        }, False)
+
+        attachment.unlink()
+        self.x_studio_send_ccew = True
