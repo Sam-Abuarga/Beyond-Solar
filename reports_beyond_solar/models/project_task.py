@@ -16,7 +16,7 @@ class ProjectTask(models.Model):
         tasks = self.search([('x_studio_send_customer_documentation', '=', False), ('x_studio_stc', '!=', False), ('x_studio_ccew', '!=', False), ('x_studio_permission_to_connect_ptc_letter', '!=', False)])
         for task in tasks:
             sale = task.sale_order_id
-            if sale.invoice_status != 'invoiced':
+            if any(line.price_subtotal and line.qty_invoiced < line.product_uom_qty for line in sale.order_line):
                 continue
             if any([invoice.state == 'draft' and invoice.type == 'out_invoice' for invoice in sale.invoice_ids]):
                 continue
