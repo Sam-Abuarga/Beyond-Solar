@@ -411,9 +411,9 @@ class ProjectTask(models.Model):
         else:
             raise ValidationError("CCEW Not Attached")
 
-        if self.x_studio_distributor == "Endeavour Energy":
-            recipients = [3779, 3780]
-        elif self.x_studio_distributor == "AusGrid":
+        # if self.x_studio_distributor == "Endeavour Energy":
+        #     recipients = [3779, 3780]
+        if self.x_studio_distributor == "AusGrid":
             recipients = [3779, 3788]
         else:
             recipients = [3779]
