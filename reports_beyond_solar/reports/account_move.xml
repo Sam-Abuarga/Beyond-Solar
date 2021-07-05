@@ -35,5 +35,17 @@
                 <p class="m-0" t-else="">Upon Installation</p>
             </div>
         </xpath>
+        
+        <xpath expr="//p[@name='payment_term']" position="after">
+            <div name="payment_details" t-if="o.type == 'out_invoice'">
+                <h4>Please make a payment to:</h4>
+                <ul>
+                    <li><b>Bank:</b> Westpac</li>
+                    <li><b>BSB:</b> 032-075</li>
+                    <li><b>Account Number:</b> 645977</li>
+                    <li><b>Account Name:</b> Beyond Solar</li>
+                </ul>
+            </div>
+        </xpath>
     </template>
 </odoo>
