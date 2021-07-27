@@ -4,6 +4,11 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="brighte_price"/>
+                <!-- To add in studio: " attrs="{'invisible': [('x_studio_type_of_service', '!=', 'New Installation')], 'required': [('x_studio_type_of_service', '=', 'New Installation')]} -->
+            </xpath>
+
             <xpath expr="//notebook" position="inside">
                 <page string="System Design" name="design">
                     <field name="has_battery" invisible="1"/>

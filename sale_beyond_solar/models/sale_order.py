@@ -31,6 +31,8 @@ class SaleOrder(models.Model):
     mppt_panel_count = fields.Integer(string="MPPT Panel Count", compute='_compute_panel_count')
     panel_count_match = fields.Boolean(string="Panel Count Match", compute='_compute_panel_count')
 
+    brighte_price = fields.Float(string="Brighte $/Week")
+
     @api.model
     def create(self, vals):
         res = super(SaleOrder, self).create(vals)
