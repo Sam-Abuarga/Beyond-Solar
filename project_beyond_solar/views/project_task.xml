@@ -153,7 +153,7 @@
 
                         </group>
                         <group string="CCEW" name="qa_ccew">
-
+                            <button name="action_generate_ccew" type="object" string="Generate CCEW"/>
                         </group>
                         <group string="STC" name="qa_stc">
 

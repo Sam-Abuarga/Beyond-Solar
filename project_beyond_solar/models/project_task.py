@@ -1,6 +1,11 @@
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
 from odoo.http import request
+from odoo.modules.module import get_module_resource
+
+import base64
+from fillpdf import fillpdfs
+from io import BytesIO
 
 
 class ProjectTask(models.Model):
@@ -425,3 +430,64 @@ class ProjectTask(models.Model):
 
         attachment.unlink()
         self.x_studio_send_ccew = True
+
+    def action_generate_ccew(self):
+        def split_name(name):
+            if not name:
+                return '', ''
+            if len(name.split(' ')) > 1:
+                return name.split(' ', 1)
+            return name, ''
+
+        file_path = get_module_resource('project_beyond_solar', 'static/src/pdf', 'CCEW_template.pdf')
+        with BytesIO() as temp_file:
+            data = fillpdfs.get_form_fields(file_path)
+
+            data.update({
+                'Installation Type - Residential': 'Yes',
+                'Work Carried Out - New': 'Yes',
+                'Customer First Name': split_name(self.partner_id.name)[0],
+                'Installation First Name': split_name(self.partner_id.name)[0],
+                'Customer Last Name': split_name(self.partner_id.name)[1],
+                'Installation Last Name': split_name(self.partner_id.name)[1],
+                'Customer Street Number': split_name(self.partner_id.street)[0],
+                'Installation Street Number': split_name(self.partner_id.street)[0],
+                'Customer Street Name': split_name(self.partner_id.street)[1],
+                'Installation Street Name': split_name(self.partner_id.street)[1],
+                'Customer Suburb': self.partner_id.city or '',
+                'Installation Suburb': self.partner_id.city or '',
+                'Customer State': self.partner_id.state_id.code or '',
+                'Installation State': self.partner_id.state_id.code or '',
+                'Customer Post Code': self.partner_id.zip or '',
+                'Installation Post Code': self.partner_id.zip or '',
+                'Customer Office No': self.partner_id.phone or self.partner_id.mobile or '',
+                'Installation Office No': self.partner_id.phone or self.partner_id.mobile or '',
+                'Customer Mobile No': self.partner_id.mobile or self.partner_id.phone or '',
+                'Installation Mobile No': self.partner_id.mobile or self.partner_id.phone or '',
+                'Customer Email': self.partner_id.email or '',
+                'Installation Email': self.partner_id.email or '',
+                'Installation NMI': self.x_studio_nmi or '',
+
+                'Installer Unit': '2',
+                'Installer Street Number': '79',
+                'Installer Street Name': 'Williamson Road',
+                'Installer Suburb': 'INGLEBURN',
+                'Installer State': 'NSW',
+                'Installer Post Code': '2565',
+                'Installer Office No': '0434474747',
+                'Installer Mobile No': '0434474747',
+
+                'Increased load within capacity of installation/service? Yes': 'Yes',
+                'Is work connected to supply? (pending DSNP Inspection) Yes': 'Yes',
+            })
+
+            installer = self.x_studio_proposed_team or self.env.user
+
+            data.update({
+                'Installer First Name': split_name(installer.name)[0],
+                'Installer Last Name': split_name(installer.name)[1],
+            })
+
+            fillpdfs.write_fillable_pdf(file_path, temp_file, data)
+            temp_file.seek(0)
+            self.x_studio_ccew = base64.b64encode(temp_file.read())
