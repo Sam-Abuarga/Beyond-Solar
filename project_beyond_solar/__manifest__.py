@@ -31,6 +31,7 @@
         'views/connection_diagram.xml',
         'views/project_project.xml',
         'views/project_task.xml',
+        'views/res_users.xml',
 
         'data/mail_template.xml',
     ],

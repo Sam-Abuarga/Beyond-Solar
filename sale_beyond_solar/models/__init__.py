@@ -1,4 +1,5 @@
 from . import account_move
+from . import mail_follower
 from . import payment_transaction
 from . import product_attachment
 from . import product_mppt
@@ -7,5 +8,3 @@ from . import project_task
 from . import sale_mppt
 from . import sale_order
 from . import sale_order_line
-
-from . import mail_follower

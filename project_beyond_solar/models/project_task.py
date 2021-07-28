@@ -474,18 +474,35 @@ class ProjectTask(models.Model):
                 'Installer Suburb': 'INGLEBURN',
                 'Installer State': 'NSW',
                 'Installer Post Code': '2565',
-                'Installer Office No': '0434474747',
-                'Installer Mobile No': '0434474747',
+                'Installer Office Number': '0434474747',
+                'Installer Mobile Number': '0434474747',
+
+                ' Unit': '2',
+                ' Street Number': '79',
+                ' Street Name': 'Williamson Road',
+                ' Suburb': 'INGLEBURN',
+                ' State': 'NSW',
+                ' Post Code': '2565',
+                ' Office Number': '0434474747',
+                ' Mobile Number': '0434474747',
+                ' Test Date': self.planned_date_end.strftime('%d/%m/%Y') if self.planned_date_end else '',
 
                 'Increased load within capacity of installation/service? Yes': 'Yes',
                 'Is work connected to supply? (pending DSNP Inspection) Yes': 'Yes',
             })
 
-            installer = self.x_studio_proposed_team or self.env.user
+            installer = self.user_id or self.env.user
 
             data.update({
                 'Installer First Name': split_name(installer.name)[0],
                 'Installer Last Name': split_name(installer.name)[1],
+                ' First Name': split_name(installer.name)[0],
+                ' Last Name': split_name(installer.name)[1],
+                'Testers Email Address': installer.login,
+                ' Contractor\'s No': installer.contractor_license,
+                ' Contractor\'s Exp': installer.contractor_license_expiry.strftime('%d/%m/%Y') if installer.contractor_license_expiry else '',
+                'Installer Contractor\'s License No': installer.contractor_license,
+                'Installer Contractor\'s License Exp': installer.contractor_license_expiry.strftime('%d/%m/%Y') if installer.contractor_license_expiry else '',
             })
 
             fillpdfs.write_fillable_pdf(file_path, temp_file, data)
