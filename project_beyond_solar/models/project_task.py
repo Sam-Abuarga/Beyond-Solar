@@ -322,7 +322,7 @@ class ProjectTask(models.Model):
                 rec.job_status = 'draft'
 
     def _compute_inverter_count(self):
-        inverter_cat = self.env['product.category'].search([('name', '=', "Inverters")], limit=1)
+        inverter_cat = self.env['product.category'].search([('name', 'ilike', "Inverters")], limit=1)
         inverter_cat_ids = self.env['product.category'].search([('id', 'child_of', inverter_cat.id)]).ids
 
         for rec in self:
@@ -489,6 +489,25 @@ class ProjectTask(models.Model):
 
                 'Increased load within capacity of installation/service? Yes': 'Yes',
                 'Is work connected to supply? (pending DSNP Inspection) Yes': 'Yes',
+
+                'Switchboard No Installed': self.sale_order_id.panel_count,
+                'Circuits Installed': 'Yes',
+                'Circuits Rating': str(self.install_acdc_breaker or '') + 'A',
+                'Circuits No Installed': self.inverter_count,
+
+                ' Earthing system integrity': 'Yes',
+                ' Insulation resistance Mohms': 'Yes',
+                ' Visual check suitability of installation': 'Yes',
+                ' Polarity': 'Yes',
+                ' Correct current connections': 'Yes',
+            })
+
+            panel_products = self.sale_order_id and self.sale_order_id.order_line.filtered(lambda l: 'Panels' in (l.product_id.categ_id.name or '')).mapped('product_id')
+            inverter_products = self.sale_order_id and self.sale_order_id.order_line.filtered(lambda l: 'Inverter' in (l.product_id.categ_id.name or '')).mapped('product_id')
+
+            data.update({
+                'Switchboard Particulars': panel_products[0].name if panel_products else '',
+                'Circuits Particulars': inverter_products[0].name if inverter_products else '',
             })
 
             installer = self.user_id or self.env.user
