@@ -6,8 +6,6 @@
     'description': "Pay Using Brighte Green",
     'depends': [
         'payment',
-
-        'website_sale',
     ],
     'data': [
         'templates/payment_transfer.xml',
