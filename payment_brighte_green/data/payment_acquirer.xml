@@ -1,0 +1,11 @@
+<odoo noupdate="1">
+    <record id="payment_acquirer_brighte_green" model="payment.acquirer">
+        <field name="name">Brighte Green Loan</field>
+        <field name="provider">brighte_green</field>
+        <field name="company_id" ref="base.main_company"/>
+        <field name="view_template_id" ref="transfer_form"/>
+        <field name="pre_msg"><![CDATA[
+<p>Apply for a Brighte Green loan for full payment.</p>]]>
+        </field>
+    </record>
+</odoo>

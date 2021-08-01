@@ -1,0 +1,33 @@
+<odoo>
+    <template id="sale_order_portal_content" inherit_id="sale.sale_order_portal_content">
+        <xpath expr="//div[@name='total']//table" position="inside">
+            <t t-if="sale_order.brighte_price">
+                <tr style="height: 35px;">
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th>Upfront Payment</th>
+                    <td class="text-right"><span t-field="sale_order.amount_total"/></td>
+                </tr>
+                <tr>
+                    <th>Brighte Green Loan per Week</th>
+                    <td class="text-right">$<span t-esc="'{:.2f}'.format(sale_order.brighte_price)"/></td>
+                </tr>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="sale_order_portal_template" inherit_id="sale.sale_order_portal_template">
+        <!-- Brighte Green Price -->
+        <xpath expr="//t[@t-set='title']" position="replace">
+            <t t-set="title">
+                <h2 class="mb-0"><b t-field="sale_order.amount_total" data-id="total_amount"/> </h2>
+                <t t-if="sale_order.brighte_price">
+                    <h4>- or -</h4>
+                    <h2 class="mb-0"><b>$<span t-esc="'{:.2f}'.format(sale_order.brighte_price)"/></b> per Week</h2>
+                </t>
+            </t>
+        </xpath>
+    </template>
+</odoo>

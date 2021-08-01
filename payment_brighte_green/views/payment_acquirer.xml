@@ -1,0 +1,21 @@
+<odoo>
+    <record id="payment_acquirer_view_form_inherit_transfer" model="ir.ui.view">
+        <field name="name">payment.acquirer.view.form.inherit.transfer</field>
+        <field name="model">payment.acquirer</field>
+        <field name="inherit_id" ref="payment.acquirer_form"/>
+        <field name="arch" type="xml">
+            <page name="acquirer_credentials" position="attributes">
+                <attribute name="attrs">{'invisible': [('provider', 'in', ['transfer', 'brighte_green'])]}</attribute>
+            </page>
+            <field name="pre_msg" position="attributes">
+                <attribute name="attrs">{'invisible': [('provider', 'in', ['transfer', 'brighte_green'])]}</attribute>
+            </field>
+            <field name="done_msg" position="attributes">
+                <attribute name="attrs">{'invisible': [('provider', 'in', ['transfer', 'brighte_green'])]}</attribute>
+            </field>
+            <field name="cancel_msg" position="attributes">
+                <attribute name="attrs">{'invisible': [('provider', 'in', ['transfer', 'brighte_green'])]}</attribute>
+            </field>
+        </field>
+    </record>
+</odoo>
