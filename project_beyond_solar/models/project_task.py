@@ -158,6 +158,12 @@ class ProjectTask(models.Model):
 
     connection_diagram_id = fields.Many2one(comodel_name='connection.diagram', string="Connection Diagram", compute='_compute_connection_diagram')
 
+    def _compute_message_attachment_count(self):
+        for rec in self:
+            rec.message_attachment_count = self.env['ir.attachment'].sudo().search_count(
+                ['|', '&', ('res_model', '=', 'project.task'), ('res_id', '=', rec.id), '&', ('res_model', '=', 'sale.order'), ('res_id', '=', rec.sale_order_id.id)]
+            )
+
     def _compute_connection_diagram(self):
         inverter_cat = self.env['product.category'].search([('name', '=', "Inverters")], limit=1)
         battery_cat = self.env['product.category'].search([('name', '=', "Storage")], limit=1)

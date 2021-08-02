@@ -1,5 +1,6 @@
 from . import connection_diagram
 from . import connection_diagram_criteria
+from . import ir_attachment
 from . import project_project
 from . import project_task
 from . import sale_order
