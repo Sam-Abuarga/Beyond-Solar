@@ -5,6 +5,8 @@ import base64
 import io
 import pikepdf
 from PyPDF2 import PdfFileReader, PdfFileWriter
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import mm
 
 
 class ProjectTask(models.Model):
@@ -57,16 +59,51 @@ class ProjectTask(models.Model):
 
         annex_attachments = self.env['product.attachment']
         for line in self.sale_order_id.order_line:
-            if line.product_id.datasheet_attachment_id:
+            if line.product_id.datasheet_attachment_id.file:
                 annex_attachments |= line.product_id.datasheet_attachment_id
-            if line.product_id.warranty_attachment_id:
+            if line.product_id.warranty_attachment_id.file:
                 annex_attachments |= line.product_id.warranty_attachment_id
 
         streams.append(io.BytesIO(self.env.ref('reports_beyond_solar.action_report_welcome_pack').render_qweb_pdf(self.sale_line_id.order_id.id, {'doc_part': 1})[0]))
 
         if self.connection_diagram_id.pdf_attachment:
             streams.append(io.BytesIO(self.env.ref('reports_beyond_solar.action_report_welcome_pack_heading').render_qweb_pdf(1, {'title': "8. Connection Diagram"})[0]))
-            streams.append(io.BytesIO(base64.b64decode(self.connection_diagram_id.pdf_attachment)))
+
+            output = PdfFileWriter()
+            text_output = io.BytesIO()
+
+            def selection_field(s, field):
+                answer = s[field]
+                if not answer:
+                    return ''
+                vals = {val[0]: val[1] for val in getattr(type(s), field).selection}
+                return vals.get(answer, '')
+
+            can = canvas.Canvas(text_output, pagesize=(420*mm, 297*mm))
+            can.drawString(30, 290, "Inverter Connection Point: " + selection_field(self, 'install_inverter_connection'))
+            can.drawString(30, 270, "AC Isolator Rating: " + selection_field(self, 'install_inverter_isolator_rating'))
+            can.drawString(30, 250, "AC Circuit Breaker Size: " + selection_field(self, 'install_acdc_breaker'))
+            can.drawString(30, 230, "AC Cable Size: " + selection_field(self, 'install_acdc_ac_cable'))
+            can.drawString(30, 210, "AC Cable Type: " + selection_field(self, 'install_acdc_cable_type'))
+            can.drawString(30, 190, "DC Cable Size: " + selection_field(self, 'install_acdc_dc_cable'))
+            can.drawString(30, 170, "DC Isolator: " + self.install_acdc_isolator)
+            can.drawString(30, 150, "DC String Fusing: " + selection_field(self, 'install_acdc_fusing_size'))
+            can.drawString(30, 130, "PV Array Earthing Connection at: " + selection_field(self, 'install_array_earthing'))
+            can.save()
+            text_output.seek(0)
+
+            new_pdf = PdfFileReader(text_output)
+            existing_pdf = PdfFileReader(io.BytesIO(base64.b64decode(self.connection_diagram_id.pdf_attachment)))
+
+            page = existing_pdf.getPage(0)
+            page.mergePage(new_pdf.getPage(0))
+            output.addPage(page)
+
+            outputStream = io.BytesIO()
+            output.write(outputStream)
+            outputStream.seek(0)
+
+            streams.append(outputStream)
 
         streams.append(io.BytesIO(self.env.ref('reports_beyond_solar.action_report_welcome_pack').render_qweb_pdf(self.sale_line_id.order_id.id, {'doc_part': 2})[0]))
 
@@ -101,7 +138,8 @@ class ProjectTask(models.Model):
             streams.append(io.BytesIO(self.env.ref('reports_beyond_solar.action_report_welcome_pack_heading').render_qweb_pdf(1, {'title': "21. Annexures"})[0]))
 
         for att in annex_attachments:
-            streams.append(io.BytesIO(base64.b64decode(att.file)))
+            if att.file:
+                streams.append(io.BytesIO(base64.b64decode(att.file)))
 
         writer = PdfFileWriter()
         for stream in streams:
