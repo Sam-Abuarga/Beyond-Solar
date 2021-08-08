@@ -6,6 +6,10 @@ from odoo.modules.module import get_module_resource
 import base64
 from fillpdf import fillpdfs
 from io import BytesIO
+from PyPDF2 import PdfFileReader, PdfFileWriter
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import mm
+from reportlab.lib.utils import ImageReader
 
 
 class ProjectTask(models.Model):
@@ -532,4 +536,37 @@ class ProjectTask(models.Model):
 
             fillpdfs.write_fillable_pdf(file_path, temp_file, data)
             temp_file.seek(0)
-            self.x_studio_ccew = base64.b64encode(temp_file.read())
+
+            if not installer.contractor_signature:
+                self.x_studio_ccew = base64.b64encode(temp_file.read())
+                return
+
+            output = PdfFileWriter()
+            sig_output = BytesIO()
+
+            can = canvas.Canvas(sig_output, pagesize=(420*mm, 297*mm))
+            img_buff = BytesIO(base64.b64decode(installer.contractor_signature))
+            img = ImageReader(img_buff)
+            dim = img.getSize()
+            dim_sq = (dim[0], dim[1] * 4)
+            dim = (int(dim[0] * 120.0 / max(dim_sq)), int(dim[1] * 120.0 / max(dim_sq)))
+            can.drawImage(img, 55 + int(60 - dim[0] / 2), 111, dim[0], dim[1])
+            can.save()
+            sig_output.seek(0)
+
+            new_pdf = PdfFileReader(sig_output)
+            existing_pdf = PdfFileReader(BytesIO(temp_file.read()))
+
+            page = existing_pdf.getPage(0)
+            output.addPage(page)
+            page = existing_pdf.getPage(1)
+            output.addPage(page)
+
+            page = existing_pdf.getPage(2)
+            page.mergePage(new_pdf.getPage(0))
+            output.addPage(page)
+
+            outputStream = BytesIO()
+            output.write(outputStream)
+            outputStream.seek(0)
+            self.x_studio_ccew = base64.b64encode(outputStream.read())

@@ -7,6 +7,7 @@
             <xpath expr="//field[@name='odoobot_state']" position="after">
                 <field name="contractor_license"/>
                 <field name="contractor_license_expiry"/>
+                <field name="contractor_signature"/>
             </xpath>
         </field>
     </record>
