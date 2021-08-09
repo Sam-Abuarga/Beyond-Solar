@@ -22,7 +22,7 @@ class ProjectTask(models.Model):
                 continue
             if any([invoice.state == 'draft' and invoice.type == 'out_invoice' for invoice in sale.invoice_ids]):
                 continue
-            if any([invoice.amount_residual > 0 and invoice.type == 'out_invoice' for invoice in sale.invoice_ids]):
+            if any([invoice.state != 'cancel' and invoice.amount_residual > 0 and invoice.type == 'out_invoice' for invoice in sale.invoice_ids]):
                 continue
 
             if sale.picking_ids.filtered(lambda p: p.state not in ('done', 'cancel')):
