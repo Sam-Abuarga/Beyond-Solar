@@ -55,8 +55,8 @@
                         <p><b>Roof Type:</b>
                             <span t-field="sale_order.x_studio_report_roof_type"/>
                         </p>
-                        <p><b>Number of Stories:</b>
-                            <span t-field="sale_order.x_studio_report_number_of_storeys"/>
+                        <p><b>Inverter Location:</b>
+                            <span t-field="sale_order.x_studio_expected_inverter_location"/>
                         </p>
                         <p><b>Shade Profile:</b>
                             <span t-field="sale_order.x_studio_shading_profile"/>
