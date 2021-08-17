@@ -236,13 +236,15 @@ class ProjectTask(models.Model):
                     rec.install_array_earthing,
                     rec.install_acdc_install,
                     rec.install_acdc_tested,
-                    rec.install_inverter_pv_isolator,
                     rec.install_inverter_breaker,
                     rec.install_inverter_install,
                     rec.install_inverter_power,
                     rec.install_inverter_resume,
                     rec.install_inverter_connection
                 ])
+                # install_inverter_pv_isolator only shows if has inverter, or microinverters with battery
+                if ((rec.has_inverter and not rec.has_micro_inverter) or (rec.has_micro_inverter and rec.has_battery)) and not rec.install_inverter_pv_isolator:
+                    rec.show_submit_install = False
             else:
                 rec.show_submit_install = rec.install_saved and not rec.date_worksheet_install and all([
                     rec.install_acdc_install,
