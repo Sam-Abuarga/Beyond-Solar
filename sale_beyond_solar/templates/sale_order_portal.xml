@@ -339,7 +339,7 @@
 
         <!-- Text in left Sign & Pay button -->
         <xpath expr="//a[@t-if='sale_order.has_to_be_signed(True)']//t[@t-if='sale_order.has_to_be_paid(True)']" position="replace">
-            <t t-if="sale_order.has_to_be_paid(True)"> Sign &amp; Pay Deposit</t>
+            <t t-if="sale_order.has_to_be_paid(True)">Accept Deposit</t>
         </xpath>
 
         <!-- Text in bottom Pay Now button -->
@@ -349,7 +349,7 @@
 
         <!-- Text in bottom Sign & Pay button -->
         <xpath expr="//t[@t-if='sale_order.has_to_be_signed(True)']//t[@t-if='sale_order.has_to_be_paid(True)']" position="replace">
-            <t t-if="sale_order.has_to_be_paid(True)"> Sign &amp; Pay Deposit</t>
+            <t t-if="sale_order.has_to_be_paid(True)">Accept Deposit</t>
         </xpath>
 
         <!-- Text in Pay Now modal -->
